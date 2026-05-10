@@ -27,9 +27,9 @@ export default function Hero() {
           priority
         />
         {/* Gradient overlays for readability */}
-        <div className="absolute inset-0 bg-white/40 backdrop-blur-[1px]"></div>
-        <div className="absolute inset-0 bg-linear-to-b from-white/80 via-white/40 to-transparent"></div>
-        <div className="absolute inset-0 bg-linear-to-t from-white/80 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px]"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-white/90 via-white/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-white/90 via-white/20 to-transparent"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
