@@ -27,7 +27,7 @@ export default function Hero() {
           priority
         />
         {/* Gradient overlays for readability */}
-        <div className="absolute inset-0 bg-white/75 backdrop-blur-[4px]"></div>
+        <div className="absolute inset-0 bg-white/75 backdrop-blur-sm"></div>
         <div className="absolute inset-0 bg-linear-to-b from-white via-white/70 to-transparent"></div>
         <div className="absolute inset-0 bg-linear-to-t from-white via-white/40 to-transparent"></div>
       </div>
