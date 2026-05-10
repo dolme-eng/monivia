@@ -49,6 +49,31 @@ const testimonials = [
     quote: "Processo 100% online, zero scartoffie e nessuna perdita di tempo. Esattamente quello che cercavo per il mio nuovo veicolo commerciale.",
     initials: "FB",
     name: "Francesco B."
+  },
+  {
+    quote: "Professionalità e cortesia. Hanno risposto a tutte le mie domande e mi hanno guidato verso la soluzione migliore per il mio budget.",
+    initials: "AV",
+    name: "Alessia V."
+  },
+  {
+    quote: "La trasparenza delle condizioni mi ha convinto subito. Niente costi nascosti e tasso fisso. Un'esperienza di credito finalmente serena.",
+    initials: "LD",
+    name: "Luca D."
+  },
+  {
+    quote: "Non pensavo fosse così veloce ottenere un prestito importante. In due giorni la somma era disponibile per l'acquisto del mio studio.",
+    initials: "SM",
+    name: "Sara M."
+  },
+  {
+    quote: "Da libero professionista spesso trovo ostacoli nei finanziamenti. Finora invece ha capito subito le mie esigenze. Ottimo partner.",
+    initials: "GP",
+    name: "Giovanni P."
+  },
+  {
+    quote: "Sito intuitivo, supporto veloce su WhatsApp e tassi super competitivi. Senza dubbio il miglior servizio di credito online in Italia.",
+    initials: "EC",
+    name: "Elena C."
   }
 ];
 
@@ -75,6 +100,13 @@ function TestimonialSlider() {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
           >
+            <div className="flex gap-1.5 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="#FACC15" className="text-yellow-400 drop-shadow-sm">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              ))}
+            </div>
             <p className="text-xl italic font-medium leading-relaxed mb-8">
               &quot;{testimonials[index].quote}&quot;
             </p>
