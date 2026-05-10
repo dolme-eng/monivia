@@ -142,10 +142,12 @@ export default function Home() {
       {/* Trust Bar */}
       <motion.section 
         {...fadeInUp}
-        className="py-12 bg-slate-50 border-y border-slate-100"
+        className="py-16 relative overflow-hidden"
       >
-        <div className="container mx-auto px-6">
-          <p className="text-center text-xs md:text-sm uppercase tracking-tighter font-black text-slate-500 mb-8">
+        <Image src="/assets/business_bg.png" alt="Trust Background" fill className="object-cover object-center z-[-2]" />
+        <div className="absolute inset-0 bg-slate-900/85 z-[-1]"></div>
+        <div className="container mx-auto px-6 relative z-10">
+          <p className="text-center text-xs md:text-sm uppercase tracking-tighter font-black text-slate-400 mb-10">
             Partner di fiducia e certificazioni istituzionali
           </p>
           <motion.div 
@@ -159,7 +161,7 @@ export default function Home() {
                <motion.div 
                 key={i}
                 variants={fadeInUp}
-                className={`text-xl md:text-2xl font-black text-slate-800 tracking-tighter italic ${i % 2 === 0 ? 'underline decoration-secondary decoration-4 underline-offset-4' : ''}`}
+                className={`text-xl md:text-2xl font-black text-white tracking-tighter italic ${i % 2 === 0 ? 'underline decoration-secondary decoration-4 underline-offset-4' : ''}`}
                >
                  {text}
                </motion.div>
