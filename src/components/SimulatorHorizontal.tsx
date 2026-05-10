@@ -99,9 +99,9 @@ export default function SimulatorHorizontal() {
             </div>
             <div className="text-[9px] font-bold text-white/30 uppercase mt-2">TAEG {(taeg*100).toFixed(2)}% • TAN {(tan*100).toFixed(2)}%</div>
           </div>
-          <button className="w-full sm:w-auto bg-secondary text-white px-6 py-4 lg:px-8 lg:py-6 rounded-3xl font-black uppercase text-xs tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-secondary/20 relative z-10">
+          <a href="#richiedi" className="w-full sm:w-auto text-center bg-secondary text-white px-6 py-4 lg:px-8 lg:py-6 rounded-3xl font-black uppercase text-xs tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-secondary/20 relative z-10">
             Avanti
-          </button>
+          </a>
         </div>
       </div>
     </div>

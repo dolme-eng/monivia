@@ -2,10 +2,12 @@
 
 import Link from 'next/link';
 
+import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -56,18 +58,21 @@ export default function Navbar() {
         
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8 lg:space-x-10">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              href={link.href} 
-              className={`text-[13px] font-bold tracking-tight transition-all duration-300 relative group ${link.highlight ? 'text-secondary' : 'text-primary hover:text-secondary'}`}
-            >
-              {link.name}
-              {!link.highlight && (
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-secondary transition-all duration-300 group-hover:w-full"></span>
-              )}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href || (pathname.startsWith('/prestiti') && link.href === '/#prestiti');
+            return (
+              <Link 
+                key={link.name} 
+                href={link.href} 
+                className={`text-[13px] font-bold tracking-tight transition-all duration-300 relative group ${link.highlight || isActive ? 'text-secondary' : 'text-primary hover:text-secondary'}`}
+              >
+                {link.name}
+                {!link.highlight && (
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-secondary transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+                )}
+              </Link>
+            );
+          })}
         </nav>
         
         <div className="flex items-center space-x-4 lg:space-x-6">
