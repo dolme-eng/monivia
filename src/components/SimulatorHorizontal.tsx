@@ -24,7 +24,7 @@ export default function SimulatorHorizontal() {
     <div className="w-full bg-white shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] rounded-[40px] p-3 border border-slate-100">
       <div className="flex flex-col lg:flex-row items-stretch gap-3">
         {/* Amount */}
-        <div className="flex-1 bg-slate-50 p-6 rounded-[32px] border border-transparent hover:border-secondary/20 transition-all group">
+        <div className="flex-1 bg-cyan-50/70 p-6 rounded-[32px] border border-cyan-100 hover:border-secondary/40 transition-all group">
           <div className="flex justify-between items-center mb-5">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-secondary"></div>
@@ -50,7 +50,7 @@ export default function SimulatorHorizontal() {
         </div>
 
         {/* Duration */}
-        <div className="flex-1 bg-slate-50 p-6 rounded-[32px] border border-transparent hover:border-secondary/20 transition-all group">
+        <div className="flex-1 bg-cyan-50/70 p-6 rounded-[32px] border border-cyan-100 hover:border-secondary/40 transition-all group">
           <div className="flex justify-between items-center mb-5">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-secondary"></div>
