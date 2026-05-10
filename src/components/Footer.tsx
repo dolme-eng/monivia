@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#0a0f1d] text-slate-400 pt-24 pb-12">
       <div className="container mx-auto px-6">
-        <div className="grid lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid lg:grid-cols-4 gap-12 mb-16 text-center md:text-left">
           <div className="space-y-6">
             <div className="text-2xl font-black text-white tracking-tighter">
               FI<span className="text-secondary">NORA</span>
@@ -15,7 +15,7 @@ export default function Footer() {
               Il tuo prestito, diretto e senza complicazioni. La soluzione fintech leader per il mercato europeo, 
               che combina tecnologia avanzata e trasparenza totale.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex justify-center md:justify-start space-x-4">
               <Link href="#" className="hover:text-secondary transition-all opacity-70 hover:opacity-100">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
               </Link>
@@ -50,26 +50,26 @@ export default function Footer() {
           
           <div className="space-y-4">
             <h4 className="text-white font-bold mb-6">Contattaci</h4>
-            <div className="flex items-start space-x-3 text-sm">
-              <Mail size={18} className="text-secondary mt-1" />
+            <div className="flex items-center md:items-start justify-center md:justify-start space-x-3 text-sm">
+              <Mail size={18} className="text-secondary mt-0 md:mt-1" />
               <span>supporto@finora.it</span>
             </div>
-            <div className="flex items-start space-x-3 text-sm">
-              <Phone size={18} className="text-secondary mt-1" />
+            <div className="flex items-center md:items-start justify-center md:justify-start space-x-3 text-sm">
+              <Phone size={18} className="text-secondary mt-0 md:mt-1" />
               <span>+39 02 1234567</span>
             </div>
-            <div className="flex items-start space-x-3 text-sm">
-              <MapPin size={18} className="text-secondary mt-1" />
-              <span>Via Dante, 10 - 20121 Milano (MI)</span>
+            <div className="flex items-center md:items-start justify-center md:justify-start space-x-3 text-sm">
+              <MapPin size={18} className="text-secondary mt-0 md:mt-1" />
+              <span>Via Dante, 10 - 20121 Milano</span>
             </div>
           </div>
         </div>
         
-        <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6 text-center">
           <div className="text-[10px] uppercase tracking-wider font-bold">
             © 2024 Finora - Messaggio pubblicitario con finalità promozionale.
           </div>
-          <div className="flex gap-6 text-[10px] font-bold uppercase tracking-wider">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-[10px] font-bold uppercase tracking-wider">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link>
             <Link href="/note-legali" className="hover:text-white transition-colors">Note Legali</Link>

@@ -119,7 +119,7 @@ export default function PrestitoDettaglio() {
               variants={stagger}
               className="space-y-16"
             >
-              <motion.div variants={fadeInUp}>
+              <motion.div variants={fadeInUp} className="text-center md:text-left">
                 <h3 className="text-3xl font-black text-primary mb-8">Perché sceglierci?</h3>
                 <p className="text-lg text-slate-600 leading-relaxed mb-10">
                   Con Finora, il processo è 100% digitale. Non dovrai recarti in filiale né spedire documenti cartacei. 
@@ -137,16 +137,16 @@ export default function PrestitoDettaglio() {
                 </div>
               </motion.div>
 
-              <motion.div variants={fadeInUp}>
+              <motion.div variants={fadeInUp} className="text-center md:text-left">
                 <h3 className="text-3xl font-black text-primary mb-8">Documenti richiesti</h3>
                 <div className="space-y-4">
                   {['Carta d&apos;identità valida', 'Codice Fiscale', 'Ultima busta paga o Modello Unico', 'IBAN del tuo conto corrente'].map((doc, i) => (
                     <motion.div 
                       key={i} 
                       variants={fadeInUp}
-                      className="flex items-center gap-5 p-6 rounded-[24px] bg-white border border-slate-100 hover:border-secondary/20 transition-all shadow-sm"
+                      className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-5 p-6 rounded-[24px] bg-white border border-slate-100 hover:border-secondary/20 transition-all shadow-sm text-center md:text-left"
                     >
-                      <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-black text-sm">{i+1}</div>
+                      <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-black text-sm shrink-0">{i+1}</div>
                       <span className="font-bold text-slate-700">{doc}</span>
                     </motion.div>
                   ))}

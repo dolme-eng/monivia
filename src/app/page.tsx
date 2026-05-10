@@ -178,7 +178,7 @@ export default function Home() {
             viewport={{ once: true, amount: 0.3 }}
             className="grid lg:grid-cols-2 gap-16 items-center mb-20"
           >
-            <motion.div variants={fadeInUp}>
+            <motion.div variants={fadeInUp} className="text-center md:text-left">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-4 md:mb-6 leading-tight">
                 Perché scegliere <span className="text-gradient">Finora</span>
               </h2>
@@ -191,7 +191,7 @@ export default function Home() {
                   <motion.div 
                     key={i} 
                     variants={fadeInUp}
-                    className="flex items-center gap-3"
+                    className="flex items-center justify-center md:justify-start gap-3"
                   >
                     <div className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
