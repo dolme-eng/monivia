@@ -1,0 +1,17 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@theme",
+      "description": "Définit le thème personnalisé pour Tailwind CSS v4."
+    },
+    {
+      "name": "@apply",
+      "description": "Applique des classes utilitaires Tailwind à un sélecteur CSS."
+    },
+    {
+      "name": "@layer",
+      "description": "Définit une couche de styles Tailwind (base, components, utilities)."
+    }
+  ]
+}
