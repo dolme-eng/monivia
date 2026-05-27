@@ -6,15 +6,15 @@ import CookieBanner from "@/components/CookieBanner";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Finora | Il tuo prestito online, diretto e sicuro",
-  description: "Richiedi il tuo prestito online da 3.000€ a 700.000€ con Finora. Tasso fisso al 2%, processo 100% digitale e risposta in 48 ore.",
-  keywords: "prestiti personali, prestito online, finanziamento veloce, tasso fisso, prestito 700000 euro, credito italia",
-  openGraph: {
-    title: "Finora | Prestiti Online Veloci",
-    description: "Finanziamenti fino a 700.000€ con tasso fisso al 2%. Richiedi ora online.",
-    locale: "it_IT",
-    type: "website",
-  },
+    title: "Finora | Il tuo prestito online, diretto e sicuro",
+    description: "Richiedi il tuo prestito online da 5.000€ a 100.000€ con Finora. Tasso fisso al 2%, processo 100% digitale e risposta in 48 ore.",
+    keywords: "prestiti personali, prestito online, finanziamento veloce, tasso fisso, prestito 100000 euro, credito italia",
+    openGraph: {
+      title: "Finora | Prestiti Online Veloci",
+      description: "Finanziamenti fino a 100.000€ con tasso fisso al 2%. Richiedi ora online.",
+      locale: "it_IT",
+      type: "website",
+    },
   icons: {
     icon: "/favicon.svg",
   },
@@ -31,7 +31,7 @@ export default function RootLayout({
     "name": "Finora",
     "url": "https://finora.it",
     "logo": "https://finora.it/logo.svg",
-    "description": "Prestiti online veloci e sicuri. Da 3.000€ a 700.000€ con tasso fisso al 2%.",
+    "description": "Prestiti online veloci e sicuri. Da 5.000€ a 100.000€ con tasso fisso al 2%.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Via Dante, 10",
@@ -40,14 +40,14 @@ export default function RootLayout({
       "addressCountry": "IT"
     },
     "priceRange": "€€",
-    "feesAndCommissionsSpecification": "Tasso Annuo Nominale (TAN) fisso 1.99%. TAEG variabile in base all'assicurazione.",
+    "feesAndCommissionsSpecification": "Tasso Annuo Nominale (TAN) fisso 2%. TAEG variabile in base all'assicurazione.",
     "areaServed": "IT",
-    "offers": {
-      "@type": "Offer",
-      "name": "Prestito Personale Online",
-      "price": "1.99",
-      "priceCurrency": "Percentage"
-    }
+        "offers": {
+          "@type": "Offer",
+          "name": "Prestito Personale Online",
+          "price": "2",
+          "priceCurrency": "Percentage"
+        }
   };
 
   return (
@@ -64,7 +64,7 @@ export default function RootLayout({
         
         {/* Floating WhatsApp Button */}
         <a 
-          href="https://wa.me/39800123456" 
+          href="https://wa.me/393508533366" 
           target="_blank" 
           rel="noopener noreferrer"
           className="fixed bottom-6 left-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 hover:shadow-[#25D366]/50 transition-all duration-300 flex items-center justify-center group"

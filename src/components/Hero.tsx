@@ -48,9 +48,9 @@ export default function Hero() {
                 </span>
                 <div className="h-px w-8 bg-secondary/50"></div>
               </div>
-              <span className="text-[10px] sm:text-xs md:text-sm font-black text-white uppercase tracking-[0.25em] drop-shadow-md px-4 md:px-0">
-                Finanziamenti Corporate & Privati <span className="mx-2 sm:mx-3 text-secondary/50">|</span> Fino a 700k€
-              </span>
+                <span className="text-[10px] sm:text-xs md:text-sm font-black text-white uppercase tracking-[0.25em] drop-shadow-md px-4 md:px-0">
+                  Finanziamenti Corporate & Privati <span className="mx-2 sm:mx-3 text-secondary/50">|</span> Fino a 100.000€
+                </span>
               <div className="h-px w-8 bg-secondary/50 hidden md:block"></div>
             </motion.div>
 
@@ -59,9 +59,9 @@ export default function Hero() {
               <span className="text-secondary">finanziario.</span>
             </motion.h1>
             
-            <motion.p variants={fadeInUp} className="text-lg md:text-2xl text-slate-200 font-medium mb-10 md:mb-12 leading-relaxed max-w-2xl mx-auto drop-shadow-md px-4 md:px-0">
-              Soluzioni di credito flessibili e trasparenti per realizzare i tuoi progetti più importanti. Tassi fissi dal 1.99%.
-            </motion.p>
+               <motion.p variants={fadeInUp} className="text-lg md:text-2xl text-slate-200 font-medium mb-10 md:mb-12 leading-relaxed max-w-2xl mx-auto drop-shadow-md px-4 md:px-0">
+                 Soluzioni di credito flessibili e trasparenti per realizzare i tuoi progetti più importanti. Tassi fissi dal 2%.
+               </motion.p>
             
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row justify-center gap-6 w-full max-w-md mx-auto sm:max-w-none">
                <Link href="#calcolatore" className="btn-primary px-12 py-5 text-sm uppercase tracking-widest font-black rounded-3xl shadow-xl hover:-translate-y-1 transition-transform w-full sm:w-auto text-center">

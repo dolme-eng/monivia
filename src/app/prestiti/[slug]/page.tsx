@@ -35,7 +35,7 @@ const loanData: Record<string, LoanInfo> = {
     title: 'Prestito Immobiliare',
     icon: <Building2 size={48} />,
     desc: 'Ristruttura la tua casa o acquista il tuo primo immobile.',
-    benefits: ['Fino a 700.000€', 'Piani fino a 120 mesi', 'Perizia gratuita']
+    benefits: ['Fino a 100.000€', 'Piani fino a 120 mesi', 'Perizia gratuita']
   },
   'consolidamento': {
     title: 'Consolidamento Debiti',

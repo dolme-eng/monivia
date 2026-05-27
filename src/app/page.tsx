@@ -467,15 +467,18 @@ export default function Home() {
       </section>
 
       {/* Multi-step Form Section */}
-      <section id="richiedi" className="py-24 bg-white">
-        <div className="container mx-auto px-6">
-          <motion.div 
-            {...fadeInUp}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">Richiedi il tuo prestito online</h2>
-            <p className="text-lg text-slate-500">Pochi minuti per una risposta garantita in 48 ore lavorative.</p>
-          </motion.div>
+       <section id="richiedi" className="py-24 bg-white">
+         <div className="container mx-auto px-6">
+           <motion.div 
+             {...fadeInUp}
+             className="text-center mb-16"
+           >
+             <div className="inline-block bg-secondary/10 text-secondary px-6 py-3 rounded-full text-xs md:text-sm font-black uppercase tracking-widest mb-6 border border-secondary/20 shadow-sm">
+               PUOI OTTENERE UN PRESTITO A PARTIRE DA 5.000€ ANCHE SE SEI SEGNALATO CRIF O SE NON HAI UNA BUSTA PAGA
+             </div>
+             <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">Richiedi il tuo prestito online</h2>
+             <p className="text-lg text-slate-500">Pochi minuti per una risposta garantita in 48 ore lavorative.</p>
+           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}

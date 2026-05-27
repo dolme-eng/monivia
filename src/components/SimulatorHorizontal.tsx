@@ -8,7 +8,7 @@ export default function SimulatorHorizontal() {
   const [insurance, setInsurance] = useState(true);
 
   // Financial constants
-  const tan = 0.0199; 
+  const tan = 0.02; 
   const monthlyRate = tan / 12;
   const insuranceRate = 0.0005; 
   
@@ -38,16 +38,16 @@ export default function SimulatorHorizontal() {
           <input 
             type="range" 
             min="5000" 
-            max="700000" 
-            step="5000"
+            max="100000" 
+            step="1000"
             value={amount}
             onChange={(e) => setAmount(Number(e.target.value))}
             className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-secondary shadow-sm"
           />
-          <div className="flex justify-between mt-3 text-[9px] font-bold text-slate-300 uppercase tracking-tighter">
-            <span>5k€</span>
-            <span>700k€</span>
-          </div>
+           <div className="flex justify-between mt-3 text-[9px] font-bold text-slate-300 uppercase tracking-tighter">
+             <span>5 000 €</span>
+             <span>100 000 €</span>
+           </div>
         </div>
 
         {/* Duration */}

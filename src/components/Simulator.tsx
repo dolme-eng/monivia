@@ -9,7 +9,7 @@ export default function Simulator() {
   const [insurance, setInsurance] = useState(true);
 
   // Financial constants
-  const tan = 0.0199; // 1.99% TAN
+  const tan = 0.02; // 2% TAN
   const monthlyRate = tan / 12;
   const insuranceRate = 0.0005; // 0.05% monthly insurance
   
@@ -59,8 +59,8 @@ export default function Simulator() {
             className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-secondary"
           />
           <div className="flex justify-between text-[10px] text-slate-400 font-bold">
-            <span>3.000€</span>
-            <span>700.000€</span>
+             <span>5.000€</span>
+             <span>100.000€</span>
           </div>
         </div>
 

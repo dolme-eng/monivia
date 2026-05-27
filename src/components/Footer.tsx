@@ -55,9 +55,9 @@ export default function Footer() {
               <span>supporto@finora.it</span>
             </div>
             <div className="flex items-center md:items-start justify-center md:justify-start space-x-3 text-sm">
-              <Phone size={18} className="text-secondary mt-0 md:mt-1" />
-              <span>+39 02 1234567</span>
-            </div>
+                    <Phone size={18} className="text-secondary mt-0 md:mt-1" />
+                    <span>+39 350 853 3366</span>
+                  </div>
             <div className="flex items-center md:items-start justify-center md:justify-start space-x-3 text-sm">
               <MapPin size={18} className="text-secondary mt-0 md:mt-1" />
               <span>Via Dante, 10 - 20121 Milano</span>
@@ -77,9 +77,9 @@ export default function Footer() {
         </div>
         
         <div className="mt-8 text-[9px] text-slate-600 max-w-4xl leading-relaxed">
-          Finora è un marchio registrato. Tutte le operazioni di finanziamento sono soggette ad approvazione da parte degli istituti eroganti. 
-          OAM n. M123456. Prima di sottoscrivere il contratto, si prega di leggere attentamente il modulo SECCI e le Informazioni Europee di Base sul Credito ai Consumatori.
-          Esempio: Prestito di 10.000€, TAN fisso 2%, TAEG 2.05%, in 48 rate mensili da 216,95€. Totale dovuto 10.413,60€.
+           Finora è un marchio registrato. Tutte le operazioni di finanziamento sono soggette ad approvazione da parte degli istituti eroganti. 
+           OAM n. M123456. Prima di sottoscrivere il contratto, si prega di leggere attentamente il modulo SECCI e le Informazioni Europee di Base sul Credito ai Consumatori.
+           Esempio: Prestito di 10.000€, TAN fisso 2%, TAEG 2.05%, in 48 rate mensili da 216,83€. Totale dovuto 10.407,84€.
         </div>
       </div>
     </footer>
