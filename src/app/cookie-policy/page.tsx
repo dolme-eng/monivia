@@ -15,7 +15,7 @@ export default function CookiePolicy() {
             <h3>2. Come utilizziamo i cookie</h3>
             <p>Finora utilizza cookie tecnici necessari per il corretto funzionamento del sito e cookie analitici per comprendere come gli utenti interagiscono con la nostra piattaforma.</p>
             <h3>3. Gestione dei cookie</h3>
-            <p>Puoi gestire le tue preferenze sui cookie direttamente dalle impostazioni del tuo browser, impedendone ad esempio l'installazione o cancellando quelli già salvati.</p>
+             <p>Puoi gestire le tue preferenze sui cookie direttamente dalle impostazioni del tuo browser, impedendone ad esempio l&apos;installazione o cancellando quelli già salvati.</p>
           </div>
         </div>
       </section>

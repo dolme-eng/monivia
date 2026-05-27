@@ -30,9 +30,29 @@ export default function LoanForm() {
   });
   const [practiceId, setPracticeId] = useState(0);
 
-  const nextStep = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const nextStep = async () => {
     if (currentStep === 3) {
-      setPracticeId(Math.floor(Math.random() * 1000000));
+      setIsSubmitting(true);
+      setError(null);
+      try {
+        const response = await fetch('/api/loan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Errore durante l\'invio');
+        setPracticeId(result.practiceId.replace('PD-', '')); 
+        setCurrentStep(4);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setIsSubmitting(false);
+      }
+      return;
     }
     setCurrentStep((prev) => Math.min(prev + 1, 4));
   };
@@ -204,8 +224,13 @@ export default function LoanForm() {
                   </div>
                 </div>
 
-                <div className="space-y-3 pt-6">
-                   <label className="flex items-start gap-3 cursor-pointer group">
+               <div className="space-y-3 pt-6">
+                  {error && (
+                    <div className="p-3 bg-red-50 text-red-500 text-xs font-bold rounded-lg mb-4 border border-red-100">
+                      {error}
+                    </div>
+                  )}
+                  <label className="flex items-start gap-3 cursor-pointer group">
                      <input type="checkbox" className="mt-1 accent-secondary h-4 w-4 rounded" />
                      <span className="text-[10px] text-slate-500 group-hover:text-primary transition-colors leading-relaxed">
                        Acconsento al trattamento dei dati personali ai fini della legge sulla privacy (RGPD).
@@ -229,13 +254,14 @@ export default function LoanForm() {
               </button>
             )}
             <div className="grow"></div>
-            <button 
-              onClick={nextStep} 
-              className="btn-primary flex items-center gap-2 text-xs uppercase tracking-widest px-8"
-            >
-              {currentStep === 3 ? 'Invia Richiesta' : 'Continua'} 
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
+             <button 
+               onClick={nextStep} 
+               disabled={isSubmitting}
+               className="btn-primary flex items-center gap-2 text-xs uppercase tracking-widest px-8 disabled:opacity-50 disabled:cursor-not-allowed"
+             >
+               {isSubmitting ? 'Invio in corso...' : currentStep === 3 ? 'Invia Richiesta' : 'Continua'} 
+               {!isSubmitting && <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>}
+             </button>
           </div>
         </div>
       </div>

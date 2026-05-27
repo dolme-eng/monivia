@@ -9,7 +9,7 @@ export default function Trasparenza() {
         <div className="container mx-auto px-6 max-w-4xl">
           <h1 className="text-4xl md:text-5xl font-black text-primary mb-8">Trasparenza Bancaria</h1>
           <div className="bg-white p-8 md:p-12 rounded-[32px] shadow-sm border border-slate-100 prose prose-slate max-w-none">
-            <p>In ottemperanza alle disposizioni della Banca d'Italia in materia di "Trasparenza delle operazioni e dei servizi bancari e finanziari", mettiamo a disposizione del pubblico i fogli informativi dei nostri prodotti.</p>
+             <p>In ottemperanza alle disposizioni della Banca d&apos;Italia in materia di &quot;Trasparenza delle operazioni e dei servizi bancari e finanziari&quot;, mettiamo a disposizione del pubblico i fogli informativi dei nostri prodotti.</p>
             
             <div className="mt-8 space-y-4">
               <div className="p-4 border border-slate-200 rounded-xl flex justify-between items-center bg-slate-50">

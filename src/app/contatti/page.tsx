@@ -1,7 +1,30 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { useState } from 'react';
 
 export default function Contatti() {
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('loading');
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error();
+      setStatus('success');
+      (e.target as HTMLFormElement).reset();
+    } catch {
+      setStatus('error');
+    }
+  };
+
   return (
     <main className="min-h-screen bg-slate-50">
       <Navbar />
@@ -46,27 +69,30 @@ export default function Contatti() {
 
           <div className="bg-white rounded-[40px] p-8 md:p-16 shadow-xl max-w-4xl mx-auto border border-slate-100">
             <h3 className="text-3xl font-black text-primary mb-8 text-center">Inviaci un messaggio</h3>
-            <form className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Nome Completo</label>
-                  <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Email</label>
-                  <input type="email" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Oggetto</label>
-                <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Messaggio</label>
-                <textarea rows={6} className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors resize-none text-slate-800"></textarea>
-              </div>
-              <button type="button" className="w-full btn-primary py-5 text-sm font-black uppercase tracking-widest rounded-2xl hover:scale-[1.02] transition-transform">Invia Messaggio</button>
-            </form>
+             <form onSubmit={handleSubmit} className="space-y-6">
+               <div className="grid md:grid-cols-2 gap-6">
+                 <div>
+                   <label className="block text-sm font-bold text-slate-700 mb-2">Nome Completo</label>
+                   <input name="nome" type="text" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" required />
+                 </div>
+                 <div>
+                   <label className="block text-sm font-bold text-slate-700 mb-2">Email</label>
+                   <input name="email" type="email" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" required />
+                 </div>
+               </div>
+               <div>
+                 <label className="block text-sm font-bold text-slate-700 mb-2">Oggetto</label>
+                 <input name="oggetto" type="text" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" required />
+               </div>
+               <div>
+                 <label className="block text-sm font-bold text-slate-700 mb-2">Messaggio</label>
+                 <textarea name="message" rows={6} className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors resize-none text-slate-800" required></textarea>
+               </div>
+               <button type="submit" disabled={status === 'loading'} className="w-full btn-primary py-5 text-sm font-black uppercase tracking-widest rounded-2xl hover:scale-[1.02] transition-transform disabled:opacity-50">
+                 {status === 'loading' ? 'Invio in corso...' : status === 'success' ? 'Messaggio Inviato!' : 'Invia Messaggio'}
+               </button>
+               {status === 'error' && <p className="text-red-500 text-xs text-center font-bold">Errore durante l'invio. Riprova più tardi.</p>}
+             </form>
           </div>
         </div>
       </section>

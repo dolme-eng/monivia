@@ -15,9 +15,9 @@ export default function PrivacyPolicy() {
             <h3>2. Dati raccolti</h3>
             <p>Raccogliamo i dati necessari per fornirti i nostri servizi finanziari, inclusi ma non limitati a: nome, email, numero di telefono, e informazioni finanziarie per la valutazione del credito.</p>
             <h3>3. Finalità del trattamento</h3>
-            <p>I tuoi dati vengono utilizzati esclusivamente per l'analisi della tua richiesta di prestito, per contattarti in merito ai nostri servizi e per adempiere agli obblighi di legge.</p>
+             <p>I tuoi dati vengono utilizzati esclusivamente per l&apos;analisi della tua richiesta di prestito, per contattarti in merito ai nostri servizi e per adempiere agli obblighi di legge.</p>
             <h3>4. I tuoi diritti</h3>
-            <p>Hai il diritto di accedere ai tuoi dati, chiederne la rettifica, la cancellazione o opporti al loro trattamento contattandoci all'indirizzo supporto@finora.it.</p>
+             <p>Hai il diritto di accedere ai tuoi dati, chiederne la rettifica, la cancellazione o opporti al loro trattamento contattandoci all&apos;indirizzo supporto@finora.it.</p>
           </div>
         </div>
       </section>

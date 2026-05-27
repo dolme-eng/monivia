@@ -38,7 +38,7 @@ export default function ChiSiamo() {
                   </div>
                   <div>
                     <h4 className="text-xl font-bold text-primary mb-1 md:mb-0">10+ Anni di esperienza</h4>
-                    <p className="text-slate-500 text-sm">Abbiamo l'esperienza necessaria per offrirti le migliori soluzioni.</p>
+                    <p className="text-slate-500 text-sm">Abbiamo l&apos;esperienza necessaria per offrirti le migliori soluzioni.</p>
                   </div>
                 </div>
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
