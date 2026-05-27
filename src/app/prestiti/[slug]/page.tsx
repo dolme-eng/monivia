@@ -107,7 +107,7 @@ export default function PrestitoDettaglio() {
           </motion.div>
         </div>
       </section>
-
+      
       {/* Product Content */}
       <section className="py-24">
         <div className="container mx-auto px-6">
@@ -136,7 +136,7 @@ export default function PrestitoDettaglio() {
                   </div>
                 </div>
               </motion.div>
-
+      
               <motion.div variants={fadeInUp} className="text-center md:text-left">
                 <h3 className="text-3xl font-black text-primary mb-8">Documenti richiesti</h3>
                 <div className="space-y-4">
@@ -153,7 +153,7 @@ export default function PrestitoDettaglio() {
                 </div>
               </motion.div>
             </motion.div>
-
+      
             {/* Form Integration */}
             <div id="richiedi" className="bg-slate-50 p-8 md:p-12 rounded-[48px] border border-slate-200 shadow-inner sticky top-32">
                <div className="text-center mb-10">
@@ -165,7 +165,7 @@ export default function PrestitoDettaglio() {
           </div>
         </div>
       </section>
-
+      
       <Footer />
     </main>
   );
