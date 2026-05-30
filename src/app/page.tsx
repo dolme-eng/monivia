@@ -153,6 +153,16 @@ const staggerContainer = {
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const [contactStatus, setContactStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleVideoPlay = () => {
+    setIsPlaying(true);
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
+  };
+
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -198,7 +208,7 @@ export default function Home() {
         {...fadeInUp}
         className="py-16 relative overflow-hidden"
       >
-        <Image src="/assets/business_bg.png" alt="Trust Background" fill className="object-cover object-center z-[-2]" />
+        <Image src="/assets/business_bg.png" alt="Trust Background" fill sizes="100vw" className="object-cover object-center z-[-2]" />
         <div className="absolute inset-0 bg-slate-900/85 z-[-1]"></div>
         <div className="container mx-auto px-6 relative z-10">
           <p className="text-center text-xs md:text-sm uppercase tracking-tighter font-black text-slate-400 mb-10">
@@ -222,9 +232,17 @@ export default function Home() {
              ))}
           </motion.div>
         </div>
-      </motion.section>
+       </motion.section>
 
-      {/* Why Choose Us */}
+       <div className="py-10 bg-white text-center">
+         <div className="container mx-auto px-6">
+           <div className="inline-block bg-secondary/10 text-secondary px-6 py-3 rounded-full text-xs md:text-sm font-black uppercase tracking-widest border border-secondary/20 shadow-sm">
+             PUOI OTTENERE UN PRESTITO A PARTIRE DA 5.000€ ANCHE SE SEI SEGNALATO CRIF O SE NON HAI UNA BUSTA PAGA
+           </div>
+         </div>
+       </div>
+ 
+       {/* Why Choose Us */}
       <section id="chi-siamo" className="py-24 bg-white overflow-hidden">
         <div className="container mx-auto px-6">
           <motion.div 
@@ -268,6 +286,7 @@ export default function Home() {
                 src="/assets/consultation.png" 
                 alt="Consulenza finanziaria professionale" 
                 fill 
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover group-hover:scale-105 transition-transform duration-700" 
               />
               {/* Nuance / Overlay */}
@@ -333,7 +352,7 @@ export default function Home() {
       <section className="py-24 bg-primary relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute inset-0 opacity-10 mix-blend-overlay">
-          <Image src="/assets/business_bg.png" alt="Background" fill className="object-cover" />
+          <Image src="/assets/business_bg.png" alt="Background" fill sizes="100vw" className="object-cover" />
         </div>
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[120px] z-0"></div>
         
@@ -354,39 +373,34 @@ export default function Home() {
             </p>
           </motion.div>
           
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-5xl mx-auto relative rounded-[40px] overflow-hidden shadow-2xl shadow-black/50 border border-white/10 group aspect-video bg-slate-900 cursor-pointer"
-          >
-            {/* Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center z-20">
-              <div className="w-24 h-24 bg-secondary text-white rounded-full flex items-center justify-center backdrop-blur-md group-hover:scale-110 transition-transform duration-500 shadow-2xl shadow-secondary/40 pl-2">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </div>
-            </div>
-            
-            {/* Fake Video Player UI */}
-            <div className="absolute bottom-0 left-0 w-full p-6 bg-linear-to-t from-black/80 to-transparent z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="w-full h-1.5 bg-white/30 rounded-full overflow-hidden mb-4">
-                <div className="h-full w-1/3 bg-secondary"></div>
-              </div>
-              <div className="flex justify-between text-white/80 text-xs font-bold">
-                <span>0:24</span>
-                <span>1:00</span>
-              </div>
-            </div>
-
-            {/* Video Poster Image */}
-            <Image 
-              src="/assets/premium_hero.png" 
-              alt="Video Promo Poster" 
-              fill 
-              className="object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-700 group-hover:scale-105" 
-            />
-          </motion.div>
+           <motion.div 
+             initial={{ opacity: 0, y: 40 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+             transition={{ duration: 0.8, delay: 0.2 }}
+             className="max-w-5xl mx-auto relative rounded-[40px] overflow-hidden shadow-2xl shadow-black/50 border border-white/10 group aspect-video bg-slate-900 cursor-pointer"
+             onClick={handleVideoPlay}
+           >
+             {/* Play Button Overlay */}
+             {!isPlaying && (
+               <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/20 backdrop-blur-[2px] transition-all duration-500">
+                 <div className="w-24 h-24 bg-secondary text-white rounded-full flex items-center justify-center backdrop-blur-md group-hover:scale-110 transition-transform duration-500 shadow-2xl shadow-secondary/40 pl-2">
+                   <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                 </div>
+               </div>
+             )}
+             
+             {/* Real Video Player */}
+             <video 
+               ref={videoRef}
+               src="/lv_0_20260529163833.mp4"
+               className="w-full h-full object-cover"
+               controls={isPlaying}
+               loop
+               playsInline
+               muted={false}
+             />
+           </motion.div>
         </div>
       </section>
 
@@ -473,11 +487,11 @@ export default function Home() {
                   </div>
                   <div className="w-full md:w-1/2 h-[300px] md:h-[400px]">
                     <div className="relative h-full w-full rounded-[30px] overflow-hidden shadow-2xl">
-                      {activeTab === 0 && <Image src="/assets/hero_lifestyle.png" alt="Personale" fill className="object-cover" />}
-                      {activeTab === 1 && <Image src="/assets/consultation.png" alt="Auto" fill className="object-cover" />}
-                      {activeTab === 2 && <Image src="/assets/premium_hero.png" alt="Immobiliare" fill className="object-cover" />}
-                      {activeTab === 3 && <Image src="/assets/pro_bg.png" alt="Business" fill className="object-cover" />}
-                      {activeTab === 4 && <Image src="/assets/hero_lifestyle_new.png" alt="Consolidamento" fill className="object-cover" />}
+                       {activeTab === 0 && <Image src="/assets/hero_lifestyle.png" alt="Personale" fill priority sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
+                      {activeTab === 1 && <Image src="/assets/consultation.png" alt="Auto" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
+                      {activeTab === 2 && <Image src="/assets/premium_hero.png" alt="Immobiliare" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
+                      {activeTab === 3 && <Image src="/assets/pro_bg.png" alt="Business" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
+                      {activeTab === 4 && <Image src="/assets/hero_lifestyle_new.png" alt="Consolidamento" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
                       <div className="absolute inset-0 bg-linear-to-t from-primary/60 to-transparent"></div>
                     </div>
                   </div>
@@ -491,14 +505,11 @@ export default function Home() {
       {/* Multi-step Form Section */}
        <section id="richiedi" className="py-24 bg-white">
          <div className="container mx-auto px-6">
-           <motion.div 
-             {...fadeInUp}
-             className="text-center mb-16"
-           >
-             <div className="inline-block bg-secondary/10 text-secondary px-6 py-3 rounded-full text-xs md:text-sm font-black uppercase tracking-widest mb-6 border border-secondary/20 shadow-sm">
-               PUOI OTTENERE UN PRESTITO A PARTIRE DA 5.000€ ANCHE SE SEI SEGNALATO CRIF O SE NON HAI UNA BUSTA PAGA
-             </div>
-             <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">Richiedi il tuo prestito online</h2>
+            <motion.div 
+              {...fadeInUp}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">Richiedi il tuo prestito online</h2>
              <p className="text-lg text-slate-500">Pochi minuti per una risposta garantita in 48 ore lavorative.</p>
            </motion.div>
           <motion.div
@@ -514,7 +525,7 @@ export default function Home() {
       {/* Contact & Testimonials Section */}
       <section id="contatti" className="py-24 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <Image src="/assets/business_bg.png" alt="Background" fill className="object-cover" />
+          <Image src="/assets/business_bg.png" alt="Background" fill sizes="100vw" className="object-cover" />
         </div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">

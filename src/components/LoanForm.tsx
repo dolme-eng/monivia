@@ -25,13 +25,19 @@ export default function LoanForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     nome: '', cognome: '', codiceFiscale: '', email: '', telefono: '',
-    impiego: 'dipendente', reddito: '', finalita: 'auto', importo: '', durata: '',
-    privacy: false, crif: false
+    impiego: 'Dipendente Tempo Indeterminato', reddito: '', finalita: 'Acquisto Auto', importo: '50000', durata: '48',
+    anzianita: '', privacy: false, crif: false
   });
   const [practiceId, setPracticeId] = useState(0);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    setFormData((prev) => ({ ...prev, [name]: val }));
+  };
 
   const nextStep = async () => {
     if (currentStep === 3) {
@@ -121,15 +127,16 @@ export default function LoanForm() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Nome</label>
-                    <input type="text" placeholder="Es: Mario" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm" />
+                    <input name="nome" type="text" placeholder="Es: Mario" value={formData.nome} onChange={handleChange} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm" required />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Cognome</label>
-                    <input type="text" placeholder="Es: Rossi" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm" />
+                    <input name="cognome" type="text" placeholder="Es: Rossi" value={formData.cognome} onChange={handleChange} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm" required />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Codice Fiscale</label>
                     <input 
+                      name="codiceFiscale"
                       type="text" 
                       placeholder="RSSMRA80A01H501W" 
                       className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all uppercase text-sm"
@@ -139,6 +146,7 @@ export default function LoanForm() {
                         setFormData({...formData, codiceFiscale: val});
                       }}
                       value={formData.codiceFiscale}
+                      required
                     />
                     {formData.codiceFiscale && !validateCodiceFiscale(formData.codiceFiscale) && (
                       <span className="text-[10px] text-red-500 font-bold uppercase ml-1">Formato non valido</span>
@@ -146,7 +154,11 @@ export default function LoanForm() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Email</label>
-                    <input type="email" placeholder="mario.rossi@email.it" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm" />
+                    <input name="email" type="email" placeholder="mario.rossi@email.it" value={formData.email} onChange={handleChange} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm" required />
+                  </div>
+                  <div className="space-y-2 md:col-span-2">
+                    <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Telefono</label>
+                    <input name="telefono" type="tel" placeholder="Es: +39 333 1234567" value={formData.telefono} onChange={handleChange} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm" required />
                   </div>
                 </div>
               </motion.div>
@@ -168,7 +180,7 @@ export default function LoanForm() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Tipo di Impiego</label>
-                    <select className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm">
+                    <select name="impiego" value={formData.impiego} onChange={handleChange} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm">
                       <option>Dipendente Tempo Indeterminato</option>
                       <option>Dipendente Tempo Determinato</option>
                       <option>Autonomo / Libero Professionista</option>
@@ -177,11 +189,11 @@ export default function LoanForm() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Reddito Mensile Netto (€)</label>
-                    <input type="number" placeholder="Es: 2500" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm" />
+                    <input name="reddito" type="number" placeholder="Es: 2500" value={formData.reddito} onChange={handleChange} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm" required />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Finalità</label>
-                    <select className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm">
+                    <select name="finalita" value={formData.finalita} onChange={handleChange} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm">
                       <option>Acquisto Auto</option>
                       <option>Ristrutturazione Casa</option>
                       <option>Consolidamento Debiti</option>
@@ -190,8 +202,8 @@ export default function LoanForm() {
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Anzianità lavorativa</label>
-                    <input type="number" placeholder="Es: 5" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm" />
+                    <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Anzianità lavorativa (anni)</label>
+                    <input name="anzianita" type="number" placeholder="Es: 5" value={formData.anzianita} onChange={handleChange} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm" required />
                   </div>
                 </div>
               </motion.div>
@@ -230,18 +242,18 @@ export default function LoanForm() {
                       {error}
                     </div>
                   )}
-                  <label className="flex items-start gap-3 cursor-pointer group">
-                     <input type="checkbox" className="mt-1 accent-secondary h-4 w-4 rounded" />
-                     <span className="text-[10px] text-slate-500 group-hover:text-primary transition-colors leading-relaxed">
-                       Acconsento al trattamento dei dati personali ai fini della legge sulla privacy (RGPD).
-                     </span>
-                   </label>
                    <label className="flex items-start gap-3 cursor-pointer group">
-                     <input type="checkbox" className="mt-1 accent-secondary h-4 w-4 rounded" />
-                     <span className="text-[10px] text-slate-500 group-hover:text-primary transition-colors leading-relaxed">
-                       Autorizzo Finora a consultare i sistemi di informazioni creditizie (CRIF).
-                     </span>
-                   </label>
+                      <input name="privacy" type="checkbox" checked={formData.privacy} onChange={handleChange} className="mt-1 accent-secondary h-4 w-4 rounded" required />
+                      <span className="text-[10px] text-slate-500 group-hover:text-primary transition-colors leading-relaxed">
+                        Acconsento al trattamento dei dati personali ai fini della legge sulla privacy (RGPD).
+                      </span>
+                    </label>
+                    <label className="flex items-start gap-3 cursor-pointer group">
+                      <input name="crif" type="checkbox" checked={formData.crif} onChange={handleChange} className="mt-1 accent-secondary h-4 w-4 rounded" required />
+                      <span className="text-[10px] text-slate-500 group-hover:text-primary transition-colors leading-relaxed">
+                        Autorizzo Finora a consultare i sistemi di informazioni creditizie (CRIF).
+                      </span>
+                    </label>
                 </div>
               </motion.div>
             )}

@@ -10,7 +10,7 @@ export default function ChiSiamo() {
       {/* Hero Section */}
       <section className="pt-40 pb-24 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <Image src="/assets/business_bg.png" alt="Business district background" fill className="object-cover" />
+          <Image src="/assets/business_bg.png" alt="Business district background" fill priority className="object-cover" />
         </div>
         <div className="container mx-auto px-6 relative z-10 text-center text-white">
           <h1 className="text-4xl md:text-6xl font-black mb-6">Chi Siamo</h1>
@@ -53,7 +53,7 @@ export default function ChiSiamo() {
               </div>
             </div>
             <div className="relative h-[500px] rounded-[40px] overflow-hidden shadow-2xl">
-              <Image src="/assets/premium_hero.png" alt="Chi siamo" fill className="object-cover" />
+               <Image src="/assets/premium_hero.png" alt="Chi siamo" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
             </div>
           </div>
         </div>

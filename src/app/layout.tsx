@@ -15,9 +15,9 @@ export const metadata: Metadata = {
       locale: "it_IT",
       type: "website",
     },
-  icons: {
-    icon: "/favicon.svg",
-  },
+   icons: {
+     icon: "/favicon.svg",
+   },
 };
 
 export default function RootLayout({
@@ -51,7 +51,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="it" className="scroll-smooth">
+    <html lang="it" className="scroll-smooth" data-scroll-behavior="smooth">
       <head>
         <script
           type="application/ld+json"

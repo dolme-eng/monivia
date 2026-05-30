@@ -23,6 +23,7 @@ export default function Hero() {
           src="/assets/pro_bg.png" 
           alt="Distretto Finanziario - Prestiti Professionali" 
           fill 
+          sizes="100vw"
           className="object-cover"
           priority
         />
@@ -48,9 +49,9 @@ export default function Hero() {
                 </span>
                 <div className="h-px w-8 bg-secondary/50"></div>
               </div>
-                <span className="text-[10px] sm:text-xs md:text-sm font-black text-white uppercase tracking-[0.25em] drop-shadow-md px-4 md:px-0">
-                  Finanziamenti Corporate & Privati <span className="mx-2 sm:mx-3 text-secondary/50">|</span> Fino a 100.000€
-                </span>
+                    <span className="text-[10px] sm:text-xs md:text-sm font-black text-white uppercase tracking-[0.25em] drop-shadow-md px-4 md:px-0">
+                      Finanziamenti Corporate & Privati <span className="mx-2 sm:mx-3 text-secondary/50">|</span> da 5.000€ a più di 500.000€
+                    </span>
               <div className="h-px w-8 bg-secondary/50 hidden md:block"></div>
             </motion.div>
 
