@@ -10,7 +10,7 @@ export default function SimulatorHorizontal() {
   // Financial constants
   const tan = 0.02; 
   const monthlyRate = tan / 12;
-  const insuranceRate = 0.0005; 
+  const insuranceRate = 0.0005; // 0.05% monthly insurance
   
   const x = Math.pow(1 + monthlyRate, months);
   const baseMonthly = (amount * x * monthlyRate) / (x - 1);
@@ -40,11 +40,13 @@ export default function SimulatorHorizontal() {
                   if (val >= 0 && val <= 1000000) setAmount(val);
                 }}
                 onBlur={(e) => {
-                  let val = Number(e.target.value);
+                  const val = Number(e.target.value);
                   if (val < 5000) setAmount(5000);
                   else if (val > 1000000) setAmount(1000000);
                 }}
                 className="bg-transparent text-2xl font-black text-primary group-hover:text-secondary transition-colors w-32 outline-none border-b-2 border-transparent focus:border-secondary"
+                aria-label="Importo prestito"
+                title="Importo prestito"
               />
               <span className="text-2xl font-black text-primary group-hover:text-secondary transition-colors">€</span>
             </div>
@@ -57,6 +59,8 @@ export default function SimulatorHorizontal() {
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
               className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-secondary shadow-sm"
+              aria-label="Importo prestito slider"
+              title="Importo prestito slider"
             />
              <div className="flex justify-between mt-3 text-[9px] font-bold text-slate-300 uppercase tracking-tighter">
                <span>5 000 €</span>
@@ -83,6 +87,8 @@ export default function SimulatorHorizontal() {
             value={months}
             onChange={(e) => setMonths(Number(e.target.value))}
             className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-secondary shadow-sm"
+            aria-label="Durata prestito in mesi"
+            title="Durata prestito in mesi"
           />
           <div className="flex justify-between mt-3 text-[9px] font-bold text-slate-300 uppercase tracking-tighter">
             <span>12m</span>

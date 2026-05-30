@@ -31,8 +31,8 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold mb-6">Servizi</h4>
             <ul className="space-y-4 text-sm">
-              <li><Link href="/prestiti/personale" className="hover:text-white transition-colors">Prestito Personale</Link></li>
               <li><Link href="/prestiti/auto" className="hover:text-white transition-colors">Prestito Auto</Link></li>
+              <li><Link href="/prestiti/immobiliare" className="hover:text-white transition-colors">Prestito Immobiliare</Link></li>
               <li><Link href="/prestiti/consolidamento" className="hover:text-white transition-colors">Consolidamento Debiti</Link></li>
               <li><Link href="/prestiti/business" className="hover:text-white transition-colors">Prestito Business</Link></li>
             </ul>
@@ -77,9 +77,9 @@ export default function Footer() {
         </div>
         
         <div className="mt-8 text-[9px] text-slate-600 max-w-4xl leading-relaxed">
-           Finora è un marchio registrato. Tutte le operazioni di finanziamento sono soggette ad approvazione da parte degli istituti eroganti. 
+           Finora è un marchio registrato. Tutte le operazioni di finanziamento sono soggette ad approvazione da parte degli istituti eroganti.
            OAM n. M123456. Prima di sottoscrivere il contratto, si prega di leggere attentamente il modulo SECCI e le Informazioni Europee di Base sul Credito ai Consumatori.
-           Esempio: Prestito di 10.000€, TAN fisso 2%, TAEG 2.05%, in 48 rate mensili da 216,83€. Totale dovuto 10.407,84€.
+           Esempio: Prestito di 10.000€, TAN fisso 2%, TAEG 2.73%, in 48 rate mensili da 216,83€. Totale dovuto 10.407,84€.
         </div>
       </div>
     </footer>

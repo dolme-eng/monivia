@@ -57,6 +57,8 @@ export default function Simulator() {
             value={amount}
             onChange={(e) => setAmount(Number(e.target.value))}
             className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-secondary"
+            aria-label="Importo del prestito"
+            title="Importo del prestito"
           />
           <div className="flex justify-between text-[10px] text-slate-400 font-bold">
              <span>5.000€</span>
@@ -80,6 +82,8 @@ export default function Simulator() {
             value={months}
             onChange={(e) => setMonths(Number(e.target.value))}
             className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-secondary"
+            aria-label="Durata del prestito in mesi"
+            title="Durata del prestito in mesi"
           />
           <div className="flex justify-between text-[10px] text-slate-400 font-bold">
             <span>12m</span>

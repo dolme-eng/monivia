@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import LoanForm from '@/components/LoanForm';
@@ -54,7 +55,11 @@ const loanData: Record<string, LoanInfo> = {
 export default function PrestitoDettaglio() {
   const params = useParams();
   const slug = params.slug as string;
-  const data = loanData[slug] || loanData['auto'];
+  const data = loanData[slug];
+
+  if (!data) {
+    notFound();
+  }
 
   return (
     <main className="min-h-screen bg-white">
