@@ -31,12 +31,12 @@ const loanData: Record<string, LoanInfo> = {
     desc: 'Finanzia la tua nuova auto, nuova o usata, con tassi agevolati.',
     benefits: ['Fino a 50.000€', 'Erogazione rapida', 'Assicurazione inclusa opzionale']
   },
-  'immobiliare': {
-    title: 'Prestito Immobiliare',
-    icon: <Building2 size={48} />,
-    desc: 'Ristruttura la tua casa o acquista il tuo primo immobile.',
-    benefits: ['Fino a 100.000€', 'Piani fino a 120 mesi', 'Perizia gratuita']
-  },
+   'immobiliare': {
+     title: 'Prestito Immobiliare',
+     icon: <Building2 size={48} />,
+     desc: 'Ristruttura la tua casa o acquista il tuo primo immobile.',
+     benefits: ['Fino a più di 500.000€', 'Piani fino a 120 mesi', 'Perizia gratuita']
+   },
   'consolidamento': {
     title: 'Consolidamento Debiti',
     icon: <Coins size={48} />,

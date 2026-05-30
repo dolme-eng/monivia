@@ -17,20 +17,26 @@ const stagger = {
 export default function Hero() {
   return (
     <section className="relative min-h-[90vh] flex items-center pt-28 pb-16 overflow-hidden">
-      {/* Background Image - Professional */}
-      <div className="absolute inset-0 z-0">
-        <Image 
-          src="/assets/pro_bg.png" 
-          alt="Distretto Finanziario - Prestiti Professionali" 
-          fill 
-          sizes="100vw"
-          className="object-cover"
-          priority
-        />
-        {/* Dark overlay to make white text pop while keeping image visible and sharp */}
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/20 to-black/60"></div>
-      </div>
+       {/* Background Image - Professional with Ken Burns Effect */}
+       <div className="absolute inset-0 z-0 overflow-hidden">
+         <motion.div 
+           className="absolute inset-0"
+           animate={{ scale: [1, 1.1, 1] }}
+           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+         >
+           <Image 
+             src="/assets/pro_bg.png" 
+             alt="Distretto Finanziario - Prestiti Professionali" 
+             fill 
+             sizes="100vw"
+             className="object-cover"
+             priority
+           />
+         </motion.div>
+         {/* Dark overlay to make white text pop while keeping image visible and sharp */}
+         <div className="absolute inset-0 bg-black/50"></div>
+         <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/20 to-black/60"></div>
+       </div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">

@@ -42,26 +42,26 @@ export default function SimulatorHorizontal() {
                 onBlur={(e) => {
                   let val = Number(e.target.value);
                   if (val < 5000) setAmount(5000);
-                  else if (val > 500000) setAmount(500000);
+                  else if (val > 1000000) setAmount(1000000);
                 }}
                 className="bg-transparent text-2xl font-black text-primary group-hover:text-secondary transition-colors w-32 outline-none border-b-2 border-transparent focus:border-secondary"
               />
               <span className="text-2xl font-black text-primary group-hover:text-secondary transition-colors">€</span>
             </div>
           </div>
-           <input 
-             type="range" 
-             min="5000" 
-             max="500000" 
-             step="1000"
-             value={amount}
-             onChange={(e) => setAmount(Number(e.target.value))}
-             className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-secondary shadow-sm"
-           />
-            <div className="flex justify-between mt-3 text-[9px] font-bold text-slate-300 uppercase tracking-tighter">
-              <span>5 000 €</span>
-              <span>500 000 €+</span>
-            </div>
+            <input 
+              type="range" 
+              min="5000" 
+              max="1000000" 
+              step="1000"
+              value={amount}
+              onChange={(e) => setAmount(Number(e.target.value))}
+              className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-secondary shadow-sm"
+            />
+             <div className="flex justify-between mt-3 text-[9px] font-bold text-slate-300 uppercase tracking-tighter">
+               <span>5 000 €</span>
+               <span>1 000 000 €+</span>
+             </div>
         </div>
 
         {/* Duration */}

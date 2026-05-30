@@ -7,11 +7,11 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
     title: "Finora | Il tuo prestito online, diretto e sicuro",
-    description: "Richiedi il tuo prestito online da 5.000€ a 100.000€ con Finora. Tasso fisso al 2%, processo 100% digitale e risposta in 48 ore.",
-    keywords: "prestiti personali, prestito online, finanziamento veloce, tasso fisso, prestito 100000 euro, credito italia",
+    description: "Richiedi il tuo prestito online da 5.000€ a più di 500.000€ con Finora. Tasso fisso al 2%, processo 100% digitale e risposta in 48 ore.",
+    keywords: "prestiti personali, prestito online, finanziamento veloce, tasso fisso, prestiti oltre 500000 euro, credito italia",
     openGraph: {
       title: "Finora | Prestiti Online Veloci",
-      description: "Finanziamenti fino a 100.000€ con tasso fisso al 2%. Richiedi ora online.",
+      description: "Finanziamenti a più di 500.000€ con tasso fisso al 2%. Richiedi ora online.",
       locale: "it_IT",
       type: "website",
     },
@@ -31,7 +31,7 @@ export default function RootLayout({
     "name": "Finora",
     "url": "https://finora.it",
     "logo": "https://finora.it/logo.svg",
-    "description": "Prestiti online veloci e sicuri. Da 5.000€ a 100.000€ con tasso fisso al 2%.",
+    "description": "Prestiti online veloci e sicuri. Da 5.000€ a più di 500.000€ con tasso fisso al 2%.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Via Dante, 10",

@@ -30,7 +30,7 @@ export default function CookieBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-slate-900 border-t border-slate-800 p-6 z-100 text-slate-300 shadow-2xl flex items-center justify-center">
+    <div className="fixed bottom-0 left-0 w-full bg-slate-900 border-t border-slate-800 p-6 z-[100] text-slate-300 shadow-2xl flex items-center justify-center">
       <div className="container mx-auto max-w-5xl flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-sm">
           <p className="font-bold text-white mb-2 text-base">Informativa sui Cookie</p>
