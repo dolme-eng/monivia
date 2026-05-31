@@ -24,31 +24,38 @@ interface FormValues {
   email: string;
   telefono: string;
   impiego: string;
-  reddito: number;
+  reddito: number | '';
   finalita: string;
   importo: number;
   durata: number;
-  anzianita: number;
+  anzianita: number | '';
   privacy: boolean;
   crif: boolean;
 }
+
+const ErrorMessage = ({ message }: { message?: string }) => {
+  if (!message) return null;
+  return (
+    <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1 absolute -bottom-5">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      {message}
+    </p>
+  );
+};
 
 export default function LoanForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [practiceId, setPracticeId] = useState(0);
   const [serverError, setServerError] = useState('');
 
-  const { register, handleSubmit, control, trigger, formState: { errors, isSubmitting }, watch, setValue } = useForm<FormValues>({
+  const { register, handleSubmit, control, trigger, formState: { errors, isSubmitting }, setValue } = useForm<FormValues>({
     defaultValues: {
       nome: '', cognome: '', codiceFiscale: '', email: '', telefono: '',
-      impiego: 'Dipendente Tempo Indeterminato', reddito: '' as any, finalita: 'Acquisto Auto', 
-      importo: 50000, durata: 48, anzianita: '' as any, privacy: false, crif: false
+      impiego: 'Dipendente Tempo Indeterminato', reddito: '', finalita: 'Acquisto Auto', 
+      importo: 50000, durata: 48, anzianita: '', privacy: false, crif: false
     },
     mode: 'onTouched'
   });
-
-  const watchImporto = watch('importo');
-  const watchDurata = watch('durata');
 
   const nextStep = async () => {
     if (currentStep === 1) {
@@ -71,8 +78,8 @@ export default function LoanForm() {
       if (!response.ok) throw new Error(result.error || 'Errore durante l\'invio');
       setPracticeId(result.practiceId.replace('PD-', '')); 
       setCurrentStep(3);
-    } catch (err: any) {
-      setServerError(err.message || 'Errore durante l\'invio');
+    } catch (err) {
+      setServerError(err instanceof Error ? err.message : 'Errore durante l\'invio');
     }
   };
 
@@ -95,15 +102,7 @@ export default function LoanForm() {
     );
   }
 
-  const ErrorMessage = ({ message }: { message?: string }) => {
-    if (!message) return null;
-    return (
-      <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1 absolute -bottom-5">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        {message}
-      </p>
-    );
-  };
+
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -221,7 +220,24 @@ export default function LoanForm() {
                            <span className="text-3xl md:text-4xl font-black text-primary">€</span>
                            <input
                              type="number"
-                             {...register('importo', { required: 'Richiesto', min: { value: 5000, message: 'Minimo 5.000€' }, max: { value: 1000000, message: 'Massimo 1.000.000€' } })}
+                             min={5000}
+                             max={1000000}
+                             step={1000}
+                             {...register('importo', {
+                               required: 'Richiesto',
+                               min: { value: 5000, message: 'Minimo 5.000€' },
+                               max: { value: 1000000, message: 'Massimo 1.000.000€' },
+                               onBlur: (e) => {
+                                 const val = Number(e.target.value);
+                                 if (val < 5000) setValue('importo', 5000, { shouldValidate: true });
+                                 else if (val > 1000000) setValue('importo', 1000000, { shouldValidate: true });
+                               }
+                             })}
+                             onChange={(e) => {
+                               const val = Number(e.target.value);
+                               if (val > 1000000) e.target.value = '1000000';
+                               setValue('importo', Number(e.target.value), { shouldValidate: true });
+                             }}
                              className="text-3xl md:text-4xl font-black text-primary bg-transparent border-b-2 border-slate-300 focus:border-secondary outline-none w-32 md:w-48"
                            />
                          </div>
@@ -230,16 +246,22 @@ export default function LoanForm() {
                            <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Max: 1.000.000€</p>
                          </div>
                        </div>
-                       <input
-                         type="range"
-                         min={5000}
-                         max={1000000}
-                         step={1000}
-                         value={watchImporto}
-                         onChange={(e) => setValue('importo', Number(e.target.value), { shouldValidate: true })}
-                         className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
-                         aria-label="Seleziona importo del prestito"
-                         title="Importo del prestito"
+                       <Controller
+                         name="importo"
+                         control={control}
+                         render={({ field }) => (
+                           <input
+                             type="range"
+                             min={5000}
+                             max={1000000}
+                             step={1000}
+                             value={field.value}
+                             onChange={(e) => field.onChange(Number(e.target.value))}
+                             className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
+                             aria-label="Seleziona importo del prestito"
+                             title="Importo del prestito"
+                           />
+                         )}
                        />
                      </div>
                      <ErrorMessage message={errors.importo?.message} />
@@ -252,7 +274,19 @@ export default function LoanForm() {
                          <div className="flex items-center gap-2">
                            <input
                              type="number"
-                             {...register('durata', { required: 'Richiesto', min: { value: 12, message: 'Minimo 12 mesi' }, max: { value: 360, message: 'Massimo 360 mesi' } })}
+                             min={12}
+                             max={360}
+                             step={6}
+                             {...register('durata', {
+                               required: 'Richiesto',
+                               min: { value: 12, message: 'Minimo 12 mesi' },
+                               max: { value: 360, message: 'Massimo 360 mesi' },
+                               onBlur: (e) => {
+                                 const val = Number(e.target.value);
+                                 if (val < 12) setValue('durata', 12, { shouldValidate: true });
+                                 else if (val > 360) setValue('durata', 360, { shouldValidate: true });
+                               }
+                             })}
                              className="text-3xl md:text-4xl font-black text-primary bg-transparent border-b-2 border-slate-300 focus:border-secondary outline-none w-24 md:w-32"
                            />
                            <span className="text-2xl md:text-3xl font-bold text-slate-600">mesi</span>
@@ -262,16 +296,22 @@ export default function LoanForm() {
                            <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Max: 360 mesi</p>
                          </div>
                        </div>
-                       <input
-                         type="range"
-                         min={12}
-                         max={360}
-                         step={6}
-                         value={watchDurata}
-                         onChange={(e) => setValue('durata', Number(e.target.value), { shouldValidate: true })}
-                         className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
-                         aria-label="Seleziona durata del prestito in mesi"
-                         title="Durata del prestito"
+                       <Controller
+                         name="durata"
+                         control={control}
+                         render={({ field }) => (
+                           <input
+                             type="range"
+                             min={12}
+                             max={360}
+                             step={6}
+                             value={field.value}
+                             onChange={(e) => field.onChange(Number(e.target.value))}
+                             className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
+                             aria-label="Seleziona durata del prestito in mesi"
+                             title="Durata del prestito"
+                           />
+                         )}
                        />
                      </div>
                      <ErrorMessage message={errors.durata?.message} />

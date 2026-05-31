@@ -98,7 +98,7 @@ export default function Navbar() {
         </nav>
         
         <div className="flex items-center space-x-4 lg:space-x-6">
-          <Link href="/#calcolatore" className="hidden lg:inline-flex btn-primary px-7 py-3 text-[12px] uppercase tracking-wider font-black rounded-2xl shadow-lg shadow-primary/20">
+          <Link href="/#calcolatore" className="hidden lg:inline-flex bg-white text-primary px-7 py-3 text-[12px] uppercase tracking-wider font-black rounded-2xl shadow-lg shadow-primary/20 hover:bg-secondary hover:text-white transition-all duration-300">
             Richiedi Ora
           </Link>
           

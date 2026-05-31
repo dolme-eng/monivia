@@ -33,7 +33,7 @@ export default function WhyChooseUs() {
             </h2>
             <p className="text-base md:text-lg text-slate-600 mb-8">
               La trasparenza e la velocità al servizio del tuo successo finanziario. 
-              Siamo l&apos;intermediario digitale numero uno per affidabilité e sicurezza dei processi.
+              Siamo l&apos;intermediario digitale numero uno per affidabilità e sicurezza dei processi.
             </p>
             <div className="space-y-4">
               {["Processo 100% Online", "Risposta in 48 ore", "Tassi fissi e trasparenti"].map((item, i) => (

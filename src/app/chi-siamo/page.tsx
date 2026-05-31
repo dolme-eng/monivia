@@ -11,15 +11,17 @@ export default function ChiSiamo() {
       
       {/* Hero Section */}
       <section className="pt-40 pb-24 bg-primary relative overflow-hidden">
+        {/* Background image with parallax-style animation */}
         <motion.div 
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.2 }}
+          initial={{ scale: 1.08, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
           className="absolute inset-0"
         >
-          <Image src="/assets/business_bg.png" alt="Business district background" fill priority className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/50 to-primary"></div>
+          <Image src="/assets/business_bg.png" alt="Business district background" fill priority className="object-cover opacity-20" />
         </motion.div>
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-linear-to-b from-primary/50 to-primary"></div>
         
         <div className="container mx-auto px-6 relative z-10 text-center text-white">
           <motion.h1 

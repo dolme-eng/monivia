@@ -3,6 +3,9 @@ import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { siteConfig } from "@/config/site";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: `${siteConfig.name} | ${siteConfig.description}`,
@@ -53,19 +56,12 @@ export default function RootLayout({
   return (
     <html lang="it" className="scroll-smooth" data-scroll-behavior="smooth">
       <head>
-        {/* Google Fonts — loaded at runtime to avoid build-time network issues */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
-          rel="stylesheet"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased relative">
+      <body className={`${inter.className} antialiased relative`}>
         {children}
         <CookieBanner />
         <WhatsAppButton />

@@ -57,7 +57,7 @@ export default function ContactSection() {
                <button type="submit" disabled={contactStatus === 'loading'} className="w-full btn-primary py-4 text-sm font-black uppercase tracking-widest rounded-2xl hover:scale-[1.02] transition-transform disabled:opacity-50">
                  {contactStatus === 'loading' ? 'Invio in corso...' : contactStatus === 'success' ? 'Messaggio Inviato!' : 'Invia Messaggio'}
                </button>
-               {contactStatus === 'error' && <p className="text-red-500 text-xs text-center font-bold">Errore durante l'invio. Riprova più tardi.</p>}
+               {contactStatus === 'error' && <p className="text-red-500 text-xs text-center font-bold">Errore durante l&apos;invio. Riprova più tardi.</p>}
              </form>
           </motion.div>
 

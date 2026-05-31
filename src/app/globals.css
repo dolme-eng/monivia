@@ -53,8 +53,9 @@
     display: none;
   }
   .scrollbar-hide {
-    -ms-overflow-style: none;
+    /* stylelint-disable-next-line property-no-unknown, plugin/no-unsupported-browser-features */
     scrollbar-width: none;
+    -ms-overflow-style: none;
   }
   
   /* Utilities for layout/animations */
