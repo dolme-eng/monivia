@@ -10,7 +10,7 @@ export const siteConfig = {
     whatsapp: {
       link: "https://wa.me/393508533366"
     },
-    email: "supporto@monivia.it",
+    email: "contact@monivia.it",
     address: "Via Dante, 10 - 20121 Milano"
   },
   links: {

@@ -48,7 +48,7 @@ export default function ContactSection() {
             <p className="text-slate-500 mb-8">Il nostro team è a tua completa disposizione.</p>
             
              <form onSubmit={handleContactSubmit} className="space-y-4">
-               <div className="grid grid-cols-2 gap-4">
+             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                  <input name="nome" type="text" placeholder="Nome Completo" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" required />
                  <input name="email" type="email" placeholder="Indirizzo E-mail" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" required />
                </div>

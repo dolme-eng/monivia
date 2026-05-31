@@ -58,23 +58,23 @@ export default function OffersTabs() {
           {/* Tab Content */}
           <div className="w-full lg:w-2/3 bg-slate-50 rounded-[40px] p-8 md:p-12 border border-slate-100 shadow-sm relative overflow-hidden">
             <AnimatePresence mode="wait">
-              <motion.div
+                              <motion.div
                 key={activeTab}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="flex flex-col md:flex-row gap-10 items-center h-full"
+                className="flex flex-col md:flex-row gap-8 md:gap-10 items-center h-full"
               >
-                <div className="w-full md:w-1/2 z-10">
-                  <h3 className="text-3xl font-black text-primary mb-6 leading-tight">
+                <div className="w-full md:w-1/2 z-10 order-1">
+                  <h3 className="text-2xl md:text-3xl font-black text-primary mb-4 md:mb-6 leading-tight">
                     {activeTab === 0 && "Prestito Personale"}
                     {activeTab === 1 && "Prestito Auto"}
                     {activeTab === 2 && "Prestito Immobiliare"}
                     {activeTab === 3 && "Prestito Business"}
                     {activeTab === 4 && "Consolidamento Debiti"}
                   </h3>
-                  <div className="text-slate-600 space-y-4 mb-10 text-sm md:text-base leading-relaxed">
+                  <div className="text-slate-600 space-y-3 mb-8 text-sm md:text-base leading-relaxed">
                     {activeTab === 0 && <><p>Realizza i tuoi sogni con i nostri prestiti personali. Rispondi alle tue esigenze finanziarie con tassi di interesse agevolati.</p><p>Devi finanziare un evento familiare, un viaggio o un acquisto imprevisto? È la soluzione su misura ideale.</p></>}
                     {activeTab === 1 && <><p>La soluzione ideale per il tuo nuovo veicolo. Finanziamento dedicato all&apos;acquisto di auto o moto, nuove o usate.</p><p>Se non disponi del capitale necessario, il nostro credito auto è la scelta più intelligente e veloce.</p></>}
                     {activeTab === 2 && <><p>Trasforma in realtà il sogno di acquistare casa. Perché pagare l&apos;affitto quando puoi comprare?</p><p>Un prestito a lungo termine studiato per l&apos;acquisto della tua prima abitazione con condizioni flessibili e trasparenti.</p></>}
@@ -82,10 +82,10 @@ export default function OffersTabs() {
                     {activeTab === 4 && <><p>Un unico prestito per rimborsare tutti i tuoi debiti in corso. Semplifica la tua vita con una sola rata mensile più leggera.</p><p>Raggruppa i tuoi finanziamenti in pochi clic e riprendi il controllo del tuo budget.</p></>}
                   </div>
                   <Link href="#richiedi" className="inline-flex items-center gap-2 btn-primary px-8 py-4 text-xs font-black uppercase tracking-widest rounded-2xl group shadow-lg shadow-primary/20 hover:scale-105 transition-all">
-                    Richiedi Preventivo <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    Richiedi Preventivo <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
                   </Link>
                 </div>
-                <div className="w-full md:w-1/2 h-[300px] md:h-[400px]">
+                <div className="w-full md:w-1/2 h-[220px] sm:h-[280px] md:h-[400px] order-2">
                   <div className="relative h-full w-full rounded-[30px] overflow-hidden shadow-2xl">
                      {activeTab === 0 && <Image src="/assets/hero_lifestyle.png" alt="Personale" fill priority sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
                     {activeTab === 1 && <Image src="/assets/consultation.png" alt="Auto" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}

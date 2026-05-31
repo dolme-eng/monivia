@@ -8,9 +8,24 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+    metadataBase: new URL(siteConfig.url),
     title: `${siteConfig.name} | ${siteConfig.description}`,
     description: "Richiedi il tuo prestito online da 5.000€ a più di 500.000€ con Monivia. Tasso fisso al 2%, processo 100% digitale e risposta in 48 ore.",
     keywords: "prestiti personali, prestito online, finanziamento veloce, tasso fisso, prestiti oltre 500000 euro, credito italia",
+    alternates: {
+      canonical: '/',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
     openGraph: {
       title: `${siteConfig.name} | Prestiti Online Veloci`,
       description: "Finanziamenti a più di 500.000€ con tasso fisso al 2%. Richiedi ora online.",

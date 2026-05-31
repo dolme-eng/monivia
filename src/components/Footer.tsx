@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-secondary/5 blur-[120px] pointer-events-none rounded-full"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid lg:grid-cols-4 gap-12 mb-16 text-center md:text-left">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-16 text-center md:text-left">
           <div className="space-y-6">
             <div className="text-2xl font-black text-white tracking-tighter">
               MO<span className="text-secondary">NIVIA</span>

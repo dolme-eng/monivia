@@ -67,7 +67,7 @@ export async function POST(request: Request) {
 
     // 4. (Optional) Send notification to internal team
     await sendEmail({
-      to: 'supporto@monivia.it',
+      to: 'contact@monivia.it',
       subject: `Nuova Richiesta Prestito: ${practiceId}`,
       html: `
         <div style="font-family: sans-serif; color: #333;">

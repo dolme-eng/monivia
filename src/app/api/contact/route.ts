@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
     // 3. Send email to internal team
     await sendEmail({
-      to: 'supporto@monivia.it',
+      to: 'contact@monivia.it',
       subject: `Nuovo Messaggio da ${data.nome} - ${data.oggetto}`,
       html: `
         <div style="font-family: sans-serif; color: #333;">
