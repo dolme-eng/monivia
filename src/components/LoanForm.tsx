@@ -187,7 +187,7 @@ export default function LoanForm() {
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Telefono *</label>
                     <input 
                       type="tel"
-                      {...register('telefono', { required: 'Il telefono è obbligatorio', pattern: { value: /^(\+?\d{1,3}[- ]?)?\d{9,15}$/, message: 'Numero non valido' } })}
+                      {...register('telefono', { required: 'Il telefono è obbligatorio', pattern: { value: /^(\+?\d{1,3})?[- ]?[\d- ]{8,15}$/, message: 'Numero non valido' } })}
                       placeholder="Es: +39 333 1234567" 
                       className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm ${errors.telefono ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
                     />
