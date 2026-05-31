@@ -48,7 +48,7 @@ export default function LoanForm() {
   const [practiceId, setPracticeId] = useState(0);
   const [serverError, setServerError] = useState('');
 
-  const { register, handleSubmit, control, trigger, formState: { errors, isSubmitting }, setValue } = useForm<FormValues>({
+  const { register, handleSubmit, control, trigger, formState: { errors, isSubmitting } } = useForm<FormValues>({
     defaultValues: {
       nome: '', cognome: '', codiceFiscale: '', email: '', telefono: '',
       impiego: 'Dipendente Tempo Indeterminato', reddito: '', finalita: 'Acquisto Auto', 
@@ -187,7 +187,7 @@ export default function LoanForm() {
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Telefono *</label>
                     <input 
                       type="tel"
-                      {...register('telefono', { required: 'Il telefono è obbligatorio', pattern: { value: /^(\+?\d{1,3})?[- ]?[\d- ]{8,15}$/, message: 'Numero non valido' } })}
+                      {...register('telefono', { required: 'Il telefono è obbligatorio', pattern: { value: /^(\+?\d{1,3})?[- .]?[\d- .]{8,15}$/, message: 'Numero non valido' } })}
                       placeholder="Es: +39 333 1234567" 
                       className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm ${errors.telefono ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
                     />
@@ -215,105 +215,122 @@ export default function LoanForm() {
                    <div className="space-y-4 relative">
                      <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Importo Richiesto (€) *</label>
                      <div className={`bg-linear-to-br from-slate-50 to-slate-100 p-6 rounded-2xl border-2 ${errors.importo ? 'border-red-500' : 'border-slate-200'}`}>
-                       <div className="flex items-center justify-between mb-4">
-                         <div className="flex items-center gap-2">
-                           <span className="text-3xl md:text-4xl font-black text-primary">€</span>
-                           <input
-                             type="number"
-                             min={5000}
-                             max={1000000}
-                             step={1000}
-                             {...register('importo', {
-                               required: 'Richiesto',
-                               min: { value: 5000, message: 'Minimo 5.000€' },
-                               max: { value: 1000000, message: 'Massimo 1.000.000€' },
-                               onBlur: (e) => {
-                                 const val = Number(e.target.value);
-                                 if (val < 5000) setValue('importo', 5000, { shouldValidate: true });
-                                 else if (val > 1000000) setValue('importo', 1000000, { shouldValidate: true });
-                               }
-                             })}
-                             onChange={(e) => {
-                               const val = Number(e.target.value);
-                               if (val > 1000000) e.target.value = '1000000';
-                               setValue('importo', Number(e.target.value), { shouldValidate: true });
-                             }}
-                             className="text-3xl md:text-4xl font-black text-primary bg-transparent border-b-2 border-slate-300 focus:border-secondary outline-none w-32 md:w-48"
-                           />
-                         </div>
-                         <div className="text-right">
-                           <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Min: 5.000€</p>
-                           <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Max: 1.000.000€</p>
-                         </div>
-                       </div>
-                       <Controller
-                         name="importo"
-                         control={control}
-                         render={({ field }) => (
-                           <input
-                             type="range"
-                             min={5000}
-                             max={1000000}
-                             step={1000}
-                             value={field.value}
-                             onChange={(e) => field.onChange(Number(e.target.value))}
-                             className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
-                             aria-label="Seleziona importo del prestito"
-                             title="Importo del prestito"
-                           />
-                         )}
-                       />
-                     </div>
+                        <Controller
+                          name="importo"
+                          control={control}
+                          rules={{
+                            required: 'Richiesto',
+                            min: { value: 5000, message: 'Minimo 5.000€' },
+                            max: { value: 1000000, message: 'Massimo 1.000.000€' }
+                          }}
+                          render={({ field }) => (
+                            <>
+                              <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-3xl md:text-4xl font-black text-primary">€</span>
+                                  <input
+                                    type="number"
+                                    min={5000}
+                                    max={1000000}
+                                    step={1000}
+                                    aria-label="Importo del prestito in euro"
+                                    title="Importo"
+                                    value={field.value}
+                                    onChange={(e) => {
+                                      let val = Number(e.target.value);
+                                      if (val > 1000000) val = 1000000;
+                                      field.onChange(val);
+                                    }}
+                                    onBlur={() => {
+                                      let val = field.value;
+                                      if (val < 5000) val = 5000;
+                                      field.onChange(val);
+                                      field.onBlur();
+                                    }}
+                                    className="text-3xl md:text-4xl font-black text-primary bg-transparent border-b-2 border-slate-300 focus:border-secondary outline-none w-32 md:w-48"
+                                  />
+                                </div>
+                                <div className="text-right">
+                                  <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Min: 5.000€</p>
+                                  <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Max: 1.000.000€</p>
+                                </div>
+                              </div>
+                              <input
+                                type="range"
+                                min={5000}
+                                max={1000000}
+                                step={1000}
+                                value={field.value}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
+                                aria-label="Seleziona importo del prestito"
+                                title="Importo del prestito"
+                              />
+                            </>
+                          )}
+                        />
+                      </div>
                      <ErrorMessage message={errors.importo?.message} />
                    </div>
 
                    <div className="space-y-4 relative">
                      <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Durata del Prestito (mesi) *</label>
                      <div className={`bg-linear-to-br from-slate-50 to-slate-100 p-6 rounded-2xl border-2 ${errors.durata ? 'border-red-500' : 'border-slate-200'}`}>
-                       <div className="flex items-center justify-between mb-4">
-                         <div className="flex items-center gap-2">
-                           <input
-                             type="number"
-                             min={12}
-                             max={360}
-                             step={6}
-                             {...register('durata', {
-                               required: 'Richiesto',
-                               min: { value: 12, message: 'Minimo 12 mesi' },
-                               max: { value: 360, message: 'Massimo 360 mesi' },
-                               onBlur: (e) => {
-                                 const val = Number(e.target.value);
-                                 if (val < 12) setValue('durata', 12, { shouldValidate: true });
-                                 else if (val > 360) setValue('durata', 360, { shouldValidate: true });
-                               }
-                             })}
-                             className="text-3xl md:text-4xl font-black text-primary bg-transparent border-b-2 border-slate-300 focus:border-secondary outline-none w-24 md:w-32"
-                           />
-                           <span className="text-2xl md:text-3xl font-bold text-slate-600">mesi</span>
-                         </div>
-                         <div className="text-right">
-                           <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Min: 12 mesi</p>
-                           <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Max: 360 mesi</p>
-                         </div>
-                       </div>
-                       <Controller
-                         name="durata"
-                         control={control}
-                         render={({ field }) => (
-                           <input
-                             type="range"
-                             min={12}
-                             max={360}
-                             step={6}
-                             value={field.value}
-                             onChange={(e) => field.onChange(Number(e.target.value))}
-                             className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
-                             aria-label="Seleziona durata del prestito in mesi"
-                             title="Durata del prestito"
-                           />
-                         )}
-                       />
-                     </div>
+                        <Controller
+                          name="durata"
+                          control={control}
+                          rules={{
+                            required: 'Richiesto',
+                            min: { value: 12, message: 'Minimo 12 mesi' },
+                            max: { value: 360, message: 'Massimo 360 mesi' }
+                          }}
+                          render={({ field }) => (
+                            <>
+                              <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="number"
+                                    min={12}
+                                    max={360}
+                                    step={6}
+                                    aria-label="Durata del prestito in mesi"
+                                    title="Durata"
+                                    value={field.value}
+                                    onChange={(e) => {
+                                      let val = Number(e.target.value);
+                                      if (val > 360) val = 360;
+                                      field.onChange(val);
+                                    }}
+                                    onBlur={() => {
+                                      let val = field.value;
+                                      if (val < 12) val = 12;
+                                      field.onChange(val);
+                                      field.onBlur();
+                                    }}
+                                    className="text-3xl md:text-4xl font-black text-primary bg-transparent border-b-2 border-slate-300 focus:border-secondary outline-none w-24 md:w-32"
+                                  />
+                                  <span className="text-2xl md:text-3xl font-bold text-slate-600">mesi</span>
+                                </div>
+                                <div className="text-right">
+                                  <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Min: 12 mesi</p>
+                                  <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Max: 360 mesi</p>
+                                </div>
+                              </div>
+                              <input
+                                type="range"
+                                min={12}
+                                max={360}
+                                step={6}
+                                value={field.value}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
+                                aria-label="Seleziona durata del prestito in mesi"
+                                title="Durata del prestito"
+                              />
+                            </>
+                          )}
+                        />
+                      </div>
                      <ErrorMessage message={errors.durata?.message} />
                    </div>
                  </div>

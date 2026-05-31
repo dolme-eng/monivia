@@ -5,14 +5,14 @@ import { z } from 'zod';
 
 // Validation schema matching the frontend LoanForm
 const loanSchema = z.object({
-  importo: z.number().min(5000).max(1000000),
-  durata: z.number().min(12).max(360),
-  impiego: z.string().min(1),
-  nome: z.string().min(2),
-  cognome: z.string().min(2),
-  email: z.string().email(),
-  telefono: z.string().regex(/^(\+?\d{1,3})?[- ]?[\d- ]{8,15}$/, "Numero di telefono non valido"),
-  codiceFiscale: z.string().length(16),
+  importo: z.coerce.number().min(5000).max(1000000),
+  durata: z.coerce.number().min(12).max(360),
+  impiego: z.string().trim().min(1),
+  nome: z.string().trim().min(2),
+  cognome: z.string().trim().min(2),
+  email: z.string().trim().email(),
+  telefono: z.string().trim().regex(/^(\+?\d{1,3})?[- .]?[\d- .]{8,15}$/, "Numero di telefono non valido"),
+  codiceFiscale: z.string().trim().toUpperCase().length(16),
 });
 
 export async function POST(request: Request) {
