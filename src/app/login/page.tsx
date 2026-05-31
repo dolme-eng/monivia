@@ -7,21 +7,22 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] z-0"></div>
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-secondary/20 via-transparent to-transparent rounded-full blur-[120px] z-0"></div>
       
       <Link href="/" className="absolute top-8 left-8 text-white/60 hover:text-white transition-colors text-sm font-bold flex items-center gap-2">
         ← Torna alla Home
       </Link>
 
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-[450px] bg-white/5 backdrop-blur-2xl border border-white/10 p-10 rounded-[32px] relative z-10"
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        className="w-full max-w-[450px] bg-white/5 backdrop-blur-2xl border border-white/10 p-10 rounded-[40px] shadow-glass relative z-10"
       >
         <div className="text-center mb-10">
           <div className="mx-auto mb-8 w-fit text-center">
             <div className="text-4xl font-black text-white tracking-tighter">
-              FI<span className="text-secondary">NORA</span>
+              MO<span className="text-secondary">NIVIA</span>
             </div>
           </div>
           <h2 className="text-2xl font-black text-white mb-2">Area Riservata</h2>
@@ -53,9 +54,14 @@ export default function LoginPage() {
             <Link href="#" className="text-xs text-secondary font-bold hover:underline">Password dimenticata?</Link>
           </div>
 
-          <button type="submit" className="w-full bg-secondary text-white py-4 rounded-2xl font-black shadow-lg shadow-cyan-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+          <motion.button 
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type="submit" 
+            className="w-full bg-secondary text-white py-4 rounded-2xl font-black shadow-xl shadow-secondary/20 transition-all"
+          >
             Accedi
-          </button>
+          </motion.button>
         </form>
 
         <div className="text-center mt-10">

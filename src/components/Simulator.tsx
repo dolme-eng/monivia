@@ -2,29 +2,14 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { calculateLoan } from '@/utils/finance';
 
 export default function Simulator() {
   const [amount, setAmount] = useState(50000);
   const [months, setMonths] = useState(48);
   const [insurance, setInsurance] = useState(true);
 
-  // Financial constants
-  const tan = 0.02; // 2% TAN
-  const monthlyRate = tan / 12;
-  const insuranceRate = 0.0005; // 0.05% monthly insurance
-  
-  // Installment calculation (Amortization formula)
-  const x = Math.pow(1 + monthlyRate, months);
-  const baseMonthly = (amount * x * monthlyRate) / (x - 1);
-  const insuranceCost = insurance ? amount * insuranceRate : 0;
-  const totalMonthly = baseMonthly + insuranceCost;
-  
-  const monthly = isFinite(totalMonthly) ? totalMonthly : 0;
-  const totalDue = monthly * months;
-  const totalInterest = totalDue - amount - (insurance ? insuranceCost * months : 0);
-  
-  // Real TAEG approximation (includes insurance)
-  const taeg = insurance ? (tan + (insuranceRate * 12)) * 1.05 : tan;
+  const { monthly, totalDue, totalInterest, taeg, tan } = calculateLoan(amount, months, insurance);
 
   return (
     <motion.div 
@@ -51,8 +36,8 @@ export default function Simulator() {
           </div>
           <input 
             type="range" 
-            min="3000" 
-            max="700000" 
+            min="5000" 
+            max="1000000" 
             step="1000"
             value={amount}
             onChange={(e) => setAmount(Number(e.target.value))}
@@ -62,7 +47,7 @@ export default function Simulator() {
           />
           <div className="flex justify-between text-[10px] text-slate-400 font-bold">
              <span>5.000€</span>
-             <span>100.000€</span>
+             <span>1.000.000€</span>
           </div>
         </div>
 

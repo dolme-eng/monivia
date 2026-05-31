@@ -4,26 +4,47 @@
   --color-primary: #0f172a;
   --color-secondary: #06b6d4;
   --color-accent: #10b981;
+  --color-surface: #f8fafc;
+  --color-muted: #64748b;
   --font-inter: "Inter", sans-serif;
+  
+  /* Custom shadows for premium feel */
+  --shadow-soft: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  --shadow-glow: 0 0 20px 0 rgba(6, 182, 212, 0.15);
+  --shadow-glass: 0 8px 32px 0 rgba(15, 23, 42, 0.05);
 }
 
 @layer base {
+  html {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
   body {
-    @apply bg-white text-slate-900 font-inter;
+    @apply bg-white text-slate-900 selection:bg-secondary/30 selection:text-primary;
+    font-family: 'Inter', sans-serif;
   }
 }
 
 @layer components {
+  /* Premium Glassmorphism */
   .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/50 shadow-2xl;
+    @apply bg-white/70 backdrop-blur-2xl border border-white/50 shadow-glass;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), var(--shadow-glass);
+  }
+  
+  .glass-dark {
+    @apply bg-primary/80 backdrop-blur-2xl border border-white/10 shadow-glass;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), var(--shadow-glass);
   }
   
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-linear-to-r from-primary to-secondary;
+    @apply bg-clip-text text-transparent bg-linear-to-r from-primary via-slate-700 to-secondary;
   }
   
   .btn-primary {
-    @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold shadow-md transition-all hover:bg-secondary hover:-translate-y-0.5 hover:shadow-cyan-500/25;
+    @apply bg-primary text-white px-6 py-3 rounded-2xl font-bold shadow-soft transition-all duration-300 ease-out 
+           hover:bg-slate-800 hover:-translate-y-0.5 hover:shadow-lg focus:ring-4 focus:ring-secondary/30 focus:outline-none;
   }
 }
 
@@ -34,5 +55,10 @@
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+  
+  /* Utilities for layout/animations */
+  .will-change-transform {
+    will-change: transform;
   }
 }

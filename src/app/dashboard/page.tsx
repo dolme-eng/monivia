@@ -19,48 +19,67 @@ export default function DashboardPage() {
     switch (activeTab) {
       case 'dashboard':
         return (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} key="dashboard">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} key="dashboard">
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               {[
-                { label: "Richiesta in corso", value: "50.000 €", status: "In Lavorazione", color: "text-amber-500", bg: "bg-amber-50" },
-                { label: "Rata mensile", value: "1.085 €", status: "TAN 2.00%", color: "text-secondary", bg: "bg-cyan-50" },
-                { label: "Esito previsto", value: "10 Maggio", status: "Entro 48 ore", color: "text-emerald-500", bg: "bg-emerald-50" }
+                { label: "Richiesta in corso", value: "50.000 €", status: "In Lavorazione", color: "text-amber-500", bg: "bg-amber-50", border: "border-amber-100", icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> },
+                { label: "Rata mensile", value: "1.085 €", status: "TAN 2.00%", color: "text-secondary", bg: "bg-cyan-50", border: "border-cyan-100", icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> },
+                { label: "Esito previsto", value: "10 Maggio", status: "Entro 48 ore", color: "text-emerald-500", bg: "bg-emerald-50", border: "border-emerald-100", icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> }
               ].map((stat, i) => (
-                <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</span>
-                  <h3 className="text-3xl font-black text-primary my-2">{stat.value}</h3>
-                  <div className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase ${stat.bg} ${stat.color}`}>
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25, delay: i * 0.08 }}
+                  whileHover={{ y: -4, boxShadow: "0 20px 40px -12px rgba(0,0,0,0.1)" }}
+                  className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm cursor-default"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</span>
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${stat.bg} ${stat.color}`}>
+                      {stat.icon}
+                    </div>
+                  </div>
+                  <h3 className="text-3xl font-black text-primary mb-3">{stat.value}</h3>
+                  <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase border ${stat.bg} ${stat.border} ${stat.color}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full bg-current`}></span>
                     {stat.status}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
 
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Progress Timeline */}
-              <div className="lg:col-span-2 bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm">
-                <h3 className="text-xl font-bold text-primary mb-8">Progresso della pratica #PD-842910</h3>
+              <div className="lg:col-span-2 bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-xl transition-shadow duration-500">
+                <h3 className="text-xl font-black text-primary mb-8">Progresso della pratica <span className="text-secondary">#PD-842910</span></h3>
                 <div className="space-y-10 relative">
-                  <div className="absolute left-[11px] top-2 bottom-2 w-0.5 bg-slate-100"></div>
+                  <div className="absolute left-[11px] top-2 bottom-2 w-0.5 bg-linear-to-b from-secondary via-amber-400 to-slate-100"></div>
                   {[
                     { title: "Richiesta inviata", time: "08 Maggio, 18:45", desc: "Abbiamo ricevuto la tua richiesta di prestito.", status: "done" },
                     { title: "Documenti caricati", time: "08 Maggio, 18:50", desc: "La documentazione è stata caricata correttamente.", status: "done" },
                     { title: "Analisi in corso", time: "In tempo reale", desc: "Il nostro team sta valutando il merito creditizio.", status: "active" },
                     { title: "Esito finale", time: "In attesa", desc: "Riceverai l&apos;esito finale tramite i nostri canali ufficiali.", status: "pending" }
                   ].map((step, i) => (
-                    <div key={i} className="flex gap-6 relative">
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 25, delay: 0.2 + i * 0.1 }}
+                      className="flex gap-6 relative"
+                    >
                       <div className={`w-6 h-6 rounded-full border-4 border-white shadow-sm shrink-0 z-10 ${
-                        step.status === 'done' ? 'bg-secondary' : step.status === 'active' ? 'bg-amber-400 animate-pulse' : 'bg-slate-200'
+                        step.status === 'done' ? 'bg-secondary' : step.status === 'active' ? 'bg-amber-400 animate-pulse ring-4 ring-amber-400/20' : 'bg-slate-200'
                       }`}></div>
-                      <div className={step.status === 'pending' ? 'opacity-40' : ''}>
+                      <div className={step.status === 'pending' ? 'opacity-30' : ''}>
                         <div className="flex items-center gap-3 mb-1">
-                          <h4 className="font-bold text-primary">{step.title}</h4>
-                          <span className="text-[10px] text-slate-400 font-bold uppercase">{step.time}</span>
+                          <h4 className="font-black text-primary">{step.title}</h4>
+                          <span className="text-[10px] text-slate-400 font-bold uppercase bg-slate-50 px-2 py-0.5 rounded-full">{step.time}</span>
                         </div>
                         <p className="text-sm text-slate-500">{step.desc}</p>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
@@ -95,7 +114,7 @@ export default function DashboardPage() {
         );
       case 'richieste':
         return (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} key="richieste" className="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} key="richieste" className="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm">
             <h3 className="text-xl font-bold text-primary mb-8">Storico Richieste</h3>
             <table className="w-full text-left">
               <thead>
@@ -125,7 +144,7 @@ export default function DashboardPage() {
         );
       case 'documenti':
         return (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} key="documenti" className="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} key="documenti" className="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm">
             <div className="flex justify-between items-center mb-8">
               <h3 className="text-xl font-bold text-primary">Gestione Documenti</h3>
               <button className="btn-primary py-3 px-6 text-xs">Carica Nuovo</button>
@@ -159,7 +178,7 @@ export default function DashboardPage() {
         );
       case 'messaggi':
         return (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} key="messaggi" className="bg-white rounded-[32px] border border-slate-100 shadow-sm flex overflow-hidden min-h-[500px]">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} key="messaggi" className="bg-white rounded-[32px] border border-slate-100 shadow-sm flex overflow-hidden min-h-[500px]">
             <div className="w-1/3 border-r border-slate-100 p-6 bg-slate-50/50">
               <h3 className="font-bold text-primary mb-6 px-2">Conversazioni</h3>
               <div className="p-4 bg-white rounded-2xl shadow-sm border border-secondary/20 cursor-pointer">
@@ -182,7 +201,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               <div className="mt-6 flex gap-4">
-                <input type="text" placeholder="Scrivi un messaggio..." className="grow bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-secondary" />
+                <input aria-label="Messaggio" title="Messaggio" type="text" placeholder="Scrivi un messaggio..." className="grow bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-secondary" />
                 <button className="btn-primary px-6 py-3 rounded-xl">Invia</button>
               </div>
             </div>
@@ -190,22 +209,22 @@ export default function DashboardPage() {
         );
       case 'impostazioni':
         return (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} key="impostazioni" className="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} key="impostazioni" className="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm max-w-2xl">
             <h3 className="text-xl font-bold text-primary mb-8">Impostazioni Profilo</h3>
             <form className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Nome</label>
-                  <input type="text" defaultValue="Mario" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-secondary" />
+                  <label htmlFor="profilo-nome" className="block text-xs font-bold text-slate-500 uppercase mb-2">Nome</label>
+                  <input id="profilo-nome" title="Nome" placeholder="Nome" type="text" defaultValue="Mario" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-secondary" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Cognome</label>
-                  <input type="text" defaultValue="Rossi" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-secondary" />
+                  <label htmlFor="profilo-cognome" className="block text-xs font-bold text-slate-500 uppercase mb-2">Cognome</label>
+                  <input id="profilo-cognome" title="Cognome" placeholder="Cognome" type="text" defaultValue="Rossi" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-secondary" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Email</label>
-                <input type="email" defaultValue="mario.rossi@email.it" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-secondary" />
+                <label htmlFor="profilo-email" className="block text-xs font-bold text-slate-500 uppercase mb-2">Email</label>
+                <input id="profilo-email" title="Email" placeholder="Email" type="email" defaultValue="mario.rossi@email.it" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-secondary" />
               </div>
               <div className="pt-6 border-t border-slate-100">
                 <button type="button" className="btn-primary py-4 px-8 text-xs">Salva Modifiche</button>
@@ -223,7 +242,7 @@ export default function DashboardPage() {
       {/* Mobile Topbar */}
       <div className="md:hidden bg-primary text-white p-4 flex justify-between items-center sticky top-0 z-50">
         <Link href="/" className="text-xl font-black tracking-tighter">
-          FI<span className="text-secondary">NORA</span>
+          MO<span className="text-secondary">NIVIA</span>
         </Link>
         <button onClick={() => window.location.href = '/'} className="text-xs font-bold text-white/70">Esci</button>
       </div>
@@ -233,24 +252,33 @@ export default function DashboardPage() {
         <div className="p-8">
           <Link href="/" className="block w-fit">
             <div className="text-3xl font-black text-white tracking-tighter">
-              FI<span className="text-secondary">NORA</span>
+              MO<span className="text-secondary">NIVIA</span>
             </div>
           </Link>
         </div>
         
-        <nav className="grow px-4 space-y-2 mt-4">
+        <nav className="grow px-4 space-y-1 mt-4">
           {navItems.map((item) => (
             <button 
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold ${
+              className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-colors duration-200 font-bold relative ${
                 activeTab === item.id 
-                  ? 'bg-white/10 text-white' 
-                  : 'text-white/50 hover:bg-white/5 hover:text-white/80'
+                  ? 'text-white' 
+                  : 'text-white/40 hover:text-white/80'
               }`}
             >
-              {item.icon}
-              {item.label}
+              {activeTab === item.id && (
+                <motion.div
+                  layoutId="sidebar-pill"
+                  className="absolute inset-0 bg-white/10 rounded-2xl"
+                  transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center gap-4">
+                {item.icon}
+                {item.label}
+              </span>
             </button>
           ))}
         </nav>
@@ -274,14 +302,21 @@ export default function DashboardPage() {
       <main className="ml-0 md:ml-72 grow p-6 md:p-12 overflow-y-auto h-screen pb-24 md:pb-12">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12 gap-4">
           <div>
-            <h1 className="text-3xl font-black text-primary mb-2">
-              {activeTab === 'dashboard' ? 'Bentornato, Mario' : navItems.find(i => i.id === activeTab)?.label}
+            <h1 className="text-3xl font-black text-primary mb-1">
+              {activeTab === 'dashboard' ? 'Bentornato, Mario 👋' : navItems.find(i => i.id === activeTab)?.label}
             </h1>
-            <p className="text-slate-500">
+            <p className="text-sm text-slate-400 font-medium">
               {activeTab === 'dashboard' ? 'Stato attuale della tua pratica di finanziamento.' : 'Gestisci i tuoi dati e le tue pratiche in sicurezza.'}
             </p>
           </div>
-          <button onClick={() => window.location.href = '/#richiedi'} className="btn-primary">Nuova Richiesta</button>
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => window.location.href = '/#richiedi'}
+            className="btn-primary shadow-xl shadow-secondary/20"
+          >
+            Nuova Richiesta
+          </motion.button>
         </header>
 
         <AnimatePresence mode="wait">

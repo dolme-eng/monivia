@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Area Riservata | Finora",
+  title: "Area Riservata | Monivia",
   robots: {
     index: false,
     follow: false,

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useForm, Controller } from 'react-hook-form';
 
 const steps = [
   { 
@@ -16,228 +17,63 @@ const steps = [
   },
 ];
 
-interface FormErrors {
-  nome?: string;
-  cognome?: string;
-  codiceFiscale?: string;
-  email?: string;
-  telefono?: string;
-  reddito?: string;
-  anzianita?: string;
-  privacy?: string;
-  crif?: string;
-  general?: string;
+interface FormValues {
+  nome: string;
+  cognome: string;
+  codiceFiscale: string;
+  email: string;
+  telefono: string;
+  impiego: string;
+  reddito: number;
+  finalita: string;
+  importo: number;
+  durata: number;
+  anzianita: number;
+  privacy: boolean;
+  crif: boolean;
 }
 
 export default function LoanForm() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    nome: '', cognome: '', codiceFiscale: '', email: '', telefono: '',
-    impiego: 'Dipendente Tempo Indeterminato', reddito: '', finalita: 'Acquisto Auto', importo: '50000', durata: '48',
-    anzianita: '', privacy: false, crif: false
-  });
   const [practiceId, setPracticeId] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [serverError, setServerError] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
-    setFormData((prev) => ({ ...prev, [name]: val }));
-    
-    // Clear error for this field when user starts typing
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
-  };
+  const { register, handleSubmit, control, trigger, formState: { errors, isSubmitting }, watch, setValue } = useForm<FormValues>({
+    defaultValues: {
+      nome: '', cognome: '', codiceFiscale: '', email: '', telefono: '',
+      impiego: 'Dipendente Tempo Indeterminato', reddito: '' as any, finalita: 'Acquisto Auto', 
+      importo: 50000, durata: 48, anzianita: '' as any, privacy: false, crif: false
+    },
+    mode: 'onTouched'
+  });
 
-  const handleBlur = (fieldName: string) => {
-    setTouched((prev) => ({ ...prev, [fieldName]: true }));
-    validateField(fieldName);
-  };
-
-  const validateField = (fieldName: string): string | undefined => {
-    let error: string | undefined;
-    const value = formData[fieldName as keyof typeof formData];
-
-    switch (fieldName) {
-      case 'nome':
-        const nomeValue = String(value || '');
-        if (!value || nomeValue.trim() === '') {
-          error = 'Il nome è obbligatorio';
-        } else if (nomeValue.trim().length < 2) {
-          error = 'Il nome deve contenere almeno 2 caratteri';
-        } else if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(nomeValue)) {
-          error = 'Il nome contiene caratteri non validi';
-        }
-        break;
-
-      case 'cognome':
-        const cognomeValue = String(value || '');
-        if (!value || cognomeValue.trim() === '') {
-          error = 'Il cognome è obbligatorio';
-        } else if (cognomeValue.trim().length < 2) {
-          error = 'Il cognome deve contenere almeno 2 caratteri';
-        } else if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(cognomeValue)) {
-          error = 'Il cognome contiene caratteri non validi';
-        }
-        break;
-
-      case 'codiceFiscale':
-        const cfValue = String(value || '');
-        if (!value || cfValue.trim() === '') {
-          error = 'Il codice fiscale è obbligatorio';
-        } else if (!validateCodiceFiscale(cfValue)) {
-          error = 'Formato codice fiscale non valido (es: RSSMRA80A01H501W)';
-        }
-        break;
-
-      case 'email':
-        const emailValue = String(value || '');
-        if (!value || emailValue.trim() === '') {
-          error = 'L\'email è obbligatoria';
-        } else if (!validateEmail(emailValue)) {
-          error = 'Inserisci un\'email valida (es: nome@esempio.com)';
-        }
-        break;
-
-      case 'telefono':
-        const telefonoValue = String(value || '');
-        if (!value || telefonoValue.trim() === '') {
-          error = 'Il numero di telefono è obbligatorio';
-        } else if (!validateTelefono(telefonoValue)) {
-          error = 'Inserisci un numero di telefono valido (es: +39 333 1234567)';
-        }
-        break;
-
-      case 'reddito':
-        const redditoValue = String(value || '');
-        if (!value || redditoValue === '') {
-          error = 'Il reddito è obbligatorio';
-        } else if (Number(redditoValue) < 500) {
-          error = 'Il reddito minimo è di 500€';
-        } else if (Number(redditoValue) > 1000000) {
-          error = 'Il reddito massimo è di 1.000.000€';
-        }
-        break;
-
-      case 'anzianita':
-        const anzianitaValue = String(value || '');
-        if (!value || anzianitaValue === '') {
-          error = 'L\'anzianità lavorativa è obbligatoria';
-        } else if (Number(anzianitaValue) < 0) {
-          error = 'L\'anzianità non può essere negativa';
-        } else if (Number(anzianitaValue) > 50) {
-          error = 'Inserisci un valore realistico per l\'anzianità';
-        }
-        break;
-
-      case 'privacy':
-        if (!value) {
-          error = 'Devi accettare la privacy policy per continuare';
-        }
-        break;
-
-      case 'crif':
-        if (!value) {
-          error = 'Devi autorizzare la consultazione CRIF per continuare';
-        }
-        break;
-    }
-
-    setErrors((prev) => ({ ...prev, [fieldName]: error }));
-    return error;
-  };
-
-  const validateStep = (step: number): boolean => {
-    let isValid = true;
-    const newErrors: FormErrors = {};
-
-    if (step === 1) {
-      const fields = ['nome', 'cognome', 'codiceFiscale', 'email', 'telefono'];
-      fields.forEach(field => {
-        const error = validateField(field);
-        if (error) {
-          newErrors[field as keyof FormErrors] = error;
-          isValid = false;
-        }
-      });
-    } else if (step === 2) {
-      const fields = ['reddito', 'anzianita', 'privacy', 'crif'];
-      fields.forEach(field => {
-        const error = validateField(field);
-        if (error) {
-          newErrors[field as keyof FormErrors] = error;
-          isValid = false;
-        }
-      });
-    }
-
-    setErrors(newErrors);
-    
-    // Mark all fields as touched when validating step
-    if (step === 1) {
-      setTouched({ nome: true, cognome: true, codiceFiscale: true, email: true, telefono: true });
-    } else if (step === 2) {
-      setTouched(prev => ({ ...prev, reddito: true, anzianita: true, privacy: true, crif: true }));
-    }
-
-    return isValid;
-  };
+  const watchImporto = watch('importo');
+  const watchDurata = watch('durata');
 
   const nextStep = async () => {
-    if (!validateStep(currentStep)) {
-      return;
+    if (currentStep === 1) {
+      const isValid = await trigger(['nome', 'cognome', 'codiceFiscale', 'email', 'telefono']);
+      if (isValid) setCurrentStep(2);
     }
-
-    if (currentStep === 2) {
-      setIsSubmitting(true);
-      setErrors({});
-      try {
-        const response = await fetch('/api/loan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || 'Errore durante l\'invio');
-        setPracticeId(result.practiceId.replace('PD-', '')); 
-        setCurrentStep(3);
-      } catch (err: unknown) {
-        setErrors({ general: err instanceof Error ? err.message : 'Errore durante l\'invio' });
-      } finally {
-        setIsSubmitting(false);
-      }
-      return;
-    }
-    setCurrentStep((prev) => Math.min(prev + 1, 3));
   };
 
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
-  const validateCodiceFiscale = (cf: string) => {
-    const re = /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i;
-    return re.test(cf);
-  };
-
-  const validateEmail = (email: string) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
-
-  const validateTelefono = (telefono: string) => {
-    // Accept formats: +39 333 1234567, +393331234567, 333 1234567, 3331234567
-    const re = /^(\+?\d{1,3}[- ]?)?\d{9,15}$/;
-    return re.test(telefono.replace(/\s/g, ''));
-  };
-
-  const getFieldError = (fieldName: string) => {
-    return touched[fieldName] ? errors[fieldName as keyof FormErrors] : undefined;
-  };
-
-  const isFieldInvalid = (fieldName: string) => {
-    return touched[fieldName] && !!errors[fieldName as keyof FormErrors];
+  const onSubmit = async (data: FormValues) => {
+    setServerError('');
+    try {
+      const response = await fetch('/api/loan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Errore durante l\'invio');
+      setPracticeId(result.practiceId.replace('PD-', '')); 
+      setCurrentStep(3);
+    } catch (err: any) {
+      setServerError(err.message || 'Errore durante l\'invio');
+    }
   };
 
   if (currentStep === 3) {
@@ -252,12 +88,22 @@ export default function LoanForm() {
         </div>
         <h2 className="text-3xl font-black text-primary mb-4">Richiesta Ricevuta!</h2>
         <p className="text-slate-600 mb-8 max-w-md mx-auto text-sm">
-          Grazie per aver scelto Finora. La tua pratica <strong>#PD-{practiceId}</strong> è in fase di analisi. Ti contatteremo entro 48 ore lavorative.
+          Grazie per aver scelto Monivia. La tua pratica <strong>#PD-{practiceId}</strong> è in fase di analisi. Ti contatteremo entro 48 ore lavorative.
         </p>
         <button onClick={() => window.location.href = '/'} className="btn-primary">Torna alla Home</button>
       </motion.div>
     );
   }
+
+  const ErrorMessage = ({ message }: { message?: string }) => {
+    if (!message) return null;
+    return (
+      <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1 absolute -bottom-5">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        {message}
+      </p>
+    );
+  };
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -280,7 +126,7 @@ export default function LoanForm() {
 
       {/* Form Card */}
       <div className="bg-white rounded-[32px] shadow-2xl border border-slate-100 overflow-hidden mx-4 md:mx-0">
-        <div className="p-6 md:p-12">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 md:p-12">
           <AnimatePresence mode="wait">
             {currentStep === 1 && (
               <motion.div
@@ -288,6 +134,7 @@ export default function LoanForm() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 className="space-y-6"
               >
                 <div className="mb-8 text-center md:text-left">
@@ -295,150 +142,57 @@ export default function LoanForm() {
                   <p className="text-sm text-slate-500">Inserisci i tuoi dati anagrafici corretti.</p>
                 </div>
                 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
+                <div className="grid md:grid-cols-2 gap-x-6 gap-y-8">
+                  <div className="space-y-2 relative">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Nome *</label>
-                    <div className="relative">
-                      <input 
-                        name="nome" 
-                        type="text" 
-                        placeholder="Es: Mario" 
-                        value={formData.nome} 
-                        onChange={handleChange}
-                        onBlur={() => handleBlur('nome')}
-                        className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm ${
-                          isFieldInvalid('nome') ? 'border-red-500 bg-red-50' : 'border-slate-200'
-                        }`}
-                        required 
-                      />
-                      {isFieldInvalid('nome') && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        </div>
-                      )}
-                    </div>
-                    {getFieldError('nome') && (
-                      <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        {getFieldError('nome')}
-                      </p>
-                    )}
+                    <input 
+                      {...register('nome', { required: 'Il nome è obbligatorio', minLength: { value: 2, message: 'Minimo 2 caratteri' }, pattern: { value: /^[a-zA-ZÀ-ÿ\s'-]+$/, message: 'Caratteri non validi' } })}
+                      placeholder="Es: Mario" 
+                      className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm ${errors.nome ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
+                    />
+                    <ErrorMessage message={errors.nome?.message} />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 relative">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Cognome *</label>
-                    <div className="relative">
-                      <input 
-                        name="cognome" 
-                        type="text" 
-                        placeholder="Es: Rossi" 
-                        value={formData.cognome} 
-                        onChange={handleChange}
-                        onBlur={() => handleBlur('cognome')}
-                        className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm ${
-                          isFieldInvalid('cognome') ? 'border-red-500 bg-red-50' : 'border-slate-200'
-                        }`}
-                        required 
-                      />
-                      {isFieldInvalid('cognome') && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        </div>
-                      )}
-                    </div>
-                    {getFieldError('cognome') && (
-                      <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        {getFieldError('cognome')}
-                      </p>
-                    )}
+                    <input 
+                      {...register('cognome', { required: 'Il cognome è obbligatorio', minLength: { value: 2, message: 'Minimo 2 caratteri' }, pattern: { value: /^[a-zA-ZÀ-ÿ\s'-]+$/, message: 'Caratteri non validi' } })}
+                      placeholder="Es: Rossi" 
+                      className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm ${errors.cognome ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
+                    />
+                    <ErrorMessage message={errors.cognome?.message} />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 relative">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Codice Fiscale *</label>
-                    <div className="relative">
-                      <input 
-                        name="codiceFiscale"
-                        type="text" 
-                        placeholder="RSSMRA80A01H501W" 
-                        value={formData.codiceFiscale}
-                        onChange={(e) => {
-                          const val = e.target.value.toUpperCase();
-                          if (val.length > 16) return;
-                          setFormData({...formData, codiceFiscale: val});
-                        }}
-                        onBlur={() => handleBlur('codiceFiscale')}
-                        className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all uppercase text-sm ${
-                          isFieldInvalid('codiceFiscale') ? 'border-red-500 bg-red-50' : 'border-slate-200'
-                        }`}
-                        required
-                      />
-                      {isFieldInvalid('codiceFiscale') && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        </div>
-                      )}
-                    </div>
-                    {getFieldError('codiceFiscale') && (
-                      <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        {getFieldError('codiceFiscale')}
-                      </p>
-                    )}
+                    <input 
+                      {...register('codiceFiscale', { 
+                        required: 'Il codice fiscale è obbligatorio', 
+                        pattern: { value: /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i, message: 'Formato non valido' },
+                        onChange: (e) => e.target.value = e.target.value.toUpperCase()
+                      })}
+                      placeholder="RSSMRA80A01H501W" 
+                      className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all uppercase text-sm ${errors.codiceFiscale ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
+                    />
+                    <ErrorMessage message={errors.codiceFiscale?.message} />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 relative">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Email *</label>
-                    <div className="relative">
-                      <input 
-                        name="email" 
-                        type="email" 
-                        placeholder="mario.rossi@email.it" 
-                        value={formData.email} 
-                        onChange={handleChange}
-                        onBlur={() => handleBlur('email')}
-                        className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm ${
-                          isFieldInvalid('email') ? 'border-red-500 bg-red-50' : 'border-slate-200'
-                        }`}
-                        required 
-                      />
-                      {isFieldInvalid('email') && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        </div>
-                      )}
-                    </div>
-                    {getFieldError('email') && (
-                      <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        {getFieldError('email')}
-                      </p>
-                    )}
+                    <input 
+                      type="email"
+                      {...register('email', { required: 'L\'email è obbligatoria', pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Email non valida' } })}
+                      placeholder="mario.rossi@email.it" 
+                      className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm ${errors.email ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
+                    />
+                    <ErrorMessage message={errors.email?.message} />
                   </div>
-                  <div className="space-y-2 md:col-span-2">
+                  <div className="space-y-2 relative md:col-span-2">
                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Telefono *</label>
-                    <div className="relative">
-                      <input 
-                        name="telefono" 
-                        type="tel" 
-                        placeholder="Es: +39 333 1234567" 
-                        value={formData.telefono} 
-                        onChange={handleChange}
-                        onBlur={() => handleBlur('telefono')}
-                        className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm ${
-                          isFieldInvalid('telefono') ? 'border-red-500 bg-red-50' : 'border-slate-200'
-                        }`}
-                        required 
-                      />
-                      {isFieldInvalid('telefono') && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        </div>
-                      )}
-                    </div>
-                    {getFieldError('telefono') && (
-                      <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        {getFieldError('telefono')}
-                      </p>
-                    )}
+                    <input 
+                      type="tel"
+                      {...register('telefono', { required: 'Il telefono è obbligatorio', pattern: { value: /^(\+?\d{1,3}[- ]?)?\d{9,15}$/, message: 'Numero non valido' } })}
+                      placeholder="Es: +39 333 1234567" 
+                      className={`w-full p-4 bg-slate-50 border-2 rounded-2xl focus:ring-2 focus:ring-secondary outline-none transition-all text-sm ${errors.telefono ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
+                    />
+                    <ErrorMessage message={errors.telefono?.message} />
                   </div>
                 </div>
               </motion.div>
@@ -450,6 +204,7 @@ export default function LoanForm() {
                  initial={{ opacity: 0, x: 20 }}
                  animate={{ opacity: 1, x: 0 }}
                  exit={{ opacity: 0, x: -20 }}
+                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
                  className="space-y-6"
                >
                  <div className="mb-8 text-center md:text-left">
@@ -457,16 +212,78 @@ export default function LoanForm() {
                    <p className="text-sm text-slate-500">Aiutaci a capire meglio le tue esigenze.</p>
                  </div>
  
-                 <div className="grid md:grid-cols-2 gap-6">
+                 <div className="space-y-8">
+                   <div className="space-y-4 relative">
+                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Importo Richiesto (€) *</label>
+                     <div className={`bg-linear-to-br from-slate-50 to-slate-100 p-6 rounded-2xl border-2 ${errors.importo ? 'border-red-500' : 'border-slate-200'}`}>
+                       <div className="flex items-center justify-between mb-4">
+                         <div className="flex items-center gap-2">
+                           <span className="text-3xl md:text-4xl font-black text-primary">€</span>
+                           <input
+                             type="number"
+                             {...register('importo', { required: 'Richiesto', min: { value: 5000, message: 'Minimo 5.000€' }, max: { value: 1000000, message: 'Massimo 1.000.000€' } })}
+                             className="text-3xl md:text-4xl font-black text-primary bg-transparent border-b-2 border-slate-300 focus:border-secondary outline-none w-32 md:w-48"
+                           />
+                         </div>
+                         <div className="text-right">
+                           <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Min: 5.000€</p>
+                           <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Max: 1.000.000€</p>
+                         </div>
+                       </div>
+                       <input
+                         type="range"
+                         min={5000}
+                         max={1000000}
+                         step={1000}
+                         value={watchImporto}
+                         onChange={(e) => setValue('importo', Number(e.target.value), { shouldValidate: true })}
+                         className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
+                         aria-label="Seleziona importo del prestito"
+                         title="Importo del prestito"
+                       />
+                     </div>
+                     <ErrorMessage message={errors.importo?.message} />
+                   </div>
+
+                   <div className="space-y-4 relative">
+                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Durata del Prestito (mesi) *</label>
+                     <div className={`bg-linear-to-br from-slate-50 to-slate-100 p-6 rounded-2xl border-2 ${errors.durata ? 'border-red-500' : 'border-slate-200'}`}>
+                       <div className="flex items-center justify-between mb-4">
+                         <div className="flex items-center gap-2">
+                           <input
+                             type="number"
+                             {...register('durata', { required: 'Richiesto', min: { value: 12, message: 'Minimo 12 mesi' }, max: { value: 360, message: 'Massimo 360 mesi' } })}
+                             className="text-3xl md:text-4xl font-black text-primary bg-transparent border-b-2 border-slate-300 focus:border-secondary outline-none w-24 md:w-32"
+                           />
+                           <span className="text-2xl md:text-3xl font-bold text-slate-600">mesi</span>
+                         </div>
+                         <div className="text-right">
+                           <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Min: 12 mesi</p>
+                           <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Max: 360 mesi</p>
+                         </div>
+                       </div>
+                       <input
+                         type="range"
+                         min={12}
+                         max={360}
+                         step={6}
+                         value={watchDurata}
+                         onChange={(e) => setValue('durata', Number(e.target.value), { shouldValidate: true })}
+                         className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
+                         aria-label="Seleziona durata del prestito in mesi"
+                         title="Durata del prestito"
+                       />
+                     </div>
+                     <ErrorMessage message={errors.durata?.message} />
+                   </div>
+                 </div>
+
+                 <div className="grid md:grid-cols-2 gap-x-6 gap-y-8 pt-4">
                    <div className="space-y-2">
-                     <label htmlFor="impiego" className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Tipo di Impiego</label>
+                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Tipo di Impiego</label>
                      <select 
-                       id="impiego"
-                       name="impiego" 
-                       value={formData.impiego} 
-                       onChange={handleChange} 
+                       {...register('impiego')}
                        className="w-full p-4 bg-slate-50 border-2 border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm"
-                       aria-label="Tipo di Impiego"
                      >
                        <option>Dipendente Tempo Indeterminato</option>
                        <option>Dipendente Tempo Determinato</option>
@@ -474,43 +291,21 @@ export default function LoanForm() {
                        <option>Pensionato</option>
                      </select>
                    </div>
-                   <div className="space-y-2">
+                   <div className="space-y-2 relative">
                      <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Reddito Mensile Netto (€) *</label>
-                     <div className="relative">
-                       <input 
-                         name="reddito" 
-                         type="number" 
-                         placeholder="Es: 2500" 
-                         value={formData.reddito} 
-                         onChange={handleChange}
-                         onBlur={() => handleBlur('reddito')}
-                         className={`w-full p-4 bg-slate-50 border-2 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm ${
-                           isFieldInvalid('reddito') ? 'border-red-500 bg-red-50' : 'border-slate-200'
-                         }`}
-                         required 
-                       />
-                       {isFieldInvalid('reddito') && (
-                         <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
-                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                         </div>
-                       )}
-                     </div>
-                     {getFieldError('reddito') && (
-                       <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1">
-                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                         {getFieldError('reddito')}
-                       </p>
-                     )}
+                     <input 
+                       type="number"
+                       {...register('reddito', { required: 'Obbligatorio', min: { value: 500, message: 'Min 500€' }, max: { value: 1000000, message: 'Max 1.000.000€' } })}
+                       placeholder="Es: 2500" 
+                       className={`w-full p-4 bg-slate-50 border-2 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm ${errors.reddito ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
+                     />
+                     <ErrorMessage message={errors.reddito?.message} />
                    </div>
                    <div className="space-y-2">
-                     <label htmlFor="finalita" className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Finalità</label>
+                     <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Finalità</label>
                      <select 
-                       id="finalita"
-                       name="finalita" 
-                       value={formData.finalita} 
-                       onChange={handleChange} 
+                       {...register('finalita')}
                        className="w-full p-4 bg-slate-50 border-2 border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm"
-                       aria-label="Finalità del prestito"
                      >
                        <option>Acquisto Auto</option>
                        <option>Ristrutturazione Casa</option>
@@ -519,124 +314,84 @@ export default function LoanForm() {
                        <option>Altro</option>
                      </select>
                    </div>
-                   <div className="space-y-2">
+                   <div className="space-y-2 relative">
                      <label className="text-[11px] uppercase tracking-widest font-black text-slate-400 ml-1">Anzianità lavorativa (anni) *</label>
-                     <div className="relative">
-                       <input 
-                         name="anzianita" 
-                         type="number" 
-                         placeholder="Es: 5" 
-                         value={formData.anzianita} 
-                         onChange={handleChange}
-                         onBlur={() => handleBlur('anzianita')}
-                         className={`w-full p-4 bg-slate-50 border-2 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm ${
-                           isFieldInvalid('anzianita') ? 'border-red-500 bg-red-50' : 'border-slate-200'
-                         }`}
-                         required 
-                       />
-                       {isFieldInvalid('anzianita') && (
-                         <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
-                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                         </div>
-                       )}
-                     </div>
-                     {getFieldError('anzianita') && (
-                       <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1">
-                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                         {getFieldError('anzianita')}
-                       </p>
-                     )}
+                     <input 
+                       type="number"
+                       {...register('anzianita', { required: 'Obbligatorio', min: { value: 0, message: 'Minimo 0' }, max: { value: 50, message: 'Massimo 50' } })}
+                       placeholder="Es: 5" 
+                       className={`w-full p-4 bg-slate-50 border-2 rounded-2xl outline-none focus:ring-2 focus:ring-secondary text-sm ${errors.anzianita ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
+                     />
+                     <ErrorMessage message={errors.anzianita?.message} />
                    </div>
                  </div>
 
                  <div className="space-y-4 pt-6">
-                   {errors.general && (
+                   {serverError && (
                      <div className="p-4 bg-red-50 text-red-600 text-xs font-bold rounded-xl border border-red-200 flex items-center gap-3">
                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                       {errors.general}
+                       {serverError}
                      </div>
                    )}
-                    <label className={`flex items-start gap-3 cursor-pointer group p-4 rounded-xl border-2 transition-all ${
-                      isFieldInvalid('privacy') ? 'border-red-500 bg-red-50' : 'border-slate-200 bg-slate-50 hover:border-secondary/30'
-                    }`}>
-                       <input 
-                         name="privacy" 
-                         type="checkbox" 
-                         checked={formData.privacy} 
-                         onChange={(e) => {
-                           handleChange(e);
-                           handleBlur('privacy');
-                         }}
-                         className="mt-1 accent-secondary h-5 w-5 rounded" 
-                       />
-                       <span className="text-[10px] text-slate-500 group-hover:text-primary transition-colors leading-relaxed">
-                         Acconsento al trattamento dei dati personali ai fini della legge sulla privacy (RGPD). *
-                       </span>
-                       {isFieldInvalid('privacy') && (
-                         <div className="ml-auto text-red-500">
-                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                         </div>
-                       )}
-                     </label>
-                     {getFieldError('privacy') && (
-                       <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1">
-                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                         {getFieldError('privacy')}
-                       </p>
-                     )}
-                     <label className={`flex items-start gap-3 cursor-pointer group p-4 rounded-xl border-2 transition-all ${
-                      isFieldInvalid('crif') ? 'border-red-500 bg-red-50' : 'border-slate-200 bg-slate-50 hover:border-secondary/30'
-                    }`}>
-                       <input 
-                         name="crif" 
-                         type="checkbox" 
-                         checked={formData.crif} 
-                         onChange={(e) => {
-                           handleChange(e);
-                           handleBlur('crif');
-                         }}
-                         className="mt-1 accent-secondary h-5 w-5 rounded" 
-                       />
-                       <span className="text-[10px] text-slate-500 group-hover:text-primary transition-colors leading-relaxed">
-                         Autorizzo Finora a consultare i sistemi di informazioni creditizie (CRIF). *
-                       </span>
-                       {isFieldInvalid('crif') && (
-                         <div className="ml-auto text-red-500">
-                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                         </div>
-                       )}
-                     </label>
-                     {getFieldError('crif') && (
-                       <p className="text-[10px] text-red-500 font-bold ml-1 flex items-center gap-1">
-                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                         {getFieldError('crif')}
-                       </p>
-                     )}
+                    <div className="relative pb-2">
+                      <label className={`flex items-start gap-3 cursor-pointer group p-4 rounded-xl border-2 transition-all ${errors.privacy ? 'border-red-500 bg-red-50' : 'border-slate-200 bg-slate-50 hover:border-secondary/30'}`}>
+                         <input 
+                           type="checkbox" 
+                           {...register('privacy', { required: 'Devi accettare la privacy policy' })}
+                           className="mt-1 accent-secondary h-5 w-5 rounded" 
+                         />
+                         <span className="text-[10px] text-slate-500 group-hover:text-primary transition-colors leading-relaxed">
+                           Acconsento al trattamento dei dati personali ai fini della legge sulla privacy (RGPD). *
+                         </span>
+                       </label>
+                       <ErrorMessage message={errors.privacy?.message} />
+                    </div>
+                    <div className="relative pb-2">
+                      <label className={`flex items-start gap-3 cursor-pointer group p-4 rounded-xl border-2 transition-all ${errors.crif ? 'border-red-500 bg-red-50' : 'border-slate-200 bg-slate-50 hover:border-secondary/30'}`}>
+                         <input 
+                           type="checkbox" 
+                           {...register('crif', { required: 'Devi autorizzare CRIF' })}
+                           className="mt-1 accent-secondary h-5 w-5 rounded" 
+                         />
+                         <span className="text-[10px] text-slate-500 group-hover:text-primary transition-colors leading-relaxed">
+                           Autorizzo Monivia a consultare i sistemi di informazioni creditizie (CRIF). *
+                         </span>
+                       </label>
+                       <ErrorMessage message={errors.crif?.message} />
+                    </div>
                  </div>
                </motion.div>
              )}
- 
-             {/* Removed Step 3 (Documenti) */}
           </AnimatePresence>
-        </div>
 
-        <div className="flex justify-between mt-12 pt-8 border-t border-slate-100">
-          {currentStep > 1 && (
-            <button onClick={prevStep} className="flex items-center gap-2 text-xs font-black text-slate-400 hover:text-primary transition-colors uppercase tracking-widest">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg> Indietro
-            </button>
-          )}
-          <div className="grow"></div>
-          <button 
-            onClick={nextStep} 
-            disabled={isSubmitting}
-            className="btn-primary flex items-center gap-2 text-xs uppercase tracking-widest px-8 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? 'Invio in corso...' : currentStep === 3 ? 'Invia Richiesta' : 'Continua'} 
-            {!isSubmitting && <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>}
-          </button>
-        </div>
-       </div>
-     </div>
-   );
- }
+          <div className="flex justify-between mt-12 pt-8 border-t border-slate-100">
+            {currentStep > 1 ? (
+              <button type="button" onClick={prevStep} className="flex items-center gap-2 text-xs font-black text-slate-400 hover:text-primary transition-colors uppercase tracking-widest">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg> Indietro
+              </button>
+            ) : <div></div>}
+            
+            {currentStep === 1 ? (
+              <button 
+                type="button"
+                onClick={nextStep} 
+                className="btn-primary flex items-center gap-2 text-xs uppercase tracking-widest px-8"
+              >
+                Continua 
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            ) : (
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="btn-primary flex items-center gap-2 text-xs uppercase tracking-widest px-8 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? 'Invio in corso...' : 'Invia Richiesta'} 
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

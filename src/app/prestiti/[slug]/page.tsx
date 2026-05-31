@@ -62,12 +62,12 @@ export default function PrestitoDettaglio() {
   }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white overflow-hidden">
       <Navbar />
       
       {/* Product Hero */}
       <section className="pt-40 pb-24 bg-slate-50 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[120px] z-0"></div>
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-secondary/10 via-transparent to-transparent rounded-full blur-[120px] z-0"></div>
         <div className="container mx-auto px-6 relative z-10 text-center max-w-4xl">
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
@@ -82,7 +82,7 @@ export default function PrestitoDettaglio() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl md:text-6xl font-black text-primary mb-6"
           >
-            {data.title} <span className="text-secondary">Finora</span>
+            {data.title} <span className="text-secondary">Monivia</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -127,18 +127,20 @@ export default function PrestitoDettaglio() {
               <motion.div variants={fadeInUp} className="text-center md:text-left">
                 <h3 className="text-3xl font-black text-primary mb-8">Perché sceglierci?</h3>
                 <p className="text-lg text-slate-600 leading-relaxed mb-10">
-                  Con Finora, il processo è 100% digitale. Non dovrai recarti in filiale né spedire documenti cartacei. 
+                  Con Monivia, il processo è 100% digitale. Non dovrai recarti in filiale né spedire documenti cartacei. 
                   Il nostro algoritmo analizza la tua richiesta in tempo reale per offrirti l&apos;approvazione più veloce sul mercato.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-8">
-                  <div className="p-8 bg-slate-50 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-md transition-all">
-                    <h5 className="font-black text-primary mb-3">Tasso Fisso 2%</h5>
+                  <motion.div whileHover={{ y: -8 }} transition={{ type: "spring" }} className="p-8 bg-white rounded-[32px] border border-slate-100 shadow-soft hover:shadow-2xl hover:shadow-secondary/10 hover:border-secondary/20 transition-all duration-500 cursor-default">
+                    <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary mb-4 font-black">2%</div>
+                    <h5 className="font-black text-primary mb-3">Tasso Fisso</h5>
                     <p className="text-sm text-slate-500 leading-relaxed">Nessuna sorpresa, la tua rata rimane bloccata per tutta la durata.</p>
-                  </div>
-                  <div className="p-8 bg-slate-50 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-md transition-all">
-                    <h5 className="font-black text-primary mb-3">Risposta 48h</h5>
-                    <p className="text-sm text-slate-500 leading-relaxed">Ricevi l&apos;esito della tua pratique entro due giorni lavorativi.</p>
-                  </div>
+                  </motion.div>
+                  <motion.div whileHover={{ y: -8 }} transition={{ type: "spring" }} className="p-8 bg-white rounded-[32px] border border-slate-100 shadow-soft hover:shadow-2xl hover:shadow-secondary/10 hover:border-secondary/20 transition-all duration-500 cursor-default">
+                    <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary mb-4 font-black">48h</div>
+                    <h5 className="font-black text-primary mb-3">Risposta Rapida</h5>
+                    <p className="text-sm text-slate-500 leading-relaxed">Ricevi l&apos;esito della tua pratica entro due giorni lavorativi.</p>
+                  </motion.div>
                 </div>
               </motion.div>
       
