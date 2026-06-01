@@ -119,7 +119,6 @@ export default function Navbar() {
             className={`md:hidden relative z-60 p-2.5 focus:outline-none rounded-xl transition-colors duration-300 ${isOpen ? 'text-primary bg-slate-100' : scrolled ? 'text-primary bg-slate-100 hover:bg-slate-200' : 'text-white bg-white/10 hover:bg-white/20'}`}
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
-            aria-expanded={isOpen ? 'true' : 'false'}
           >
             <AnimatePresence mode="wait" initial={false}>
               {isOpen ? (
