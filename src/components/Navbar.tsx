@@ -58,7 +58,7 @@ export default function Navbar() {
 
       {/* Main Navbar */}
       <div className={`container mx-auto px-4 sm:px-6 flex items-center justify-between transition-all duration-500 ${scrolled ? 'py-4' : 'py-5'}`}>
-        <Link href="/" className="relative group flex items-center gap-2 outline-none rounded-xl focus-visible:ring-2 focus-visible:ring-secondary/50 z-[60]" onClick={closeMenu}>
+        <Link href="/" className="relative group flex items-center gap-2 outline-none rounded-xl focus-visible:ring-2 focus-visible:ring-secondary/50 z-60" onClick={closeMenu}>
           <div className={`text-2xl font-black tracking-tighter transition-colors duration-300 ${isOpen ? 'text-primary' : scrolled ? 'text-primary' : 'text-white'}`}>
             MO<span className="text-secondary">NIVIA</span>
           </div>
@@ -116,10 +116,10 @@ export default function Navbar() {
           
           {/* Mobile Menu Button */}
           <button 
-            className={`md:hidden relative z-[60] p-2.5 focus:outline-none rounded-xl transition-colors duration-300 ${isOpen ? 'text-primary bg-slate-100' : scrolled ? 'text-primary bg-slate-100 hover:bg-slate-200' : 'text-white bg-white/10 hover:bg-white/20'}`}
+            className={`md:hidden relative z-60 p-2.5 focus:outline-none rounded-xl transition-colors duration-300 ${isOpen ? 'text-primary bg-slate-100' : scrolled ? 'text-primary bg-slate-100 hover:bg-slate-200' : 'text-white bg-white/10 hover:bg-white/20'}`}
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
-            aria-expanded={isOpen}
+            aria-expanded={isOpen ? 'true' : 'false'}
           >
             <AnimatePresence mode="wait" initial={false}>
               {isOpen ? (
