@@ -4,10 +4,10 @@ import { sendEmail } from '@/lib/email';
 import { z } from 'zod';
 
 const contactSchema = z.object({
-  nome: z.string().min(2),
-  email: z.string().email(),
-  oggetto: z.string().min(2),
-  message: z.string().min(10),
+  nome: z.string().trim().min(2),
+  email: z.string().trim().email(),
+  oggetto: z.string().trim().min(2),
+  message: z.string().trim().min(10),
 });
 
 export async function POST(request: Request) {
@@ -25,15 +25,19 @@ export async function POST(request: Request) {
     
     const data = result.data;
 
-    // 2. Save to database
-    const contactMessage = await prisma.contactMessage.create({
-      data: {
-        nome: data.nome,
-        email: data.email,
-        oggetto: data.oggetto,
-        message: data.message,
-      }
-    });
+    // 2. Save to database (wrapped in try-catch for Vercel SQLite read-only filesystem)
+    try {
+      await prisma.contactMessage.create({
+        data: {
+          nome: data.nome,
+          email: data.email,
+          oggetto: data.oggetto,
+          message: data.message,
+        }
+      });
+    } catch (dbError) {
+      console.warn('Database save failed (expected on Vercel with SQLite), continuing to email:', dbError);
+    }
 
     // 3. Send email to internal team
     await sendEmail({
@@ -91,7 +95,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ 
       success: true, 
       message: 'Messaggio inviato con successo',
-      messageId: contactMessage.id
     });
 
   } catch (error) {
