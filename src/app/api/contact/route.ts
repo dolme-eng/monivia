@@ -3,7 +3,6 @@ import { z } from 'zod';
 import { siteConfig } from '@/config/site';
 import { sendEmail } from '@/lib/email';
 import { buildContactAutoReplyEmail, buildContactNotificationEmail } from '@/lib/email-templates';
-import { prisma } from '@/lib/prisma';
 import { guardSubmission } from '@/lib/security';
 import { normalizeText } from '@/lib/sanitization';
 
@@ -46,20 +45,6 @@ export async function POST(request: Request) {
       sourcePage: normalizeText(result.data.sourcePage) || '/contatti',
     };
 
-    try {
-      await prisma.contactMessage.create({
-        data: {
-          nome: data.nome,
-          email: data.email,
-          oggetto: data.oggetto,
-          message: data.message,
-          sourcePage: data.sourcePage,
-        },
-      });
-    } catch (dbError) {
-      console.warn('Database save failed (expected on Vercel with SQLite), continuing to email:', dbError);
-    }
-
     const [teamEmail, autoReplyEmail] = await Promise.all([
       sendEmail({
         to: siteConfig.contact.email,
@@ -75,7 +60,11 @@ export async function POST(request: Request) {
     ]);
 
     if (!teamEmail.success) {
-      console.warn('Internal contact email failed to send');
+      console.error('Internal contact notification email failed to send');
+      return NextResponse.json(
+        { error: 'Impossibile inviare il messaggio in questo momento. Riprova più tardi.' },
+        { status: 503 }
+      );
     }
 
     if (!autoReplyEmail.success) {

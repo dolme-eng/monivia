@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { siteConfig } from '@/config/site';
 import { sendEmail } from '@/lib/email';
 import { buildLoanAutoReplyEmail, buildLoanNotificationEmail } from '@/lib/email-templates';
-import { prisma } from '@/lib/prisma';
 import { guardSubmission } from '@/lib/security';
 import { normalizeText } from '@/lib/sanitization';
 
@@ -67,30 +66,6 @@ export async function POST(request: Request) {
 
     const practiceId = `PD-${randomUUID().split('-')[0].toUpperCase()}`;
 
-    try {
-      await prisma.loanRequest.create({
-        data: {
-          practiceId,
-          importo: data.importo,
-          durata: data.durata,
-          impiego: data.impiego,
-          nome: data.nome,
-          cognome: data.cognome,
-          email: data.email,
-          telefono: data.telefono,
-          codiceFiscale: data.codiceFiscale,
-          reddito: data.reddito,
-          finalita: data.finalita,
-          anzianita: data.anzianita,
-          sourcePage: data.sourcePage,
-          privacyAccepted: data.privacy,
-          crifAccepted: data.crif,
-        },
-      });
-    } catch (dbError) {
-      console.warn('Database save failed (expected on Vercel with SQLite), continuing to email:', dbError);
-    }
-
     const [teamEmail, autoReplyEmail] = await Promise.all([
       sendEmail({
         to: siteConfig.contact.email,
@@ -106,7 +81,11 @@ export async function POST(request: Request) {
     ]);
 
     if (!teamEmail.success) {
-      console.warn('Internal loan email failed to send');
+      console.error('Internal loan notification email failed to send');
+      return NextResponse.json(
+        { error: 'Impossibile inviare la richiesta in questo momento. Riprova più tardi.' },
+        { status: 503 }
+      );
     }
 
     if (!autoReplyEmail.success) {
