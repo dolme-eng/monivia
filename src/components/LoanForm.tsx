@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm, Controller } from 'react-hook-form';
@@ -84,6 +84,7 @@ export default function LoanForm() {
   const [serverError, setServerError] = useState('');
   const [prefillBanner, setPrefillBanner] = useState(getInitialPrefillBanner);
   const pathname = usePathname();
+  const formTopRef = useRef<HTMLDivElement>(null);
 
   const { register, handleSubmit, control, trigger, setValue, formState: { errors, isSubmitting } } = useForm<FormValues>({
     defaultValues: {
@@ -120,14 +121,24 @@ export default function LoanForm() {
     return () => window.removeEventListener('monivia:loan-prefill', onPrefillUpdated);
   }, [pathname, setValue]);
 
+  const scrollToTop = () => {
+    setTimeout(() => formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  };
+
   const nextStep = async () => {
     if (currentStep === 1) {
       const isValid = await trigger(['nome', 'cognome', 'codiceFiscale', 'email', 'telefono']);
-      if (isValid) setCurrentStep(2);
+      if (isValid) {
+        setCurrentStep(2);
+        scrollToTop();
+      }
     }
   };
 
-  const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
+  const prevStep = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+    scrollToTop();
+  };
 
   const onSubmit = async (data: FormValues) => {
     setServerError('');
@@ -137,6 +148,7 @@ export default function LoanForm() {
       if (!response.ok) throw new Error(result.error || "Errore durante l'invio");
       setPracticeId(String(result.practiceId || '').replace(/^PD-/, ''));
       setCurrentStep(3);
+      scrollToTop();
     } catch (err) {
       setServerError(err instanceof Error ? err.message : "Errore durante l'invio");
     }
@@ -171,7 +183,7 @@ export default function LoanForm() {
 
   /* ── Step 1 & 2 ── */
   return (
-    <div className="w-full">
+    <div className="w-full scroll-mt-24" ref={formTopRef}>
       {/* Prefill banner */}
       {prefillBanner && (
         <div className="mb-5 rounded-lg border border-secondary/25 bg-secondary/6 px-4 py-3.5">

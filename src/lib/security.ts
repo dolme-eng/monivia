@@ -44,7 +44,14 @@ function isAllowedOrigin(request: Request) {
 
   try {
     const host = new URL(origin).host;
-    return getAllowedHosts().has(host);
+    const allowed = getAllowedHosts();
+    if (allowed.has(host)) return true;
+    
+    // Also allow www. prefix if base domain is allowed (and vice versa)
+    if (host.startsWith('www.') && allowed.has(host.replace('www.', ''))) return true;
+    if (allowed.has(`www.${host}`)) return true;
+
+    return false;
   } catch {
     return true;
   }
