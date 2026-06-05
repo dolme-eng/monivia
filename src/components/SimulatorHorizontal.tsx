@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import proBg from '../../public/assets/pro_bg.png';
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { calculateLoan } from '@/utils/finance';
@@ -78,12 +80,23 @@ export default function SimulatorHorizontal() {
   ───────────────────────────────────────────────────────────── */
   return (
     <div
-      className="rounded-xl border border-slate-200 bg-white"
+      className="relative overflow-hidden rounded-xl border border-slate-200 bg-white"
       style={{ boxShadow: 'var(--shadow-card)' }}
     >
+      <div className="absolute inset-0" aria-hidden>
+        <Image
+          src={proBg}
+          alt=""
+          fill
+          sizes="100vw"
+          placeholder="blur"
+          className="object-cover object-center opacity-40"
+        />
+      </div>
+      <div className="pointer-events-none absolute inset-0 bg-white/75 backdrop-blur-[3px]" aria-hidden />
 
       {/* ─── Zone contrôles ─── */}
-      <div className="p-3 sm:p-4">
+      <div className="relative z-10 p-3 sm:p-4">
 
         {/* Desktop 4-col / Tablette 2-col / Mobile 1-col */}
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1.1fr_1.1fr_0.85fr_1fr]">
@@ -229,10 +242,10 @@ export default function SimulatorHorizontal() {
         </div>
       </div>
 
-      {/* ── Bandeau résultat mobile (< sm) ──
+      {/* ── Bandeau risultato mobile (< sm) ──
           Affiché uniquement sur téléphone, collé en bas du widget.
       */}
-      <div className="flex items-center justify-between gap-3 rounded-b-[32px] bg-primary px-5 py-4 sm:hidden">
+      <div className="relative z-10 flex items-center justify-between gap-3 rounded-b-[32px] bg-primary px-5 py-4 sm:hidden">
         <div>
           <p className="text-[9px] font-black uppercase tracking-[0.22em] text-white/40">Rata stimata</p>
           <div className="mt-0.5 flex items-baseline gap-1">

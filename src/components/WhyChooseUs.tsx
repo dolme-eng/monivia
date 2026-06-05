@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import consultationImg from '../../public/assets/consultation.png';
+import consultationImg from '../../public/assets/why_choose_us.png';
 import { ArrowRight, CheckCircle2, Clock3, Headphones, LockKeyhole } from 'lucide-react';
 
 const benefits = [

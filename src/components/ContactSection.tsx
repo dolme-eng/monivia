@@ -40,11 +40,11 @@ export default function ContactSection() {
 
             <form onSubmit={handleContactSubmit} className="space-y-4">
               <input type="text" name="website" tabIndex={-1} autoComplete="off" className="sr-only" aria-hidden />
-              <div>
+                <div>
                 <label htmlFor="contact-nome" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Nome</label>
                 <input id="contact-nome" name="nome" required className="field-shell" placeholder="Il tuo nome" />
-              </div>
-              <div>
+                </div>
+                <div>
                 <label htmlFor="contact-email" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Email</label>
                 <input id="contact-email" name="email" type="email" required className="field-shell" placeholder="nome@email.it" />
               </div>

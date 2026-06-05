@@ -22,7 +22,7 @@ export default function Hero() {
           priority
           sizes="100vw"
           placeholder="blur"
-          className="object-cover object-center opacity-20"
+          className="object-cover object-center opacity-80"
         />
       </div>
 
@@ -30,7 +30,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'linear-gradient(to bottom, rgba(10,22,40,0.55) 0%, rgba(10,22,40,0.25) 40%, rgba(10,22,40,0.80) 100%)',
+            'linear-gradient(to bottom, rgba(10,22,40,0.40) 0%, rgba(10,22,40,0.15) 40%, rgba(10,22,40,0.65) 100%)',
         }}
         aria-hidden
       />
@@ -38,7 +38,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'linear-gradient(to right, rgba(10,22,40,0.70) 0%, rgba(10,22,40,0.20) 55%, transparent 100%)',
+            'linear-gradient(to right, rgba(10,22,40,0.85) 0%, rgba(10,22,40,0.45) 50%, transparent 100%)',
         }}
         aria-hidden
       />

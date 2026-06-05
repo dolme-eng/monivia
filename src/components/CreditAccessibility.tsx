@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, BriefcaseBusiness, FileCheck2, Landmark, UsersRound } from 'lucide-react';
+import { ArrowRight, BriefcaseBusiness, FileCheck2, Landmark, UsersRound, ShieldAlert } from 'lucide-react';
 import { fadeInUp } from '@/lib/motion';
 
 const profiles = [
@@ -33,6 +33,15 @@ const profiles = [
     hoverBorder: 'hover:border-accent/30',
     linkColor: 'text-accent hover:text-primary',
   },
+  {
+    icon: ShieldAlert,
+    title: 'Segnalato in CRIF?',
+    desc: 'Soluzioni dedicate (es. Cessione del Quinto) anche per segnalati in banche dati o cattivi pagatori.',
+    iconBg: 'bg-red-500/10',
+    iconText: 'text-red-600',
+    hoverBorder: 'hover:border-red-500/30',
+    linkColor: 'text-red-600 hover:text-primary',
+  },
 ];
 
 export default function CreditAccessibility() {
@@ -57,8 +66,8 @@ export default function CreditAccessibility() {
           </p>
         </motion.div>
 
-        {/* Cards : 1 col mobile, 2 col sm, 3 col lg */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Cards : 1 col mobile, 2 col sm, 4 col xl */}
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {profiles.map((profile, index) => (
             <motion.div
               key={profile.title}

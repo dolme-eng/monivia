@@ -55,7 +55,7 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
       'Unisci i tuoi prestiti in un’unica rata e semplifica la gestione del tuo budget con Monivia.',
     keywords: ['consolidamento debiti', 'unica rata', 'prestito consolidamento'],
     benefits: ['Rata unica', 'Minori interessi totali', 'Gestione semplificata'],
-    ogImage: '/assets/premium_hero.png',
+    ogImage: '/assets/hero_lifestyle_new.png',
   },
   business: {
     slug: 'business',
@@ -66,7 +66,7 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
       'Sostieni la crescita della tua impresa con un prestito aziendale pensato per liquidità e flessibilità.',
     keywords: ['prestito aziendale', 'finanziamento impresa', 'Monivia impresa'],
     benefits: ['Liquidità immediata', 'Piani ammortamento flessibili', 'Consulenza dedicata'],
-    ogImage: '/assets/business_bg.png',
+    ogImage: '/assets/pro_bg.png',
   },
 };
 

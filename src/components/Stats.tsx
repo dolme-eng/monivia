@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
+import statsBg from '../../public/assets/stats_bg.png';
 import { ArrowRight, FileText, Users, Award, Star } from 'lucide-react';
 import { useReducedMotion, fadeInUp } from '@/lib/motion';
 
@@ -85,8 +87,27 @@ const stats = [
 
 export default function Stats() {
   return (
-    <section className="bg-mesh-dark py-20 sm:py-24">
-      <div className="site-container">
+    <section className="relative overflow-hidden bg-primary py-20 sm:py-24">
+      <div className="absolute inset-0" aria-hidden>
+        <Image
+          src={statsBg}
+          alt=""
+          fill
+          sizes="100vw"
+          placeholder="blur"
+          className="object-cover object-center opacity-60"
+        />
+      </div>
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(to bottom, rgba(10,22,40,0.85) 0%, rgba(10,22,40,0.55) 50%, rgba(10,22,40,0.85) 100%)',
+        }}
+        aria-hidden
+      />
+
+      <div className="site-container relative z-10">
         <motion.div {...fadeInUp} className="mb-14 text-center">
           <div className="badge-dark inline-flex mb-5">I nostri numeri</div>
           <h2 className="text-section-title font-black text-white">
@@ -102,7 +123,7 @@ export default function Stats() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.09 }}
-              className="rounded-xl border border-white/15 bg-[#0f1f35] p-5 text-center sm:p-7"
+              className="rounded-xl border border-white/15 bg-[#0f1f35]/80 backdrop-blur-md p-5 text-center sm:p-7"
             >
               <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg ${stat.iconBg} ${stat.iconColor}`}>
                 <stat.Icon size={26} aria-hidden />

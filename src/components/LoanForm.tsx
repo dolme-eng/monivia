@@ -266,18 +266,18 @@ export default function LoanForm() {
                           <div className="mb-4 flex items-baseline justify-between">
                             <div className="flex items-baseline gap-1">
                               <span className="text-2xl font-black text-primary">€</span>
-                              <input type="number" min={5000} max={1000000} step={1000} aria-label="Importo prestito" value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 1000000) v = 1000000; field.onChange(v); }} onBlur={() => { if (field.value < 5000) field.onChange(5000); field.onBlur(); }} className="w-28 bg-transparent text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
+                              <input type="number" min={5000} max={1000000} step={1000} aria-label="Importo prestito" aria-invalid={!!errors.importo} aria-describedby={errors.importo ? 'error-importo' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 1000000) v = 1000000; field.onChange(v); }} onBlur={() => { if (field.value < 5000) field.onChange(5000); field.onBlur(); }} className="w-28 bg-transparent text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
                             </div>
                             <div className="text-right text-[10px] font-bold uppercase tracking-wider text-slate-400">
                               <p>Min 5.000€</p><p>Max 1.000.000€</p>
                             </div>
                           </div>
-                          <input type="range" min={5000} max={1000000} step={1000} value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} aria-label="Seleziona importo" />
+                          <input type="range" min={5000} max={1000000} step={1000} value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} aria-label="Seleziona importo" aria-invalid={!!errors.importo} aria-describedby={errors.importo ? 'error-importo' : undefined} />
                         </>
                       )}
                     />
                   </div>
-                  <ErrorMessage message={errors.importo?.message} />
+                  <ErrorMessage id="error-importo" message={errors.importo?.message} />
                 </div>
 
                 {/* Durata slider */}
@@ -289,19 +289,19 @@ export default function LoanForm() {
                         <>
                           <div className="mb-4 flex items-baseline justify-between">
                             <div className="flex items-baseline gap-2">
-                              <input type="number" min={12} max={360} step={6} aria-label="Durata prestito in mesi" value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 360) v = 360; field.onChange(v); }} onBlur={() => { if (field.value < 12) field.onChange(12); field.onBlur(); }} className="w-20 bg-transparent text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
+                              <input type="number" min={12} max={360} step={6} aria-label="Durata prestito in mesi" aria-invalid={!!errors.durata} aria-describedby={errors.durata ? 'error-durata' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 360) v = 360; field.onChange(v); }} onBlur={() => { if (field.value < 12) field.onChange(12); field.onBlur(); }} className="w-20 bg-transparent text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
                               <span className="text-lg font-bold text-slate-500">mesi</span>
                             </div>
                             <div className="text-right text-[10px] font-bold uppercase tracking-wider text-slate-400">
                               <p>Min 12 mesi</p><p>Max 360 mesi</p>
                             </div>
                           </div>
-                          <input type="range" min={12} max={360} step={6} value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} aria-label="Seleziona durata" />
+                          <input type="range" min={12} max={360} step={6} value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} aria-label="Seleziona durata" aria-invalid={!!errors.durata} aria-describedby={errors.durata ? 'error-durata' : undefined} />
                         </>
                       )}
                     />
                   </div>
-                  <ErrorMessage message={errors.durata?.message} />
+                  <ErrorMessage id="error-durata" message={errors.durata?.message} />
                 </div>
 
                 {/* Campi aggiuntivi */}
@@ -317,8 +317,8 @@ export default function LoanForm() {
                   </div>
                   <div>
                     <Label>Reddito mensile netto (€) *</Label>
-                    <input type="number" {...register('reddito', { required: 'Obbligatorio', min: { value: 500, message: 'Min 500€' }, max: { value: 1000000, message: 'Max 1.000.000€' } })} placeholder="Es: 2500" className={fieldClass(!!errors.reddito)} />
-                    <ErrorMessage message={errors.reddito?.message} />
+                    <input type="number" {...register('reddito', { required: 'Obbligatorio', min: { value: 500, message: 'Min 500€' }, max: { value: 1000000, message: 'Max 1.000.000€' } })} aria-invalid={!!errors.reddito} aria-describedby={errors.reddito ? 'error-reddito' : undefined} placeholder="Es: 2500" className={fieldClass(!!errors.reddito)} />
+                    <ErrorMessage id="error-reddito" message={errors.reddito?.message} />
                   </div>
                   <div>
                     <Label>Finalità</Label>
@@ -332,8 +332,8 @@ export default function LoanForm() {
                   </div>
                   <div>
                     <Label>Anzianità lavorativa (anni) *</Label>
-                    <input type="number" {...register('anzianita', { required: 'Obbligatorio', min: { value: 0, message: 'Minimo 0' }, max: { value: 50, message: 'Massimo 50' } })} placeholder="Es: 5" className={fieldClass(!!errors.anzianita)} />
-                    <ErrorMessage message={errors.anzianita?.message} />
+                    <input type="number" {...register('anzianita', { required: 'Obbligatorio', min: { value: 0, message: 'Minimo 0' }, max: { value: 50, message: 'Massimo 50' } })} aria-invalid={!!errors.anzianita} aria-describedby={errors.anzianita ? 'error-anzianita' : undefined} placeholder="Es: 5" className={fieldClass(!!errors.anzianita)} />
+                    <ErrorMessage id="error-anzianita" message={errors.anzianita?.message} />
                   </div>
                 </div>
 
@@ -351,10 +351,10 @@ export default function LoanForm() {
                   ].map(({ name, label, error, rule }) => (
                     <div key={name}>
                       <label className={`flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all ${error ? 'border-red-300 bg-red-50' : 'border-slate-200 bg-slate-50 hover:border-secondary/30'}`}>
-                        <input type="checkbox" {...register(name, rule)} className="mt-0.5 h-5 w-5 accent-secondary rounded" />
+                        <input type="checkbox" {...register(name, rule)} aria-invalid={!!error} aria-describedby={error ? `error-${name}` : undefined} className="mt-0.5 h-5 w-5 accent-secondary rounded" />
                         <span className="text-[11px] leading-relaxed text-slate-500">{label}</span>
                       </label>
-                      <ErrorMessage message={error} />
+                      <ErrorMessage id={`error-${name}`} message={error} />
                     </div>
                   ))}
                 </div>
