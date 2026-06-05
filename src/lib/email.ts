@@ -1,9 +1,11 @@
 import nodemailer from 'nodemailer';
+import { siteConfig } from '@/config/site';
 
 interface EmailPayload {
   to: string | string[];
   subject: string;
   html: string;
+  replyTo?: string;
 }
 
 // Create the SMTP transporter using Hostinger credentials from environment variables.
@@ -33,6 +35,9 @@ export const sendEmail = async (payload: EmailPayload): Promise<{ success: boole
     console.log('================= MOCK EMAIL SENT =================');
     console.log(`To: ${Array.isArray(payload.to) ? payload.to.join(', ') : payload.to}`);
     console.log(`Subject: ${payload.subject}`);
+    if (payload.replyTo) {
+      console.log(`Reply-To: ${payload.replyTo}`);
+    }
     console.log(`Body (HTML):\n${payload.html}`);
     console.log('===================================================');
     return { success: true, mocked: true };
@@ -40,10 +45,11 @@ export const sendEmail = async (payload: EmailPayload): Promise<{ success: boole
 
   try {
     await transporter.sendMail({
-      from: `"Monivia" <${process.env.SMTP_USER}>`,
+      from: `"${siteConfig.name}" <${process.env.SMTP_USER}>`,
       to: payload.to,
       subject: payload.subject,
       html: payload.html,
+      replyTo: payload.replyTo,
     });
     return { success: true };
   } catch (error) {

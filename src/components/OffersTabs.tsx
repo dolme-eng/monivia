@@ -3,97 +3,203 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Car, Building2, Coins, Rocket } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, Building2, Car, Coins, Rocket, UserRound } from 'lucide-react';
+import { trackAnalyticsEvent } from '@/lib/analytics-client';
+import { fadeInUp } from '@/lib/motion';
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6, ease: "easeOut" as const }
-};
+const offers = [
+  {
+    slug: 'personale',
+    title: 'Prestito Personale',
+    icon: UserRound,
+    image: '/assets/hero_lifestyle.png',
+    desc: 'Per progetti personali, imprevisti o acquisti importanti con un percorso digitale semplice.',
+    points: ['Importi flessibili', 'Rata chiara', 'Richiesta guidata'],
+  },
+  {
+    slug: 'auto',
+    title: 'Prestito Auto',
+    icon: Car,
+    image: '/assets/consultation.png',
+    desc: "Per auto e moto nuove o usate, con una rata stimata subito prima dell'invio.",
+    points: ['Nuovo o usato', 'Esito rapido', 'Piani su misura'],
+  },
+  {
+    slug: 'immobiliare',
+    title: 'Prestito Immobiliare',
+    icon: Building2,
+    image: '/assets/premium_hero.png',
+    desc: 'Per ristrutturare, acquistare o finanziare progetti abitativi più importanti.',
+    points: ['Fino a importi elevati', 'Durate lunghe', 'Consulenza dedicata'],
+  },
+  {
+    slug: 'business',
+    title: 'Prestito Aziendale',
+    icon: Rocket,
+    image: '/assets/pro_bg.png',
+    desc: 'Per liquidità, attrezzature, crescita aziendale o investimenti professionali.',
+    points: ['Per imprese', 'Iter digitale', 'Supporto consulente'],
+  },
+  {
+    slug: 'consolidamento',
+    title: 'Consolidamento Debiti',
+    icon: Coins,
+    image: '/assets/hero_lifestyle_new.png',
+    desc: 'Per riunire più finanziamenti in una rata unica più semplice da gestire.',
+    points: ['Una rata', 'Più controllo', 'Meno complessità'],
+  },
+];
 
 export default function OffersTabs() {
+  const pathname = usePathname();
   const [activeTab, setActiveTab] = useState(0);
+  const activeOffer = offers[activeTab];
+
+  const selectTab = (index: number) => {
+    setActiveTab(index);
+    trackAnalyticsEvent({
+      eventType: 'offer_tab_change',
+      page: pathname || '/',
+      label: offers[index].title,
+      metadata: { slug: offers[index].slug },
+    });
+  };
 
   return (
-    <section id="prestiti" className="py-24 bg-white relative">
-      <div className="container mx-auto px-6 relative z-10">
-        <motion.div {...fadeInUp} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">Le Nostre Offerte di Credito</h2>
-          <p className="text-lg text-slate-500">Scegli la soluzione più adatta alle tue esigenze finanziarie.</p>
+    <section id="prestiti" className="section-pad bg-white">
+      <div className="site-container">
+        {/* Header — animé au scroll */}
+        <motion.div {...fadeInUp} className="mb-12 mx-auto max-w-3xl text-center">
+          <div
+            className="badge inline-flex mb-4"
+            style={{ borderColor: 'rgba(99,102,241,0.25)', backgroundColor: 'rgba(99,102,241,0.08)', color: 'var(--color-accent)' }}
+          >
+            I nostri prodotti
+          </div>
+          <h2 className="section-heading">
+            Scegli il prestito<br className="hidden sm:block" /> più adatto al tuo obiettivo.
+          </h2>
+          <p className="section-copy mt-4">
+            Simulazione chiara, richiesta digitale, supporto quando serve.
+          </p>
         </motion.div>
-        
-        <div className="flex flex-col lg:flex-row gap-12">
-          {/* Tab Navigation */}
-          <div className="w-full lg:w-1/3 flex flex-row overflow-x-auto pb-4 lg:pb-0 lg:flex-col gap-3 lg:space-y-3 snap-x scrollbar-hide">
-            {[
-              { title: "Prestito Personale", icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> },
-              { title: "Prestito Auto", icon: <Car size={20} /> },
-              { title: "Prestito Immobiliare", icon: <Building2 size={20} /> },
-              { title: "Prestito Business", icon: <Rocket size={20} /> },
-              { title: "Consolidamento Debiti", icon: <Coins size={20} /> }
-            ].map((tab, i) => (
-              <button 
-                key={i}
-                onClick={() => setActiveTab(i)}
-                className={`relative flex items-center gap-3 md:gap-4 px-5 md:px-6 py-4 md:py-5 rounded-2xl font-bold transition-colors text-left whitespace-nowrap lg:whitespace-normal shrink-0 snap-start z-10 focus-visible:ring-2 focus-visible:ring-secondary/50 outline-none ${activeTab === i ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}
+
+        {/* Mobile tabs — pill scrollabili */}
+        <div className="mb-5 lg:hidden">
+          <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-3 scrollbar-hide sm:-mx-6 sm:px-6">
+            {offers.map((offer, index) => (
+              <button
+                key={offer.title}
+                type="button"
+                onClick={() => selectTab(index)}
+                className={`flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-black transition-all ${
+                  activeTab === index
+                    ? 'bg-primary text-white shadow-md'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
               >
-                {activeTab === i && (
-                  <motion.div 
-                    layoutId="activeTabPill" 
-                    className="absolute inset-0 bg-primary rounded-2xl shadow-xl shadow-primary/20 -z-10" 
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }} 
-                  />
-                )}
-                {activeTab !== i && (
-                  <div className="absolute inset-0 bg-slate-50 hover:bg-slate-100 rounded-2xl -z-10 transition-colors"></div>
-                )}
-                <div className={`relative z-10 transition-colors ${activeTab === i ? 'text-secondary' : 'text-slate-400'}`}>{tab.icon}</div>
-                <span className="text-sm md:text-base relative z-10 transition-colors">{tab.title}</span>
+                <offer.icon size={15} aria-hidden />
+                {offer.title}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Layout principale */}
+        <div className="grid gap-5 lg:grid-cols-[0.42fr_0.58fr] lg:gap-8">
+
+          {/* Sidebar desktop only */}
+          <div className="hidden flex-col gap-3 lg:flex">
+            {offers.map((offer, index) => (
+              <button
+                key={offer.title}
+                type="button"
+                onClick={() => selectTab(index)}
+                className={`flex items-center gap-4 rounded-lg border p-4 text-left transition-all duration-200 ${
+                  activeTab === index
+                    ? 'border-primary bg-primary text-white shadow-premium'
+                    : 'border-slate-200 bg-slate-50 text-primary hover:border-secondary/40 hover:bg-white'
+                }`}
+              >
+                <span
+                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
+                    activeTab === index ? 'bg-white/10 text-secondary' : 'bg-white text-secondary'
+                  }`}
+                >
+                  <offer.icon size={22} aria-hidden />
+                </span>
+                <span>
+                  <span className="block text-base font-black">{offer.title}</span>
+                  <span
+                    className={`mt-0.5 block text-xs font-bold ${
+                      activeTab === index ? 'text-white/50' : 'text-slate-400'
+                    }`}
+                  >
+                    Scopri dettagli
+                  </span>
+                </span>
               </button>
             ))}
           </div>
 
-          {/* Tab Content */}
-          <div className="w-full lg:w-2/3 bg-slate-50 rounded-[40px] p-8 md:p-12 border border-slate-100 shadow-sm relative overflow-hidden">
+          {/* Content panel */}
+          <div
+            className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50"
+            style={{ boxShadow: 'var(--shadow-soft)' }}
+          >
             <AnimatePresence mode="wait">
-                              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 20 }}
+              <motion.div
+                key={activeOffer.title}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col md:flex-row gap-8 md:gap-10 items-center h-full"
+                exit={{ opacity: 0, y: -14 }}
+                transition={{ duration: 0.22 }}
+                className="lg:grid lg:grid-cols-2"
               >
-                <div className="w-full md:w-1/2 z-10 order-1">
-                  <h3 className="text-2xl md:text-3xl font-black text-primary mb-4 md:mb-6 leading-tight">
-                    {activeTab === 0 && "Prestito Personale"}
-                    {activeTab === 1 && "Prestito Auto"}
-                    {activeTab === 2 && "Prestito Immobiliare"}
-                    {activeTab === 3 && "Prestito Business"}
-                    {activeTab === 4 && "Consolidamento Debiti"}
+                {/* Testo */}
+                <div className="p-6 sm:p-8 lg:p-9">
+                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
+                    <activeOffer.icon size={28} aria-hidden />
+                  </div>
+                  <h3 className="text-2xl font-black tracking-tight text-primary sm:text-3xl">
+                    {activeOffer.title}
                   </h3>
-                  <div className="text-slate-600 space-y-3 mb-8 text-sm md:text-base leading-relaxed">
-                    {activeTab === 0 && <><p>Realizza i tuoi sogni con i nostri prestiti personali. Rispondi alle tue esigenze finanziarie con tassi di interesse agevolati.</p><p>Devi finanziare un evento familiare, un viaggio o un acquisto imprevisto? È la soluzione su misura ideale.</p></>}
-                    {activeTab === 1 && <><p>La soluzione ideale per il tuo nuovo veicolo. Finanziamento dedicato all&apos;acquisto di auto o moto, nuove o usate.</p><p>Se non disponi del capitale necessario, il nostro credito auto è la scelta più intelligente e veloce.</p></>}
-                    {activeTab === 2 && <><p>Trasforma in realtà il sogno di acquistare casa. Perché pagare l&apos;affitto quando puoi comprare?</p><p>Un prestito a lungo termine studiato per l&apos;acquisto della tua prima abitazione con condizioni flessibili e trasparenti.</p></>}
-                    {activeTab === 3 && <><p>Investi in nuovi macchinari, espandi la tua attività o rinnova le strutture senza intaccare la liquidità aziendale.</p><p>Supportiamo la crescita della tua impresa con finanziamenti corporate veloci.</p></>}
-                    {activeTab === 4 && <><p>Un unico prestito per rimborsare tutti i tuoi debiti in corso. Semplifica la tua vita con una sola rata mensile più leggera.</p><p>Raggruppa i tuoi finanziamenti in pochi clic e riprendi il controllo del tuo budget.</p></>}
+                  <p className="mt-4 text-base leading-relaxed text-slate-600">{activeOffer.desc}</p>
+
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {activeOffer.points.map((point) => (
+                      <span
+                        key={point}
+                        className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-black text-primary shadow-sm"
+                      >
+                        {point}
+                      </span>
+                    ))}
                   </div>
-                  <Link href="#richiedi" className="inline-flex items-center gap-2 btn-primary px-8 py-4 text-xs font-black uppercase tracking-widest rounded-2xl group shadow-lg shadow-primary/20 hover:scale-105 transition-all">
-                    Richiedi Preventivo <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
-                  </Link>
+
+                  <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                    <Link href="#richiedi" className="btn-primary px-6 py-3.5">
+                      Richiedi preventivo
+                      <ArrowRight size={15} />
+                    </Link>
+                    <Link href={`/prestiti/${activeOffer.slug}`} className="btn-secondary px-6 py-3.5">
+                      Dettagli prodotto
+                    </Link>
+                  </div>
                 </div>
-                <div className="w-full md:w-1/2 h-[220px] sm:h-[280px] md:h-[400px] order-2">
-                  <div className="relative h-full w-full rounded-[30px] overflow-hidden shadow-2xl">
-                     {activeTab === 0 && <Image src="/assets/hero_lifestyle.png" alt="Personale" fill priority sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
-                    {activeTab === 1 && <Image src="/assets/consultation.png" alt="Auto" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
-                    {activeTab === 2 && <Image src="/assets/premium_hero.png" alt="Immobiliare" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
-                    {activeTab === 3 && <Image src="/assets/pro_bg.png" alt="Business" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
-                    {activeTab === 4 && <Image src="/assets/hero_lifestyle_new.png" alt="Consolidamento" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
-                    <div className="absolute inset-0 bg-linear-to-t from-primary/60 to-transparent"></div>
-                  </div>
+
+                {/* Immagine */}
+                <div className="relative h-[220px] sm:h-[280px] lg:h-full">
+                  <Image
+                    src={activeOffer.image}
+                    alt={activeOffer.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-primary/50 via-transparent to-transparent lg:bg-linear-to-r lg:from-transparent lg:via-transparent lg:to-transparent" />
                 </div>
               </motion.div>
             </AnimatePresence>

@@ -1,26 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import TestimonialSlider from '@/components/Testimonials';
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6, ease: "easeOut" as const }
-};
+import { getAnalyticsSessionId, trackAnalyticsEvent } from '@/lib/analytics-client';
+import { siteConfig } from '@/config/site';
+import { fadeInUp } from '@/lib/motion';
 
 export default function ContactSection() {
   const [contactStatus, setContactStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const pathname = usePathname();
+
+  useEffect(() => {
+    trackAnalyticsEvent({ eventType: 'contact_form_view', page: pathname || '/' });
+  }, [pathname]);
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setContactStatus('loading');
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    
+    const data: Record<string, FormDataEntryValue | string> = Object.fromEntries(formData.entries());
+    data.analyticsSessionId = getAnalyticsSessionId();
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -36,40 +37,67 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contatti" className="py-24 bg-primary relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
-        <Image src="/assets/business_bg.png" alt="Background" fill sizes="100vw" className="object-cover" />
-      </div>
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Contact Form */}
-          <motion.div {...fadeInUp} className="bg-white rounded-[40px] p-8 md:p-12 shadow-2xl">
-            <h3 className="text-3xl font-black text-primary mb-2">Hai una domanda?</h3>
-            <p className="text-slate-500 mb-8">Il nostro team è a tua completa disposizione.</p>
-            
-             <form onSubmit={handleContactSubmit} className="space-y-4">
-             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                 <input name="nome" type="text" placeholder="Nome Completo" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" required />
-                 <input name="email" type="email" placeholder="Indirizzo E-mail" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" required />
-               </div>
-               <input name="oggetto" type="text" placeholder="Oggetto" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors text-slate-800" required />
-               <textarea name="message" placeholder="Il tuo messaggio..." rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-secondary transition-colors resize-none text-slate-800" required></textarea>
-               <button type="submit" disabled={contactStatus === 'loading'} className="w-full btn-primary py-4 text-sm font-black uppercase tracking-widest rounded-2xl hover:scale-[1.02] transition-transform disabled:opacity-50">
-                 {contactStatus === 'loading' ? 'Invio in corso...' : contactStatus === 'success' ? 'Messaggio Inviato!' : 'Invia Messaggio'}
-               </button>
-               {contactStatus === 'error' && <p className="text-red-500 text-xs text-center font-bold">Errore durante l&apos;invio. Riprova più tardi.</p>}
-             </form>
+    <section id="contatti" className="section-pad relative overflow-hidden bg-mesh-dark">
+      <div className="site-container relative z-10">
+        {/* Mobile: form first, testimonials below. Desktop: side by side */}
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-start">
+
+          {/* Formulaire — premier sur mobile */}
+          <motion.div {...fadeInUp} className="rounded-xl bg-white p-6 sm:p-8 lg:p-10" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <h2 className="text-2xl font-black tracking-tight text-primary sm:text-3xl">Hai una domanda?</h2>
+            <p className="mb-7 mt-2 text-slate-500">La nostra squadra è a tua completa disposizione.</p>
+
+            <form onSubmit={handleContactSubmit} className="space-y-4">
+              <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="sr-only" />
+              <input type="hidden" name="sourcePage" value={pathname || '/'} />
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="cs-nome" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">Nome completo</label>
+                  <input id="cs-nome" name="nome" type="text" autoComplete="name" placeholder="Il tuo nome" className="field-shell" required />
+                </div>
+                <div>
+                  <label htmlFor="cs-email" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">Email</label>
+                  <input id="cs-email" name="email" type="email" inputMode="email" autoComplete="email" placeholder="nome@email.it" className="field-shell" required />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="cs-oggetto" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">Oggetto</label>
+                <input id="cs-oggetto" name="oggetto" type="text" placeholder="Oggetto del messaggio" className="field-shell" required />
+              </div>
+
+              <div>
+                <label htmlFor="cs-message" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">Messaggio</label>
+                <textarea id="cs-message" name="message" placeholder="Scrivi qui..." rows={4} className="field-shell resize-none" required />
+              </div>
+
+              <button type="submit" disabled={contactStatus === 'loading'} className="btn-primary w-full py-4 text-sm uppercase tracking-widest">
+                {contactStatus === 'loading' ? 'Invio in corso...' : contactStatus === 'success' ? 'Messaggio inviato ✓' : 'Invia messaggio'}
+              </button>
+
+              {contactStatus === 'success' && (
+                <p className="rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-center text-sm font-bold text-emerald-700">
+                  Grazie! Ti ricontatteremo entro 48 ore lavorative. Oppure scrivici su{' '}
+                  <a href={siteConfig.contact.whatsapp.link} className="text-secondary underline" target="_blank" rel="noopener noreferrer">WhatsApp</a>.
+                </p>
+              )}
+              {contactStatus === 'error' && (
+                <p className="text-center text-sm font-bold text-red-400">Errore durante l&apos;invio. Riprova più tardi.</p>
+              )}
+            </form>
           </motion.div>
 
-          {/* Testimonials */}
+          {/* Testimonials — secondo su mobile */}
           <motion.div {...fadeInUp} className="text-white">
-            <div className="mb-12">
-              <h3 className="text-4xl md:text-5xl font-black mb-4">Cosa dicono i nostri clienti</h3>
-              <p className="text-lg text-slate-300">La trasparenza e la velocità sono i nostri punti di forza. Ecco l&apos;esperienza di chi ci ha già scelto.</p>
+            <div className="mb-8">
+              <div className="badge-dark inline-flex mb-4">Recensioni</div>
+              <h2 className="text-section-title font-black text-white">Cosa dicono i<br />nostri clienti</h2>
+              <p className="mt-4 text-base text-white/65">La trasparenza e la velocità sono i nostri punti di forza.</p>
             </div>
-            
             <TestimonialSlider />
           </motion.div>
+
         </div>
       </div>
     </section>

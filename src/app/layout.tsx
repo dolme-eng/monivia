@@ -1,41 +1,63 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import SkipToContent from "@/components/SkipToContent";
+import StickyConversionBar from "@/components/StickyConversionBar";
 import { siteConfig } from "@/config/site";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    metadataBase: new URL(siteConfig.url),
-    title: `${siteConfig.name} | ${siteConfig.description}`,
-    description: "Richiedi il tuo prestito online da 5.000€ a più di 500.000€ con Monivia. Tasso fisso al 2%, processo 100% digitale e risposta in 48 ore.",
-    keywords: "prestiti personali, prestito online, finanziamento veloce, tasso fisso, prestiti oltre 500000 euro, credito italia",
-    alternates: {
-      canonical: '/',
-    },
-    robots: {
+  metadataBase: new URL(siteConfig.url),
+  title: siteConfig.name,
+  description: siteConfig.description,
+  keywords: [
+    'prestiti personali',
+    'prestito online',
+    'finanziamento veloce',
+    'tasso fisso',
+    'credito italia',
+    'Monivia',
+  ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
       index: true,
       follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    title: siteConfig.name,
+    description: siteConfig.description,
+    locale: 'it_IT',
+    type: 'website',
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: '/logo.svg',
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
       },
-    },
-    openGraph: {
-      title: `${siteConfig.name} | Prestiti Online Veloci`,
-      description: "Finanziamenti a più di 500.000€ con tasso fisso al 2%. Richiedi ora online.",
-      locale: "it_IT",
-      type: "website",
-      url: siteConfig.url,
-    },
-   icons: {
-     icon: "/favicon.svg",
-   },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: ['/logo.svg'],
+  },
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -44,28 +66,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FinancialService",
-    "name": siteConfig.name,
-    "url": siteConfig.url,
-    "logo": `${siteConfig.url}/logo.svg`,
-    "description": "Prestiti online veloci e sicuri. Da 5.000€ a più di 500.000€ con tasso fisso al 2%.",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Via Dante, 10",
-      "addressLocality": "Milano",
-      "postalCode": "20121",
-      "addressCountry": "IT"
+    '@context': 'https://schema.org',
+    '@type': 'FinancialService',
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: `${siteConfig.url}/logo.svg`,
+    description: 'Prestiti online chiari, veloci e sicuri, con assistenza dedicata e risposta in 48 ore.',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Via Dante, 10',
+      addressLocality: 'Milano',
+      postalCode: '20121',
+      addressCountry: 'IT',
     },
-    "priceRange": "€€",
-    "feesAndCommissionsSpecification": "Tasso Annuo Nominale (TAN) fisso 2%. TAEG variabile in base all'assicurazione.",
-    "areaServed": "IT",
-        "offers": {
-          "@type": "Offer",
-          "name": "Prestito Personale Online",
-          "price": "2",
-          "priceCurrency": "Percentage"
-        }
+    telephone: siteConfig.contact.phone.link,
+    email: siteConfig.contact.email,
+    priceRange: '€€',
+    areaServed: 'IT',
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        telephone: siteConfig.contact.phone.link,
+        email: siteConfig.contact.email,
+        availableLanguage: ['it'],
+      },
+    ],
   };
 
   return (
@@ -77,8 +103,13 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} antialiased relative`}>
-        {children}
+        <SkipToContent />
+        <AnalyticsTracker />
+        <div id="site-content" tabIndex={-1}>
+          {children}
+        </div>
         <CookieBanner />
+        <StickyConversionBar />
         <WhatsAppButton />
       </body>
     </html>

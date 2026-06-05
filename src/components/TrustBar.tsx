@@ -1,51 +1,50 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import { BadgeCheck, Building2, LockKeyhole, Scale } from 'lucide-react';
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6, ease: "easeOut" as const }
-};
-
-const staggerContainer = {
-  initial: {},
-  whileInView: { transition: { staggerChildren: 0.15 } },
-  viewport: { once: true }
-};
+const items = [
+  { icon: BadgeCheck, label: 'OAM', value: 'Intermediario registrato', href: '/trasparenza' },
+  { icon: LockKeyhole, label: 'SSL', value: 'Dati protetti 256-bit', href: '/privacy-policy' },
+  { icon: Scale, label: 'GDPR', value: 'Privacy europea', href: '/privacy-policy' },
+  { icon: Building2, label: 'Italia', value: 'Consulenza dedicata', href: '/contatti' },
+] as const;
 
 export default function TrustBar() {
   return (
-    <motion.section 
-      {...fadeInUp}
-      className="py-16 relative overflow-hidden"
-    >
-      <Image src="/assets/business_bg.png" alt="Trust Background" fill sizes="100vw" className="object-cover object-center z-[-2]" />
-      <div className="absolute inset-0 bg-slate-900/85 z-[-1]"></div>
-      <div className="container mx-auto px-6 relative z-10">
-        <p className="text-center text-xs md:text-sm uppercase tracking-tighter font-black text-slate-400 mb-10">
-          Partner di fiducia e certificazioni istituzionali
-        </p>
-        <motion.div 
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="whileInView"
+    <section className="border-y border-slate-100 bg-white py-8 sm:py-10" aria-label="Certificazioni e garanzie">
+      <div className="site-container">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center items-center gap-8 md:gap-16 transition-all duration-500"
+          transition={{ duration: 0.5 }}
         >
-           {["OAM CERTIFICATO", "GDPR COMPLIANT", "SSL SECURE", "BANCA D'ITALIA"].map((text, i) => (
-             <motion.div 
-              key={i}
-              variants={fadeInUp}
-              className={`text-xl md:text-2xl font-black text-white tracking-tighter italic ${i % 2 === 0 ? 'underline decoration-secondary decoration-4 underline-offset-4' : ''}`}
-             >
-               {text}
-             </motion.div>
-           ))}
+          {/* Grille 2×2 sur mobile, 4 colonnes sur desktop */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {items.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="group flex items-center gap-3 rounded-lg bg-slate-50 p-4 transition-all duration-200 hover:bg-white hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40 sm:p-5"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-secondary/10 text-secondary transition-colors group-hover:bg-secondary group-hover:text-white">
+                  <item.icon size={20} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                    {item.label}
+                  </p>
+                  <p className="mt-0.5 truncate text-sm font-black text-primary transition-colors group-hover:text-secondary">
+                    {item.value}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 }

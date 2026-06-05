@@ -2,204 +2,245 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, Mail, Menu, Phone, X } from 'lucide-react';
 import { siteConfig } from '@/config/site';
+
+const navLinks = [
+  { name: 'Prestiti', href: '/#prestiti' },
+  { name: 'Simulatore', href: '/#calcolatore' },
+  { name: 'Chi siamo', href: '/chi-siamo' },
+  { name: 'Contatti', href: '/contatti' },
+  { name: 'Area riservata', href: '/login' },
+];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const [openPathname, setOpenPathname] = useState<string | null>(null);
+  const menuVisible = isOpen && openPathname === pathname;
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 16);
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
+  /* Verrouille le scroll du body quand le menu est ouvert */
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = menuVisible ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [isOpen]);
+  }, [menuVisible]);
 
-  const navLinks = [
-    { name: 'Prestiti', href: '/#prestiti' },
-    { name: 'Chi Siamo', href: '/chi-siamo' },
-    { name: 'Contatti', href: '/contatti' },
-    { name: 'Area Riservata', href: '/login', highlight: true },
-  ];
+  const openMenu = () => {
+    setOpenPathname(pathname);
+    setIsOpen(true);
+  };
+  const closeMenu = () => {
+    setIsOpen(false);
+    setOpenPathname(null);
+  };
+  const transparent = pathname === '/' && !scrolled && !menuVisible;
 
-  const closeMenu = () => setIsOpen(false);
+  const isActive = (href: string) =>
+    !href.includes('#') && (pathname === href || (href === '/login' && pathname === '/login'));
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 will-change-transform ${scrolled ? 'bg-white/80 backdrop-blur-2xl shadow-glass border-b border-white/50' : 'bg-transparent border-b border-transparent'}`}>
-      
-      {/* Top Bar - Hidden on scroll and mobile */}
-      <div className={`hidden md:block transition-all duration-500 overflow-hidden ${scrolled ? 'h-0 opacity-0' : 'h-10 opacity-100 border-b border-white/10'}`}>
-        <div className={`container mx-auto px-6 h-full flex items-center justify-between text-[11px] font-bold tracking-wider uppercase ${scrolled ? 'text-slate-500' : 'text-white/80'}`}>
-           <div className="flex items-center space-x-6">
-              <a href={`tel:${siteConfig.contact.phone.link}`} className="flex items-center hover:text-secondary transition-colors" aria-label="Phone">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                <span className="ml-2">{siteConfig.contact.phone.display}</span>
-              </a>
-             <a href={`mailto:${siteConfig.contact.email}`} className="flex items-center hover:text-secondary transition-colors" aria-label="Email">
-               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-               <span className="ml-2">{siteConfig.contact.email}</span>
-             </a>
-           </div>
+    <header
+      className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${
+        transparent
+          ? 'text-white'
+          : 'border-b border-slate-200/70 bg-white text-primary shadow-sm'
+      }`}
+    >
+      {/* ── Barre utilitaire desktop uniquement ── */}
+      <div
+        className={`hidden border-b text-[11px] font-black uppercase tracking-[0.18em] transition-all duration-300 md:block ${
+          transparent ? 'border-white/10 text-white/65' : 'border-slate-100 text-slate-400'
+        }`}
+      >
+        <div className="site-container flex h-9 items-center justify-between">
+          <div className="flex items-center gap-6">
+            <a
+              href={`tel:${siteConfig.contact.phone.link}`}
+              className="flex items-center gap-1.5 transition-colors hover:text-secondary"
+            >
+              <Phone size={12} />
+              {siteConfig.contact.phone.display}
+            </a>
+            <a
+              href={`mailto:${siteConfig.contact.email}`}
+              className="flex items-center gap-1.5 transition-colors hover:text-secondary"
+            >
+              <Mail size={12} />
+              {siteConfig.contact.email}
+            </a>
+          </div>
+          <span className="hidden lg:block">Risposta entro 48 ore lavorative</span>
         </div>
       </div>
 
-      {/* Main Navbar */}
-      <div className={`container mx-auto px-4 sm:px-6 flex items-center justify-between transition-all duration-500 ${scrolled ? 'py-4' : 'py-5'}`}>
-        <Link href="/" className="relative group flex items-center gap-2 outline-none rounded-xl focus-visible:ring-2 focus-visible:ring-secondary/50 z-60" onClick={closeMenu}>
-          <div className={`text-2xl font-black tracking-tighter transition-colors duration-300 ${isOpen ? 'text-primary' : scrolled ? 'text-primary' : 'text-white'}`}>
+      {/* ── Barre principale ── */}
+      <div className="site-container flex h-[68px] items-center justify-between">
+        {/* Logo */}
+        <Link
+          href="/"
+          onClick={closeMenu}
+          className="relative z-50 flex items-center gap-2 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-secondary/50"
+        >
+          <span className={`text-2xl font-black tracking-tight ${transparent ? 'text-white' : 'text-primary'}`}>
             MO<span className="text-secondary">NIVIA</span>
-          </div>
+          </span>
         </Link>
-        
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center relative" onMouseLeave={() => setHoveredLink(null)}>
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href || (pathname.startsWith('/prestiti') && link.href === '/#prestiti');
-            const isHovered = hoveredLink === link.href;
-            
-            if (link.highlight) {
-               return (
-                <Link 
-                  key={link.name} 
-                  href={link.href} 
-                  className={`ml-4 text-[13px] font-bold tracking-tight transition-all duration-300 text-secondary hover:text-secondary/80`}
-                >
-                  {link.name}
-                </Link>
-               );
-            }
 
-            return (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                onMouseEnter={() => setHoveredLink(link.href)}
-                className={`relative px-4 py-2 text-[13px] font-bold tracking-tight transition-colors duration-300 outline-none rounded-full focus-visible:ring-2 focus-visible:ring-secondary/50 ${scrolled ? (isActive || isHovered ? 'text-primary' : 'text-slate-500') : (isActive || isHovered ? 'text-white' : 'text-white/70')}`}
-              >
-                <span className="relative z-10">{link.name}</span>
-                {isActive && (
-                  <motion.div
-                    layoutId="navbar-active"
-                    className="absolute inset-0 bg-slate-100/10 dark:bg-white/10 rounded-full z-0"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-                {isHovered && !isActive && (
-                  <motion.div
-                    layoutId="navbar-hover"
-                    className="absolute inset-0 bg-slate-200/50 dark:bg-white/5 rounded-full z-0"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </Link>
-            );
-          })}
+        {/* Liens desktop */}
+        <nav className="hidden items-center gap-1 md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={`rounded-full px-4 py-2 text-sm font-black transition-colors outline-none focus-visible:ring-2 focus-visible:ring-secondary/50 ${
+                isActive(link.href)
+                  ? transparent
+                    ? 'bg-white/10 text-white'
+                    : 'bg-secondary/10 text-secondary'
+                  : transparent
+                    ? 'text-white/70 hover:bg-white/10 hover:text-white'
+                    : 'text-slate-500 hover:bg-slate-100 hover:text-primary'
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
         </nav>
-        
-        <div className="flex items-center space-x-3">
-          <Link href="/#calcolatore" className="hidden lg:inline-flex bg-white text-primary px-7 py-3 text-[12px] uppercase tracking-wider font-black rounded-2xl shadow-lg shadow-primary/20 hover:bg-secondary hover:text-white transition-all duration-300">
-            Richiedi Ora
+
+        {/* Côté droit */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* CTA mobile — masquée quand le menu est ouvert */}
+          {!menuVisible && (
+            <Link
+              href="/#richiedi"
+              className="inline-flex rounded-lg bg-secondary px-3 py-2.5 text-[11px] font-black uppercase tracking-widest text-primary transition-all md:hidden"
+            >
+              Richiedi
+            </Link>
+          )}
+
+          {/* CTA desktop */}
+          <Link
+            href="/#richiedi"
+            className={`hidden items-center gap-2 rounded-lg px-5 py-3 text-xs font-black uppercase tracking-widest transition-all lg:inline-flex ${
+              transparent
+                ? 'bg-white text-primary shadow-lg hover:bg-secondary hover:text-primary'
+                : 'bg-primary text-white hover:-translate-y-0.5 hover:bg-slate-800'
+            }`}
+          >
+            Richiedi prestito
+            <ArrowRight size={14} />
           </Link>
-          
-          {/* Mobile Menu Button */}
-          <button 
-            className={`md:hidden relative z-60 p-2.5 focus:outline-none rounded-xl transition-colors duration-300 ${isOpen ? 'text-primary bg-slate-100' : scrolled ? 'text-primary bg-slate-100 hover:bg-slate-200' : 'text-white bg-white/10 hover:bg-white/20'}`}
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
+
+          {/* Bouton hamburger */}
+          <button
+            type="button"
+            onClick={() => (menuVisible ? closeMenu() : openMenu())}
+            className={`relative z-50 rounded-lg p-3 transition-colors md:hidden ${
+              menuVisible
+                ? 'bg-slate-100 text-primary hover:bg-slate-200'
+                : transparent
+                  ? 'bg-white/10 text-white hover:bg-white/20'
+                  : 'bg-slate-100 text-primary hover:bg-slate-200'
+            }`}
+            aria-label={menuVisible ? 'Chiudi menu' : 'Apri menu'}
+            aria-expanded={menuVisible}
+            aria-controls="mobile-menu"
           >
             <AnimatePresence mode="wait" initial={false}>
-              {isOpen ? (
-                <motion.svg key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </motion.svg>
-              ) : (
-                <motion.svg key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="4" y1="12" x2="20" y2="12"></line>
-                  <line x1="4" y1="6" x2="20" y2="6"></line>
-                  <line x1="4" y1="18" x2="20" y2="18"></line>
-                </motion.svg>
-              )}
+              <motion.span
+                key={menuVisible ? 'close' : 'open'}
+                initial={{ opacity: 0, rotate: -90, scale: 0.7 }}
+                animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                exit={{ opacity: 0, rotate: 90, scale: 0.7 }}
+                transition={{ duration: 0.18 }}
+                className="flex"
+              >
+                {menuVisible ? <X size={22} /> : <Menu size={22} />}
+              </motion.span>
             </AnimatePresence>
           </button>
         </div>
       </div>
 
-      {/* Mobile Nav — Full-screen slide-in overlay */}
+      {/* ── Drawer mobile ── */}
       <AnimatePresence>
-        {isOpen && (
+        {menuVisible && (
           <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'tween', duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-            className="md:hidden fixed inset-0 z-40 bg-white flex flex-col"
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu principale"
+            initial={{ opacity: 0, y: '100%' }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: '100%' }}
+            transition={{ type: 'tween', duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
+            className="fixed inset-0 z-40 flex flex-col bg-primary md:hidden"
           >
-            {/* Spacer for header */}
-            <div className="h-20 shrink-0 border-b border-slate-100" />
+            {/* Spacer égal à la hauteur du header fixe (68px) */}
+            <div className="h-[68px] shrink-0" aria-hidden />
 
-            {/* Links */}
-            <nav className="flex flex-col px-6 sm:px-8 pt-6 pb-8 gap-0 overflow-y-auto grow">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 + i * 0.07, type: 'spring', stiffness: 300, damping: 25 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={closeMenu}
-                    className={`flex items-center justify-between py-5 text-2xl font-black border-b border-slate-100 transition-colors ${link.highlight ? 'text-secondary' : 'text-primary hover:text-secondary'}`}
+            {/* Liens de navigation */}
+            <nav className="flex-1 overflow-y-auto px-4 pt-3">
+              <div className="space-y-2">
+                {navLinks.map((link, index) => (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, x: 24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.06 + index * 0.05 }}
                   >
-                    {link.name}
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-30">
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </Link>
-                </motion.div>
-              ))}
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
-                className="mt-8 flex flex-col gap-4"
-              >
-                <Link
-                  href="/#calcolatore"
-                  onClick={closeMenu}
-                  className="btn-primary text-center py-5 text-sm uppercase tracking-widest font-black rounded-2xl w-full block"
-                >
-                  Richiedi Prestito
-                </Link>
-
-                {/* Contact info at bottom */}
-                <div className="flex flex-col gap-3 pt-2">
-                  <a href={`tel:${siteConfig.contact.phone.link}`} className="flex items-center gap-3 text-sm text-slate-500 font-bold">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                    {siteConfig.contact.phone.display}
-                  </a>
-                  <a href={`mailto:${siteConfig.contact.email}`} className="flex items-center gap-3 text-sm text-slate-500 font-bold">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                    {siteConfig.contact.email}
-                  </a>
-                </div>
-              </motion.div>
+                    <Link
+                      href={link.href}
+                      onClick={closeMenu}
+                      className={`flex items-center justify-between rounded-lg border px-5 py-4 text-lg font-black text-white transition-colors ${
+                        isActive(link.href)
+                          ? 'border-secondary/40 bg-secondary/10'
+                          : 'border-white/15 bg-[#0f1f35] hover:bg-[#152a45]'
+                      }`}
+                    >
+                      {link.name}
+                      <ArrowRight size={18} className={isActive(link.href) ? 'text-secondary' : 'text-white/30'} />
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
             </nav>
+
+            {/* Carte de contact en bas */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="m-4 mt-3 rounded-xl border border-white/15 bg-[#0f1f35] p-5"
+            >
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/40">Contatto rapido</p>
+              <a
+                href={`tel:${siteConfig.contact.phone.link}`}
+                className="mt-3 flex items-center gap-3 text-lg font-black text-white"
+              >
+                <Phone size={18} className="text-secondary" />
+                {siteConfig.contact.phone.display}
+              </a>
+              <Link
+                href="/#richiedi"
+                onClick={closeMenu}
+                className="btn-cyan mt-4 flex w-full items-center justify-center text-sm uppercase tracking-widest"
+              >
+                Richiedi ora
+                <ArrowRight size={15} className="ml-2" />
+              </Link>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

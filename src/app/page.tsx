@@ -10,25 +10,30 @@ import OffersTabs from '@/components/OffersTabs';
 import ContactSection from '@/components/ContactSection';
 import LoanForm from '@/components/LoanForm';
 import Footer from '@/components/Footer';
+import TrustStrip from '@/components/TrustStrip';
+import { buildPageMetadata } from '@/lib/seo';
+
+export const metadata = buildPageMetadata({
+  title: 'Monivia | Prestiti online chiari e veloci',
+  description: 'Scopri Monivia: simulatore, richiesta prestito guidata, assistenza dedicata e un percorso pensato prima per i dispositivi mobili.',
+  path: '/',
+  keywords: ['prestito online', 'prestiti personali', 'simulatore prestito', 'Monivia'],
+});
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white selection:bg-secondary/30 selection:text-primary">
+    <main className="min-h-screen bg-white pb-24 selection:bg-secondary/30 selection:text-primary md:pb-0">
       <Navbar />
 
       <Hero />
       
-      {/* Simulator overlaying the bottom of Hero and top of TrustBar */}
-      <section id="calcolatore" className="relative z-30 -mt-20 md:-mt-32 mb-10 px-4 md:px-6">
-        <div className="container mx-auto max-w-6xl">
+      <section id="calcolatore" className="relative z-30 -mt-16 px-4 pb-10 sm:-mt-20 md:px-6 lg:-mt-24">
+        <div className="mx-auto max-w-6xl">
           <SimulatorHorizontal />
         </div>
       </section>
       
-      {/* We add a negative margin to TrustBar to pull it up behind the simulator's mb-10, removing white gaps */}
-      <div className="-mt-24 md:-mt-32 relative z-10 pt-16">
-        <TrustBar />
-      </div>
+      <TrustBar />
 
       <CreditAccessibility />
 
@@ -40,19 +45,16 @@ export default function Home() {
 
       <OffersTabs />
 
-      <section id="richiedi" className="py-24 bg-slate-50 relative">
-        {/* Decorazioni di background */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[100px] -z-10 translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[80px] -z-10 -translate-x-1/2 translate-y-1/2"></div>
-
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-16 max-w-2xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-black text-primary mb-6">Inizia la tua richiesta</h2>
-            <p className="text-lg text-slate-600">
-              Compila il modulo in meno di 2 minuti. Nessun impegno e impatto nullo sul tuo credit score.
+      <section id="richiedi" className="section-pad relative bg-slate-50">
+        <div className="site-container relative z-10">
+          <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
+            <h2 className="section-heading">Inizia la tua richiesta</h2>
+            <p className="section-copy mt-5">
+              Compila il modulo in meno di 2 minuti. Nessun impegno e impatto nullo sul tuo punteggio creditizio.
             </p>
           </div>
           <LoanForm />
+          <TrustStrip className="mx-auto mt-8 max-w-4xl" />
         </div>
       </section>
 

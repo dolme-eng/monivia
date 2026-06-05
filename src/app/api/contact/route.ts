@@ -1,31 +1,54 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { sendEmail } from '@/lib/email';
 import { z } from 'zod';
+import { siteConfig } from '@/config/site';
+import { sendEmail } from '@/lib/email';
+import { buildContactAutoReplyEmail, buildContactNotificationEmail } from '@/lib/email-templates';
+import { prisma } from '@/lib/prisma';
+import { guardSubmission } from '@/lib/security';
+import { normalizeText } from '@/lib/sanitization';
 
 const contactSchema = z.object({
-  nome: z.string().trim().min(2),
-  email: z.string().trim().email(),
-  oggetto: z.string().trim().min(2),
-  message: z.string().trim().min(10),
+  nome: z.string().trim().min(2).max(80),
+  email: z.string().trim().email().max(120),
+  oggetto: z.string().trim().min(2).max(120),
+  message: z.string().trim().min(10).max(4000),
+  analyticsSessionId: z.string().trim().max(120).optional().default(''),
+  sourcePage: z.string().trim().max(200).optional().default('/contatti'),
 });
 
 export async function POST(request: Request) {
   try {
-    const json = await request.json();
-    
-    // 1. Validate data
-    const result = contactSchema.safeParse(json);
+    const body = await request.json().catch(() => null);
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json({ error: 'Dati non validi' }, { status: 400 });
+    }
+
+    const honeypot = normalizeText((body as Record<string, unknown>).website);
+    const guard = guardSubmission(request, { kind: 'contact', honeypot });
+    if (!guard.allowed) {
+      return guard.silent
+        ? NextResponse.json({ success: true, message: 'Messaggio inviato con successo' })
+        : guard.response;
+    }
+
+    const result = contactSchema.safeParse(body);
     if (!result.success) {
       return NextResponse.json(
-        { error: 'Dati non validi', details: result.error.format() }, 
+        { error: 'Dati non validi', details: result.error.format() },
         { status: 400 }
       );
     }
-    
-    const data = result.data;
 
-    // 2. Save to database (wrapped in try-catch for Vercel SQLite read-only filesystem)
+
+    const data = {
+      nome: normalizeText(result.data.nome),
+      email: normalizeText(result.data.email).toLowerCase(),
+      oggetto: normalizeText(result.data.oggetto),
+      message: normalizeText(result.data.message),
+      analyticsSessionId: normalizeText(result.data.analyticsSessionId),
+      sourcePage: normalizeText(result.data.sourcePage) || '/contatti',
+    };
+
     try {
       await prisma.contactMessage.create({
         data: {
@@ -33,74 +56,61 @@ export async function POST(request: Request) {
           email: data.email,
           oggetto: data.oggetto,
           message: data.message,
-        }
+          analyticsSessionId: data.analyticsSessionId || null,
+          sourcePage: data.sourcePage,
+        },
       });
     } catch (dbError) {
       console.warn('Database save failed (expected on Vercel with SQLite), continuing to email:', dbError);
     }
 
-    // 3. Send email to internal team
-    await sendEmail({
-      to: 'contatto@monivia.it',
-      subject: `Nuovo Messaggio da ${data.nome} - ${data.oggetto}`,
-      html: `
-        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #1e293b; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-          <div style="background-color: #0f172a; padding: 24px; text-align: center;">
-            <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px;">MO<span style="color: #06b6d4;">NIVIA</span></h1>
-          </div>
-          <div style="padding: 32px;">
-            <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">Nuova Richiesta di Contatto</h2>
-            <div style="background-color: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 24px;">
-              <p style="margin: 0 0 8px 0;"><strong>Nome:</strong> ${data.nome}</p>
-              <p style="margin: 0 0 8px 0;"><strong>Email:</strong> <a href="mailto:${data.email}" style="color: #06b6d4; text-decoration: none;">${data.email}</a></p>
-              <p style="margin: 0;"><strong>Oggetto:</strong> ${data.oggetto}</p>
-            </div>
-            <h3 style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Messaggio</h3>
-            <div style="background-color: #f1f5f9; padding: 20px; border-radius: 8px; border-left: 4px solid #06b6d4;">
-              <p style="margin: 0; white-space: pre-wrap; line-height: 1.6;">${data.message}</p>
-            </div>
-          </div>
-        </div>
-      `,
-    });
+    try {
+      await prisma.analyticsEvent.create({
+        data: {
+          eventType: 'contact_submit',
+          page: data.sourcePage,
+          label: data.oggetto,
+          sessionId: data.analyticsSessionId || null,
+          metadata: JSON.stringify({
+            email: data.email,
+            messageLength: data.message.length,
+          }),
+        },
+      });
+    } catch (analyticsError) {
+      console.warn('Analytics save failed for contact submit:', analyticsError);
+    }
 
-    // 4. Send auto-reply to user
-    await sendEmail({
-      to: data.email,
-      subject: `Abbiamo ricevuto il tuo messaggio - Monivia`,
-      html: `
-        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #1e293b; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-          <div style="background-color: #0f172a; padding: 32px; text-align: center;">
-            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">MO<span style="color: #06b6d4;">NIVIA</span></h1>
-          </div>
-          <div style="padding: 40px 32px;">
-            <p style="font-size: 16px; margin-top: 0;">Gentile <strong>${data.nome}</strong>,</p>
-            <p style="font-size: 16px; line-height: 1.6; color: #475569;">
-              Grazie per averci contattato. Ti confermiamo di aver ricevuto con successo il tuo messaggio relativo a "<strong>${data.oggetto}</strong>".
-            </p>
-            <p style="font-size: 16px; line-height: 1.6; color: #475569;">
-              Un nostro consulente dedicato analizzerà la tua richiesta e ti risponderà al più presto, solitamente entro 24 ore lavorative.
-            </p>
-            
-            <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid #e2e8f0;">
-              <p style="margin: 0; font-size: 14px; font-weight: bold; color: #0f172a;">Il Team di Monivia</p>
-              <p style="margin: 4px 0 0 0; font-size: 12px; color: #64748b;">Trasparenza e velocità al tuo servizio.</p>
-              <p style="margin: 12px 0 0 0; font-size: 12px; color: #06b6d4;"><a href="https://monivia.it" style="color: #06b6d4; text-decoration: none;">www.monivia.it</a></p>
-            </div>
-          </div>
-        </div>
-      `,
-    });
+    const [teamEmail, autoReplyEmail] = await Promise.all([
+      sendEmail({
+        to: siteConfig.contact.email,
+        replyTo: data.email,
+        subject: `Nuovo messaggio da ${data.nome} - ${data.oggetto}`,
+        html: buildContactNotificationEmail(data),
+      }),
+      sendEmail({
+        to: data.email,
+        subject: 'Abbiamo ricevuto il tuo messaggio | Monivia',
+        html: buildContactAutoReplyEmail(data),
+      }),
+    ]);
 
-    return NextResponse.json({ 
-      success: true, 
+    if (!teamEmail.success) {
+      console.warn('Internal contact email failed to send');
+    }
+
+    if (!autoReplyEmail.success) {
+      console.warn('Contact auto-reply email failed to send');
+    }
+
+    return NextResponse.json({
+      success: true,
       message: 'Messaggio inviato con successo',
     });
-
   } catch (error) {
     console.error('API /contact Error:', error);
     return NextResponse.json(
-      { error: 'Errore interno del server' }, 
+      { error: 'Errore interno del server' },
       { status: 500 }
     );
   }

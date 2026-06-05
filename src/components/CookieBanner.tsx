@@ -3,16 +3,14 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Cookie } from 'lucide-react';
 
 export default function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const consent = localStorage.getItem('monivia_cookie_consent');
-      if (!consent) {
-        setIsVisible(true);
-      }
+      if (!localStorage.getItem('monivia_cookie_consent')) setIsVisible(true);
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
@@ -31,45 +29,50 @@ export default function CookieBanner() {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ y: 120, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 120, opacity: 0 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="fixed bottom-6 left-0 right-0 z-100 flex justify-center px-4 pointer-events-none"
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16, scale: 0.95 }}
+          transition={{ type: 'spring', stiffness: 280, damping: 26 }}
+          className="fixed bottom-[5rem] left-3 right-3 z-[100] sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-sm"
         >
-          <div className="pointer-events-auto w-full max-w-3xl bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl sm:rounded-[28px] shadow-2xl shadow-black/40 px-4 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            {/* Icon */}
-            <div className="hidden sm:flex w-10 h-10 rounded-2xl bg-secondary/20 items-center justify-center text-secondary shrink-0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div className="rounded-xl border border-slate-200 bg-white p-5" style={{ boxShadow: 'var(--shadow-card)' }}>
+            <div className="mb-3 flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary/10 text-secondary" aria-hidden>
+                <Cookie size={18} />
+              </div>
+              <h3 className="text-base font-black text-primary">Utilizziamo i cookie</h3>
             </div>
 
-            {/* Text */}
-            <div className="grow text-xs sm:text-sm text-slate-300 leading-relaxed">
-              <span className="font-black text-white">🍪 Cookie </span>
-              Utilizziamo cookie per migliorare la tua esperienza.{' '}
-              <Link href="/cookie-policy" className="text-secondary hover:underline font-bold">Cookie Policy</Link>
-              {' '}e{' '}
-              <Link href="/privacy-policy" className="text-secondary hover:underline font-bold">Privacy Policy</Link>.
-            </div>
+            {/* Body */}
+            <p className="mb-4 text-sm leading-relaxed text-slate-500">
+              Per migliorare la tua esperienza e analizzare il traffico.{' '}
+              <Link href="/cookie-policy" className="font-bold text-secondary hover:underline">
+                Informativa cookie
+              </Link>
+              .
+            </p>
 
             {/* Actions */}
-            <div className="flex gap-2 shrink-0 w-full sm:w-auto">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={acceptCookies}
+                className="btn-cyan w-full py-3 text-xs uppercase tracking-widest"
+              >
+                Accetta tutti
+              </button>
+              <button
                 onClick={declineCookies}
-                className="flex-1 sm:flex-none px-4 py-2.5 border border-white/10 rounded-xl text-xs font-bold text-white/60 hover:text-white hover:border-white/20 transition-colors whitespace-nowrap"
+                className="btn-secondary w-full py-3 text-xs uppercase tracking-widest"
               >
                 Solo necessari
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={acceptCookies}
-                className="flex-1 sm:flex-none px-4 py-2.5 bg-secondary text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-lg shadow-secondary/30 hover:bg-emerald-400 transition-colors whitespace-nowrap"
+              </button>
+              <Link
+                href="/cookie-policy"
+                onClick={() => setIsVisible(false)}
+                className="py-1 text-center text-xs text-slate-400 transition-colors hover:text-secondary"
               >
-                Accetta Tutti
-              </motion.button>
+                Personalizza preferenze
+              </Link>
             </div>
           </div>
         </motion.div>
@@ -77,4 +80,3 @@ export default function CookieBanner() {
     </AnimatePresence>
   );
 }
-

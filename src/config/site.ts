@@ -14,8 +14,8 @@ export const siteConfig = {
     address: "Via Dante, 10 - 20121 Milano"
   },
   links: {
-    facebook: "https://facebook.com",
-    twitter: "https://twitter.com",
-    instagram: "https://instagram.com"
+    facebook: "https://www.facebook.com/monivia",
+    twitter: "https://twitter.com/monivia",
+    instagram: "https://www.instagram.com/monivia"
   }
 };

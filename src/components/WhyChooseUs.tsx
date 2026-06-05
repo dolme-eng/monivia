@@ -1,125 +1,116 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import consultationImg from '../../public/assets/consultation.png';
+import { ArrowRight, CheckCircle2, Clock3, Headphones, LockKeyhole } from 'lucide-react';
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6, ease: "easeOut" as const }
-};
-
-const staggerContainer = {
-  initial: {},
-  whileInView: { transition: { staggerChildren: 0.15 } },
-  viewport: { once: true }
-};
+const benefits = [
+  {
+    icon: Clock3,
+    title: 'Risposta veloce',
+    desc: 'Un processo snello riduce attese, passaggi manuali e documenti inutili.',
+    iconBg: 'bg-secondary/10',
+    iconColor: 'text-secondary',
+    hoverBorder: 'hover:border-secondary/25',
+  },
+  {
+    icon: LockKeyhole,
+    title: 'Dati protetti',
+    desc: 'La richiesta viene gestita con canali digitali sicuri e informative trasparenti.',
+    iconBg: 'bg-secondary/10',
+    iconColor: 'text-secondary',
+    hoverBorder: 'hover:border-secondary/25',
+  },
+  {
+    icon: Headphones,
+    title: 'Supporto umano',
+    desc: "Un consulente può accompagnarti prima, durante e dopo l'invio della pratica.",
+    iconBg: 'bg-accent/10',
+    iconColor: 'text-accent',
+    hoverBorder: 'hover:border-accent/25',
+  },
+];
 
 export default function WhyChooseUs() {
   return (
-    <section id="chi-siamo" className="py-24 bg-white overflow-hidden">
-      <div className="container mx-auto px-6">
-        <motion.div 
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true, amount: 0.3 }}
-          className="grid lg:grid-cols-2 gap-16 items-center mb-20"
-        >
-          <motion.div variants={fadeInUp} className="text-left">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-primary mb-4 md:mb-6 leading-tight">
-              Perché scegliere <span className="text-gradient">Monivia</span>
+    <section id="perche-monivia" className="section-pad bg-white">
+      <div className="site-container">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+
+          {/* Colonna testo — prima su mobile */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="badge inline-flex mb-5">Perché Monivia</div>
+            <h2 className="section-heading">
+              Meno incertezza,<br />più controllo.
             </h2>
-            <p className="text-base md:text-lg text-slate-600 mb-8">
-              La trasparenza e la velocità al servizio del tuo successo finanziario. 
-              Siamo l&apos;intermediario digitale numero uno per affidabilità e sicurezza dei processi.
+            <p className="section-copy mt-5 max-w-xl">
+              Con Monivia parti da una stima immediata, invii i dati essenziali e ricevi
+              un orientamento chiaro sui prossimi passi della pratica.
             </p>
-            <div className="space-y-4">
-              {["Processo 100% Online", "Risposta in 48 ore", "Tassi fissi e trasparenti"].map((item, i) => (
-                <motion.div 
-                  key={i} 
-                  variants={fadeInUp}
-                  className="flex items-center justify-start gap-3"
+
+            <div className="mt-8 space-y-3">
+              {benefits.map((item) => (
+                <div
+                  key={item.title}
+                  className={`flex gap-4 rounded-lg border border-slate-100 bg-slate-50/80 p-4 transition-all ${item.hoverBorder} hover:bg-white sm:p-5`}
                 >
-                  <div className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${item.iconBg} ${item.iconColor}`}>
+                    <item.icon size={22} />
                   </div>
-                  <span className="font-bold text-slate-700">{item}</span>
-                </motion.div>
+                  <div>
+                    <h3 className="text-base font-black text-primary">{item.title}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-slate-500">{item.desc}</p>
+                  </div>
+                </div>
               ))}
             </div>
+
+            <Link href="/#richiedi" className="btn-primary mt-8 inline-flex px-7 py-4">
+              Inizia la richiesta
+              <ArrowRight size={16} />
+            </Link>
           </motion.div>
-          <motion.div 
-            initial={{ opacity: 0, x: 50, rotate: 2 }}
-            whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+
+          {/* Colonna immagine — seconda su mobile */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative h-[400px] rounded-[40px] overflow-hidden shadow-2xl group"
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="relative overflow-hidden rounded-xl bg-primary"
+            style={{ boxShadow: 'var(--shadow-card)' }}
           >
-            <Image 
-              src="/assets/consultation.png" 
-              alt="Consulenza finanziaria professionale" 
-              fill 
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover group-hover:scale-105 transition-transform duration-700" 
-            />
-            {/* Nuance / Overlay */}
-            <div className="absolute inset-0 bg-linear-to-t from-primary/90 via-primary/30 to-transparent"></div>
-            
-            {/* Text Overlay */}
-            <div className="absolute bottom-0 left-0 w-full p-8 md:p-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-4 shadow-lg shadow-secondary/20">
-                <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></div>
-                Supporto Premium
+            <div className="relative h-[340px] sm:h-[460px] lg:h-[560px]">
+              <Image
+                src={consultationImg}
+                alt="Consulenza finanziaria Monivia"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                placeholder="blur"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-primary via-primary/30 to-transparent" />
+
+              <div className="absolute bottom-0 left-0 right-0 bg-primary/90 p-5 sm:p-7">
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-secondary text-primary">
+                  <CheckCircle2 size={20} />
+                </div>
+                <h3 className="text-xl font-black text-white">Consulenza dedicata</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-white/70">
+                  Una presenza chiara nel momento più importante: prima dell&apos;invio.
+                </p>
               </div>
-              <h3 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">
-                I nostri esperti <br/> sempre al tuo fianco
-              </h3>
-              <p className="text-slate-200 text-sm font-medium">
-                Consulenza dedicata per guidarti in ogni fase.
-              </p>
             </div>
           </motion.div>
-        </motion.div>
 
-        <motion.div 
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true }}
-          className="grid md:grid-cols-3 gap-8"
-        >
-          {[
-            { 
-              icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>, 
-              title: "Rapido", 
-              desc: "Risposta garantita entro 48 ore lavorative dalla richiesta completa." 
-            },
-            { 
-              icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>, 
-              title: "Sicuro", 
-              desc: "Dati crittografati end-to-end e processi conformi alle normative europee." 
-            },
-            { 
-              icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>, 
-              title: "Trasparente", 
-              desc: "Nessun costo nascosto o commissione occulta. Tutto è chiaro fin da subito." 
-            }
-          ].map((feature, i) => (
-            <motion.div 
-              key={i} 
-              variants={fadeInUp}
-              className="p-8 md:p-10 rounded-3xl border border-slate-100 bg-white hover:shadow-2xl hover:border-secondary/20 transition-all group"
-            >
-              <div className="mb-6 p-5 rounded-2xl bg-slate-50 w-fit group-hover:bg-secondary/10 group-hover:text-secondary transition-all">
-                {feature.icon}
-              </div>
-              <h4 className="text-xl font-bold text-primary mb-4">{feature.title}</h4>
-              <p className="text-slate-500 leading-relaxed text-sm">{feature.desc}</p>
-            </motion.div>
-          ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

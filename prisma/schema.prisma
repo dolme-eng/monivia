@@ -21,6 +21,13 @@ model LoanRequest {
   email         String
   telefono      String
   codiceFiscale String
+  reddito       Float?
+  finalita      String?
+  anzianita     Int?
+  analyticsSessionId String?
+  sourcePage    String?
+  privacyAccepted Boolean @default(false)
+  crifAccepted    Boolean @default(false)
   status        String   @default("IN_REVISIONE")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -32,7 +39,24 @@ model ContactMessage {
   email     String
   oggetto   String
   message   String
+  analyticsSessionId String?
+  sourcePage String?
   status    String   @default("UNREAD")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model AnalyticsEvent {
+  id          String   @id @default(uuid())
+  eventType   String
+  page        String
+  label       String?
+  value       Float?
+  sessionId   String?
+  metadata    String?
+  createdAt   DateTime @default(now())
+
+  @@index([eventType, createdAt])
+  @@index([page, createdAt])
+  @@index([sessionId, createdAt])
 }
