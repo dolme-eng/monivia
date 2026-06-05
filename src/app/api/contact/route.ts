@@ -12,7 +12,6 @@ const contactSchema = z.object({
   email: z.string().trim().email().max(120),
   oggetto: z.string().trim().min(2).max(120),
   message: z.string().trim().min(10).max(4000),
-  analyticsSessionId: z.string().trim().max(120).optional().default(''),
   sourcePage: z.string().trim().max(200).optional().default('/contatti'),
 });
 
@@ -39,13 +38,11 @@ export async function POST(request: Request) {
       );
     }
 
-
     const data = {
       nome: normalizeText(result.data.nome),
       email: normalizeText(result.data.email).toLowerCase(),
       oggetto: normalizeText(result.data.oggetto),
       message: normalizeText(result.data.message),
-      analyticsSessionId: normalizeText(result.data.analyticsSessionId),
       sourcePage: normalizeText(result.data.sourcePage) || '/contatti',
     };
 
@@ -56,29 +53,11 @@ export async function POST(request: Request) {
           email: data.email,
           oggetto: data.oggetto,
           message: data.message,
-          analyticsSessionId: data.analyticsSessionId || null,
           sourcePage: data.sourcePage,
         },
       });
     } catch (dbError) {
       console.warn('Database save failed (expected on Vercel with SQLite), continuing to email:', dbError);
-    }
-
-    try {
-      await prisma.analyticsEvent.create({
-        data: {
-          eventType: 'contact_submit',
-          page: data.sourcePage,
-          label: data.oggetto,
-          sessionId: data.analyticsSessionId || null,
-          metadata: JSON.stringify({
-            email: data.email,
-            messageLength: data.message.length,
-          }),
-        },
-      });
-    } catch (analyticsError) {
-      console.warn('Analytics save failed for contact submit:', analyticsError);
     }
 
     const [teamEmail, autoReplyEmail] = await Promise.all([

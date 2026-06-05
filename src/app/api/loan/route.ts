@@ -22,7 +22,6 @@ const loanSchema = z.object({
   anzianita: z.coerce.number().int().min(0).max(50),
   privacy: z.literal(true),
   crif: z.literal(true),
-  analyticsSessionId: z.string().trim().max(120).optional().default(''),
   sourcePage: z.string().trim().max(200).optional().default('/'),
 });
 
@@ -49,7 +48,6 @@ export async function POST(request: Request) {
       );
     }
 
-
     const data = {
       importo: result.data.importo,
       durata: result.data.durata,
@@ -64,7 +62,6 @@ export async function POST(request: Request) {
       anzianita: result.data.anzianita,
       privacy: result.data.privacy,
       crif: result.data.crif,
-      analyticsSessionId: normalizeText(result.data.analyticsSessionId),
       sourcePage: normalizeText(result.data.sourcePage) || '/',
     };
 
@@ -85,7 +82,6 @@ export async function POST(request: Request) {
           reddito: data.reddito,
           finalita: data.finalita,
           anzianita: data.anzianita,
-          analyticsSessionId: data.analyticsSessionId || null,
           sourcePage: data.sourcePage,
           privacyAccepted: data.privacy,
           crifAccepted: data.crif,
@@ -93,26 +89,6 @@ export async function POST(request: Request) {
       });
     } catch (dbError) {
       console.warn('Database save failed (expected on Vercel with SQLite), continuing to email:', dbError);
-    }
-
-    try {
-      await prisma.analyticsEvent.create({
-        data: {
-          eventType: 'loan_submit',
-          page: data.sourcePage,
-          label: practiceId,
-          value: data.importo,
-          sessionId: data.analyticsSessionId || null,
-          metadata: JSON.stringify({
-            durata: data.durata,
-            impiego: data.impiego,
-            finalita: data.finalita,
-            reddito: data.reddito,
-          }),
-        },
-      });
-    } catch (analyticsError) {
-      console.warn('Analytics save failed for loan submit:', analyticsError);
     }
 
     const [teamEmail, autoReplyEmail] = await Promise.all([

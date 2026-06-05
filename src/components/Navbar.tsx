@@ -12,7 +12,6 @@ const navLinks = [
   { name: 'Simulatore', href: '/#calcolatore' },
   { name: 'Chi siamo', href: '/chi-siamo' },
   { name: 'Contatti', href: '/contatti' },
-  { name: 'Area riservata', href: '/login' },
 ];
 
 export default function Navbar() {
@@ -45,8 +44,7 @@ export default function Navbar() {
   };
   const transparent = pathname === '/' && !scrolled && !menuVisible;
 
-  const isActive = (href: string) =>
-    !href.includes('#') && (pathname === href || (href === '/login' && pathname === '/login'));
+  const isActive = (href: string) => !href.includes('#') && pathname === href;
 
   return (
     <header

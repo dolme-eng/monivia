@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import { readLoanPrefill } from '@/lib/loan-prefill';
-import { trackCtaClick } from '@/lib/analytics-client';
 
 export default function StickyConversionBar() {
   const pathname = usePathname();
@@ -47,7 +46,6 @@ export default function StickyConversionBar() {
         </div>
         <Link
           href={href}
-          onClick={() => trackCtaClick(pathname || '/', 'sticky_conversion_bar', { monthly })}
           className="btn-cyan shrink-0 px-5 py-3 text-xs uppercase tracking-widest"
         >
           Richiedi

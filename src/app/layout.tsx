@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
-import AnalyticsTracker from "@/components/AnalyticsTracker";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SkipToContent from "@/components/SkipToContent";
 import StickyConversionBar from "@/components/StickyConversionBar";
@@ -104,7 +103,6 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} antialiased relative`}>
         <SkipToContent />
-        <AnalyticsTracker />
         <div id="site-content" tabIndex={-1}>
           {children}
         </div>

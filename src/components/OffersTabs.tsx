@@ -3,10 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Building2, Car, Coins, Rocket, UserRound } from 'lucide-react';
-import { trackAnalyticsEvent } from '@/lib/analytics-client';
 import { fadeInUp } from '@/lib/motion';
 
 const offers = [
@@ -53,19 +51,8 @@ const offers = [
 ];
 
 export default function OffersTabs() {
-  const pathname = usePathname();
   const [activeTab, setActiveTab] = useState(0);
   const activeOffer = offers[activeTab];
-
-  const selectTab = (index: number) => {
-    setActiveTab(index);
-    trackAnalyticsEvent({
-      eventType: 'offer_tab_change',
-      page: pathname || '/',
-      label: offers[index].title,
-      metadata: { slug: offers[index].slug },
-    });
-  };
 
   return (
     <section id="prestiti" className="section-pad bg-white">
@@ -93,7 +80,7 @@ export default function OffersTabs() {
               <button
                 key={offer.title}
                 type="button"
-                onClick={() => selectTab(index)}
+                onClick={() => setActiveTab(index)}
                 className={`flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-black transition-all ${
                   activeTab === index
                     ? 'bg-primary text-white shadow-md'
@@ -116,7 +103,7 @@ export default function OffersTabs() {
               <button
                 key={offer.title}
                 type="button"
-                onClick={() => selectTab(index)}
+                onClick={() => setActiveTab(index)}
                 className={`flex items-center gap-4 rounded-lg border p-4 text-left transition-all duration-200 ${
                   activeTab === index
                     ? 'border-primary bg-primary text-white shadow-premium'

@@ -5,8 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Play } from 'lucide-react';
 import { fadeInUp, useReducedMotion } from '@/lib/motion';
-import { trackCtaClick } from '@/lib/analytics-client';
-
 const VIDEO_SRC = '/lv_0_20240529163833.mp4';
 const POSTER_SRC = '/assets/business_bg.png';
 
@@ -103,7 +101,6 @@ export default function VideoPromo() {
         >
           <Link
             href="/#richiedi"
-            onClick={() => trackCtaClick('/', 'video_promo_richiedi')}
             className="btn-cyan px-7 py-4"
           >
             Richiedi ora
@@ -111,7 +108,6 @@ export default function VideoPromo() {
           </Link>
           <Link
             href="/#calcolatore"
-            onClick={() => trackCtaClick('/', 'video_promo_calcola')}
             className="btn-ghost-white px-7 py-4"
           >
             Calcola la rata

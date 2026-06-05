@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm, Controller } from 'react-hook-form';
 import { ChevronLeft, ChevronRight, Send } from 'lucide-react';
-import { getAnalyticsSessionId, trackAnalyticsEvent } from '@/lib/analytics-client';
 import {
   buildPrefillBanner,
   finalitaFromPathname,
@@ -35,7 +34,6 @@ interface FormValues {
   privacy: boolean;
   crif: boolean;
   website: string;
-  analyticsSessionId: string;
   sourcePage: string;
 }
 
@@ -92,13 +90,12 @@ export default function LoanForm() {
       nome: '', cognome: '', codiceFiscale: '', email: '', telefono: '',
       impiego: 'Dipendente Tempo Indeterminato', reddito: '', finalita: 'Acquisto Auto',
       importo: 50000, durata: 48, anzianita: '', privacy: false, crif: false,
-      website: '', analyticsSessionId: '', sourcePage: '',
+      website: '', sourcePage: '',
     },
     mode: 'onTouched',
   });
 
   useEffect(() => {
-    setValue('analyticsSessionId', getAnalyticsSessionId(), { shouldDirty: false, shouldTouch: false });
     setValue('sourcePage', pathname || '/', { shouldDirty: false, shouldTouch: false });
     const productFinalita = finalitaFromPathname(pathname || '/');
     if (productFinalita) setValue('finalita', productFinalita, { shouldDirty: false, shouldTouch: false });
@@ -117,20 +114,11 @@ export default function LoanForm() {
         prefill.monthlyEstimate ?? calculateLoan(prefill.importo, prefill.durata, prefill.insurance).monthly;
       setPrefillBanner(buildPrefillBanner(prefill, monthly));
       applyPrefillValues(prefill, setValue);
-      trackAnalyticsEvent({
-        eventType: 'loan_form_prefilled',
-        page: pathname || '/',
-        metadata: { source: prefill.source, importo: prefill.importo, durata: prefill.durata },
-      });
     };
 
     window.addEventListener('monivia:loan-prefill', onPrefillUpdated);
     return () => window.removeEventListener('monivia:loan-prefill', onPrefillUpdated);
   }, [pathname, setValue]);
-
-  useEffect(() => {
-    trackAnalyticsEvent({ eventType: 'loan_form_view', page: pathname || '/', metadata: { stepCount: 2 } });
-  }, [pathname]);
 
   const nextStep = async () => {
     if (currentStep === 1) {
@@ -220,7 +208,6 @@ export default function LoanForm() {
       <div className="overflow-hidden rounded-xl border border-slate-100 bg-white" style={{ boxShadow: 'var(--shadow-soft)' }}>
         <form onSubmit={handleSubmit(onSubmit)} className="p-5 sm:p-7">
           <input type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" className="sr-only" {...register('website')} />
-          <input type="hidden" {...register('analyticsSessionId')} />
           <input type="hidden" {...register('sourcePage')} />
 
           <AnimatePresence mode="wait">

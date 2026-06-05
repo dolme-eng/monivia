@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getAnalyticsSessionId } from '@/lib/analytics-client';
 
 export default function CareerForm() {
   const pathname = usePathname();
@@ -23,7 +22,6 @@ export default function CareerForm() {
       email,
       oggetto: 'Candidatura spontanea',
       message: `Candidatura da ${pathname || '/lavora-con-noi'}\n\n${message}`,
-      analyticsSessionId: getAnalyticsSessionId(),
       sourcePage: pathname || '/lavora-con-noi',
       website: '',
     };

@@ -6,8 +6,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useReducedMotion } from '@/lib/motion';
-import { trackCtaClick } from '@/lib/analytics-client';
-
 const steps = ['Simuli la rata', 'Invii la richiesta', "Ricevi l'esito"];
 
 export default function Hero() {
@@ -73,7 +71,6 @@ export default function Hero() {
             <div className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
               <Link
                 href="#calcolatore"
-                onClick={() => trackCtaClick('/', 'hero_calcola')}
                 className="btn-cyan px-7 py-4 text-sm"
               >
                 Calcola la rata
@@ -81,7 +78,6 @@ export default function Hero() {
               </Link>
               <Link
                 href="#richiedi"
-                onClick={() => trackCtaClick('/', 'hero_richiedi')}
                 className="btn-ghost-white px-7 py-4 text-sm"
               >
                 Richiedi ora

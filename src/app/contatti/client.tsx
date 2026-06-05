@@ -8,9 +8,8 @@ import PageHero from '@/components/PageHero';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import TrustStrip from '@/components/TrustStrip';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { getAnalyticsSessionId, trackAnalyticsEvent } from '@/lib/analytics-client';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { fadeInUp } from '@/lib/motion';
 
@@ -22,25 +21,17 @@ function ContattiContent() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const pathname = usePathname();
 
-  useEffect(() => {
-    trackAnalyticsEvent({
-      eventType: 'contact_form_view',
-      page: pathname || '/contatti',
-    });
-  }, [pathname]);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('loading');
     const formData = new FormData(e.currentTarget);
-    const data: Record<string, FormDataEntryValue | string> = Object.fromEntries(formData.entries());
-    data.analyticsSessionId = getAnalyticsSessionId();
+    const data = Object.fromEntries(formData.entries());
 
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, sourcePage: pathname || '/contatti' }),
       });
       if (!response.ok) throw new Error();
       setStatus('success');

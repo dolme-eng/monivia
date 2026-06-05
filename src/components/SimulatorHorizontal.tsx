@@ -1,12 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { calculateLoan } from '@/utils/finance';
 import { saveLoanPrefill } from '@/lib/loan-prefill';
-import { trackAnalyticsEvent } from '@/lib/analytics-client';
 
 const MIN_AMOUNT = 5000;
 const MAX_AMOUNT = 1000000;
@@ -23,7 +22,6 @@ function AnimatedNumber({ value }: { value: number }) {
 }
 
 export default function SimulatorHorizontal() {
-  const pathname = usePathname();
   const router = useRouter();
   const [amount, setAmount]       = useState(50000);
   const [amountInput, setAmountInput] = useState('50000');
@@ -32,10 +30,6 @@ export default function SimulatorHorizontal() {
 
   const { monthly, totalDue, taeg, tan } = calculateLoan(amount, months, insurance);
 
-  useEffect(() => {
-    trackAnalyticsEvent({ eventType: 'simulator_view', page: pathname || '/' });
-  }, [pathname]);
-
   const handleContinue = () => {
     saveLoanPrefill({
       importo: Math.max(MIN_AMOUNT, Math.min(MAX_AMOUNT, amount)),
@@ -43,12 +37,6 @@ export default function SimulatorHorizontal() {
       insurance,
       monthlyEstimate: monthly,
       source: 'simulator',
-    });
-    trackAnalyticsEvent({
-      eventType: 'simulator_continue',
-      page: pathname || '/',
-      value: monthly,
-      metadata: { importo: amount, durata: months, insurance },
     });
     const target = document.getElementById('richiedi');
     if (target) {
