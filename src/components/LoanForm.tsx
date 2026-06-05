@@ -80,7 +80,7 @@ function applyPrefillValues(
 
 export default function LoanForm() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [practiceId, setPracticeId] = useState(0);
+  const [practiceId, setPracticeId] = useState('');
   const [serverError, setServerError] = useState('');
   const [prefillBanner, setPrefillBanner] = useState(getInitialPrefillBanner);
   const pathname = usePathname();
@@ -135,7 +135,7 @@ export default function LoanForm() {
       const response = await fetch('/api/loan', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Errore durante l'invio");
-      setPracticeId(Number(String(result.practiceId).replace(/^PD-/, '')));
+      setPracticeId(String(result.practiceId || '').replace(/^PD-/, ''));
       setCurrentStep(3);
     } catch (err) {
       setServerError(err instanceof Error ? err.message : "Errore durante l'invio");
@@ -165,7 +165,6 @@ export default function LoanForm() {
         <button onClick={() => { window.location.href = '/'; }} className="btn-primary mx-auto px-8 py-4">
           Torna alla pagina iniziale
         </button>
-        <TrustStrip className="mt-8" variant="light" />
       </motion.div>
     );
   }

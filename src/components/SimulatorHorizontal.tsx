@@ -93,7 +93,7 @@ export default function SimulatorHorizontal() {
           className="object-cover object-center opacity-40"
         />
       </div>
-      <div className="pointer-events-none absolute inset-0 bg-white/75 backdrop-blur-[3px]" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 bg-primary/80 backdrop-blur-[4px]" aria-hidden />
 
       {/* ─── Zone contrôles ─── */}
       <div className="relative z-10 p-3 sm:p-4">
