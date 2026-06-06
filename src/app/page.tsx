@@ -22,7 +22,7 @@ export const metadata = buildPageMetadata({
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white pb-24 selection:bg-secondary/30 selection:text-primary md:pb-0">
+    <main className="min-h-screen bg-white selection:bg-secondary/30 selection:text-primary">
       <Navbar />
 
       <Hero />

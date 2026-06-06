@@ -140,7 +140,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/6 py-8">
+        <div className="border-t border-white/6 pt-8 pb-32 md:pb-8">
           <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
             <p className="text-xs text-slate-600">
               © 2024 Monivia S.p.A. — OAM n. M123456 — P.IVA 12345678901

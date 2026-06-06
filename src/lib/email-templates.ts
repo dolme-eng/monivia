@@ -22,8 +22,9 @@ function brandEmailShell({ eyebrow, title, intro, body, footer }: BrandEmailShel
   return `
     <div style="margin:0;padding:0;background:#f8fafc;">
       <div style="max-width:640px;margin:0 auto;padding:24px 16px 40px 16px;">
-        <div style="background:#0f172a;border-radius:24px 24px 0 0;padding:28px 32px;text-align:center;">
-          <div style="color:#ffffff;font-size:28px;font-weight:800;letter-spacing:-0.5px;">MO<span style="color:#06b6d4;">NIVIA</span></div>
+        <div style="background:#0a1628;border-radius:24px 24px 0 0;padding:32px;text-align:center;">
+          <img src="${siteConfig.url}/icon.png" width="48" height="48" alt="Mo" style="display:block;margin:0 auto 16px auto;border-radius:12px;" onerror="this.style.display='none'" />
+          <div style="color:#ffffff;font-size:26px;font-weight:900;letter-spacing:-0.5px;">MONIVIA</div>
           <div style="margin-top:8px;color:#94a3b8;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">${safeEyebrow}</div>
         </div>
         <div style="background:#ffffff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 24px 24px;padding:32px;">
