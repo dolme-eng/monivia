@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Monivia",
   description: "Il tuo prestito online, diretto e sicuro",
-  url: "https://monivia.it",
+  url: "https://www.monivia.it",
   contact: {
     phone: {
       display: "+39 350 853 3366",
