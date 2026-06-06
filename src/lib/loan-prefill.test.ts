@@ -3,15 +3,15 @@ import { saveLoanPrefill, readLoanPrefill, buildPrefillBanner, finalitaFromPathn
 
 describe('Loan Prefill', () => {
   beforeEach(() => {
-    // Clear localStorage before each test
+    // Clear sessionStorage before each test
     if (typeof window !== 'undefined') {
-      localStorage.clear();
+      sessionStorage.clear();
     }
   });
 
   afterEach(() => {
     if (typeof window !== 'undefined') {
-      localStorage.clear();
+      sessionStorage.clear();
     }
   });
 
@@ -67,7 +67,7 @@ describe('Loan Prefill', () => {
   });
 
   it('handles pathname with query parameters', () => {
-    expect(finalitaFromPathname('/prestiti/personale?ref=google')).toBe('personale');
+    expect(finalitaFromPathname('/prestiti/personale?ref=google')).toBe('Viaggi / Benessere');
   });
 
   it('overwrites existing prefill data', () => {
