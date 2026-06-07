@@ -6,14 +6,14 @@ import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { useReducedMotion } from '@/lib/motion';
 
 const testimonials = [
-  { quote: 'Ho richiesto un prestito per ristrutturare casa. In 48 ore avevo i soldi sul conto. Il servizio clienti è stato impeccabile e la piattaforma è facilissima da usare.', initials: 'MR', name: 'Marco Rossi' },
-  { quote: 'Avevo bisogno di liquidità per espandere la mia attività. Monivia mi ha offerto un tasso eccellente e un\'assistenza personalizzata. Consigliatissimo!', initials: 'GL', name: 'Giulia L.' },
-  { quote: 'Processo 100% online, zero scartoffie e nessuna perdita di tempo. Esattamente quello che cercavo per il mio nuovo veicolo commerciale.', initials: 'FB', name: 'Francesco B.' },
-  { quote: 'Professionalità e cortesia. Hanno risposto a tutte le mie domande e mi hanno guidato verso la soluzione migliore per il mio budget.', initials: 'AV', name: 'Alessia V.' },
-  { quote: 'La trasparenza delle condizioni mi ha convinto subito. Niente costi nascosti e tasso fisso. Un\'esperienza di credito finalmente serena.', initials: 'LD', name: 'Luca D.' },
-  { quote: 'Non pensavo fosse così veloce ottenere un prestito importante. In due giorni la somma era disponibile per l\'acquisto del mio studio.', initials: 'SM', name: 'Sara M.' },
-  { quote: 'Da libero professionista spesso trovo ostacoli nei finanziamenti. Monivia invece ha capito subito le mie esigenze. Ottimo partner.', initials: 'GP', name: 'Giovanni P.' },
-  { quote: 'Sito intuitivo, supporto veloce su WhatsApp e tassi super competitivi. Senza dubbio il miglior servizio di credito online in Italia.', initials: 'EC', name: 'Elena C.' },
+  { quote: 'Ho ottenuto il finanziamento per ristrutturare la mia trattoria in 8 giorni. Servizio impeccabile.', initials: 'AB', name: 'Andrea Bianchi', city: 'Bologna', profession: 'Ristoratore', amount: '€ 75.000' },
+  { quote: 'Da freelance, le banche mi davano sempre problemi. Qui ho trovato ascolto e una rata sostenibile.', initials: 'EF', name: 'Elena Ferraro', city: 'Torino', profession: 'Libera professionista', amount: '€ 22.000' },
+  { quote: 'Abbiamo usato il capitale per acquistare nuovi macchinari. Tempi rispettati al giorno.', initials: 'DM', name: 'Davide Moretti', city: 'Padova', profession: 'Imprenditore edile', amount: '€ 150.000' },
+  { quote: 'Ho consolidato due prestiti precedenti e risparmio € 180 al mese. Consigliatissimo.', initials: 'SC', name: 'Sara Colombo', city: 'Genova', profession: 'Farmacista', amount: '€ 45.000' },
+  { quote: 'Ristrutturazione delle camere finanziata al 100%. Documentazione minimale.', initials: 'LM', name: 'Luca Marchetti', city: 'Firenze', profession: 'Titolare di B&B', amount: '€ 60.000' },
+  { quote: 'Ho apprezzato la trasparenza: nessuna sorpresa sui costi, tutto chiaro dal primo preventivo.', initials: 'GR', name: 'Giulia Romano', city: 'Verona', profession: 'Avvocato', amount: '€ 35.000' },
+  { quote: 'Ho ampliato il mio negozio di elettronica. Il consulente mi ha seguito passo dopo passo.', initials: 'MG', name: 'Matteo Gallo', city: 'Napoli', profession: 'Commerciante', amount: '€ 90.000' },
+  { quote: 'Ho aperto il mio studio privato grazie a questo finanziamento. Risposta in 48 ore.', initials: 'CC', name: 'Chiara Costa', city: 'Trieste', profession: 'Fisioterapista', amount: '€ 28.000' },
 ];
 
 const swipeConfidenceThreshold = 10000;
@@ -85,7 +85,8 @@ export default function TestimonialSlider() {
               </div>
               <div>
                 <p className="text-base font-bold text-white">{testimonials[index].name}</p>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Cliente verificato</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">{testimonials[index].profession} — {testimonials[index].city}</p>
+                <p className="text-[10px] font-medium text-white/60">{testimonials[index].amount}</p>
               </div>
             </div>
           </motion.div>

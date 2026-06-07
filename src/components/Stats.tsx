@@ -77,8 +77,8 @@ const stats = [
     iconColor: 'text-accent',
   },
   {
-    num: 12,
-    label: 'Premi ricevuti',
+    num: 2019,
+    label: 'Iscritto OAM dal',
     Icon: Star,
     iconBg: 'bg-secondary/15',
     iconColor: 'text-secondary',
