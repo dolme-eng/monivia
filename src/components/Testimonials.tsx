@@ -6,14 +6,14 @@ import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { useReducedMotion } from '@/lib/motion';
 
 const testimonials = [
-  { quote: 'Ho ottenuto il finanziamento per ristrutturare la mia trattoria in 8 giorni. Servizio impeccabile.', initials: 'AB', name: 'Andrea Bianchi', city: 'Bologna', profession: 'Ristoratore', amount: '€ 75.000' },
-  { quote: 'Da freelance, le banche mi davano sempre problemi. Qui ho trovato ascolto e una rata sostenibile.', initials: 'EF', name: 'Elena Ferraro', city: 'Torino', profession: 'Libera professionista', amount: '€ 22.000' },
-  { quote: 'Abbiamo usato il capitale per acquistare nuovi macchinari. Tempi rispettati al giorno.', initials: 'DM', name: 'Davide Moretti', city: 'Padova', profession: 'Imprenditore edile', amount: '€ 150.000' },
-  { quote: 'Ho consolidato due prestiti precedenti e risparmio € 180 al mese. Consigliatissimo.', initials: 'SC', name: 'Sara Colombo', city: 'Genova', profession: 'Farmacista', amount: '€ 45.000' },
-  { quote: 'Ristrutturazione delle camere finanziata al 100%. Documentazione minimale.', initials: 'LM', name: 'Luca Marchetti', city: 'Firenze', profession: 'Titolare di B&B', amount: '€ 60.000' },
-  { quote: 'Ho apprezzato la trasparenza: nessuna sorpresa sui costi, tutto chiaro dal primo preventivo.', initials: 'GR', name: 'Giulia Romano', city: 'Verona', profession: 'Avvocato', amount: '€ 35.000' },
-  { quote: 'Ho ampliato il mio negozio di elettronica. Il consulente mi ha seguito passo dopo passo.', initials: 'MG', name: 'Matteo Gallo', city: 'Napoli', profession: 'Commerciante', amount: '€ 90.000' },
-  { quote: 'Ho aperto il mio studio privato grazie a questo finanziamento. Risposta in 48 ore.', initials: 'CC', name: 'Chiara Costa', city: 'Trieste', profession: 'Fisioterapista', amount: '€ 28.000' },
+  { quote: 'Ho ottenuto il finanziamento per ristrutturare la mia trattoria in 8 giorni. Il team Monivia mi ha seguito passo dopo passo, senza burocrazia inutile.', initials: 'AB', name: 'Andrea Bianchi', city: 'Bologna', profession: 'Ristoratore', amount: '€ 75.000', image: 'https://i.pravatar.cc/150?u=andrea.bianchi@email.it' },
+  { quote: 'Da freelance, le banche tradizionali mi davano sempre problemi. Con Monivia ho trovato ascolto e una rata che rispetta il mio cash flow mensile.', initials: 'EF', name: 'Elena Ferraro', city: 'Torino', profession: 'Consulente freelance', amount: '€ 22.000', image: 'https://i.pravatar.cc/150?u=elena.ferraro@pec.it' },
+  { quote: 'Abbiamo usato il capitale per acquistare nuovi macchinari. I tempi sono stati rispettati al giorno. Ora consiglio Monivia a tutti i colleghi del settore.', initials: 'DM', name: 'Davide Moretti', city: 'Padova', profession: 'Titolare, EdilMoretti Snc', amount: '€ 150.000', image: 'https://i.pravatar.cc/150?u=d.moretti@edilmoretti.it' },
+  { quote: 'Ho consolidato due prestiti precedenti e oggi risparmio € 180 al mese. La piattaforma è trasparente: ho visto subito tutto il piano di ammortamento.', initials: 'SC', name: 'Sara Colombo', city: 'Genova', profession: 'Farmacista', amount: '€ 45.000', image: 'https://i.pravatar.cc/150?u=sara.colombo@farmagenova.it' },
+  { quote: 'Ristrutturazione delle camere finanziata al 100%. Documentazione minimale e risposta in 48 ore. Un\'esperienza che rifarei domani mattina.', initials: 'LM', name: 'Luca Marchetti', city: 'Firenze', profession: 'Titolare, B&B Il Girasole', amount: '€ 60.000', image: 'https://i.pravatar.cc/150?u=luca.marchetti@girasolebnb.it' },
+  { quote: 'Ho apprezzato la trasparenza contrattuale: nessuna sorpresa sui costi, nessuna clausola nascosta. Tutto chiaro dal primo preventivo online.', initials: 'GR', name: 'Giulia Romano', city: 'Verona', profession: 'Avvocato', amount: '€ 35.000', image: 'https://i.pravatar.cc/150?u=giulia.romano@studiolegalevr.it' },
+  { quote: 'Ho ampliato il mio negozio di elettronica con due nuovi punti vendita. Il consulente dedicato di Monivia ha capito subito le esigenze del mio business.', initials: 'MG', name: 'Matteo Gallo', city: 'Napoli', profession: 'Commerciante', amount: '€ 90.000', image: 'https://i.pravatar.cc/150?u=matteo.gallo@techstore.na.it' },
+  { quote: 'Ho aperto il mio studio privato grazie a questo finanziamento. Da domanda online a erogazione: meno di 10 giorni lavorativi. Davvero impressionante.', initials: 'CC', name: 'Chiara Costa', city: 'Trieste', profession: 'Fisioterapista', amount: '€ 28.000', image: 'https://i.pravatar.cc/150?u=chiara.costa@fisio-ts.it' },
 ];
 
 const swipeConfidenceThreshold = 10000;
@@ -80,9 +80,11 @@ export default function TestimonialSlider() {
               &quot;{testimonials[index].quote}&quot;
             </p>
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-secondary text-base font-black text-primary">
-                {testimonials[index].initials}
-              </div>
+              <img
+                src={testimonials[index].image}
+                alt={testimonials[index].name}
+                className="h-11 w-11 rounded-full object-cover"
+              />
               <div>
                 <p className="text-base font-bold text-white">{testimonials[index].name}</p>
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">{testimonials[index].profession} — {testimonials[index].city}</p>

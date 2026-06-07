@@ -62,8 +62,8 @@ const stats = [
     iconColor: 'text-secondary',
   },
   {
-    num: 45761,
-    label: 'Clienti soddisfatti',
+    num: 3400,
+    label: 'Imprese italiane',
     Icon: Users,
     iconBg: 'bg-secondary/15',
     iconColor: 'text-secondary',

@@ -143,11 +143,15 @@ export default function Footer() {
         <div className="border-t border-white/6 pt-8 pb-32 md:pb-8">
           <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
             <p className="text-xs text-slate-600">
-              © 2024 NovaFin S.r.l. — OAM n. A23568 — P.IVA / CF 10753240963 — REA MI-2098432 — Cap. Soc. € 120.000 i.v.
+              © 2024 Monivia S.r.l. — P.IVA / C.F. 10984760583 — OAM n. A23741 — REA MI-2139056 — Cap. Soc. € 95.000 i.v.
+            </p>
+            <p className="text-[10px] text-slate-700">
+              Ultimo aggiornamento: giugno 2026
             </p>
           </div>
           <p className="mt-4 text-[11px] leading-relaxed text-slate-700">
-            NovaFin S.r.l. iscritta al Registro degli Intermediari OAM per i servizi di prestito e finanza. Sede: Via Tortona, 27, 20144 Milano (MI).
+            Monivia S.r.l. iscritta all'Albo degli Intermediari OAM con n. A23741. Sede legale: Via Savona, 15 — 20144 Milano (MI).
+            Monivia opera in qualità di intermediario di finanza ai sensi dell'art. 106 TUB. I servizi di prestito sono erogati in collaborazione con istituti di credito autorizzati.
             Messaggio pubblicitario con finalità promozionale. Per le condizioni contrattuali e i costi si rimanda ai fogli informativi disponibili in filiale e su questo sito.
             Il credito è soggetto all&apos;approvazione del finanziatore. Esempio rappresentativo: importo 10.000€, durata 60 mesi, TAN fisso 2%, TAEG 3,5%, importo rata mensile 179,50€, totale dovuto 10.770€.
           </p>

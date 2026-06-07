@@ -11,7 +11,7 @@ export const siteConfig = {
       link: "https://wa.me/393508533366"
     },
     email: "contatto@monivia.it",
-    address: "Via Tortona, 27, 20144 Milano (MI)"
+    address: "Via Savona, 15 — 20144 Milano (MI)"
   },
   links: {
     facebook: "https://www.facebook.com/monivia",
