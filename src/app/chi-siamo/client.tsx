@@ -85,7 +85,7 @@ export default function ChiSiamoClient() {
 
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { value: '38.226+', label: 'Pratiche finanziate' },
+                  { value: '3.400+', label: 'Imprese italiane' },
                   { value: '48h', label: 'Tempo medio di esito' },
                 ].map((item) => (
                   <div key={item.label} className="surface-card p-5 sm:p-6">

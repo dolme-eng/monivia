@@ -70,9 +70,9 @@ export default function RootLayout({
     description: 'Prestiti online chiari, veloci e sicuri, con assistenza dedicata e risposta in 48 ore.',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Via Dante, 10',
+      streetAddress: 'Via Savona, 15',
       addressLocality: 'Milano',
-      postalCode: '20121',
+      postalCode: '20144',
       addressCountry: 'IT',
     },
     telephone: siteConfig.contact.phone.link,
