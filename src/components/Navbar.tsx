@@ -92,9 +92,6 @@ export default function Navbar() {
           <span className={`text-2xl font-black tracking-tight ${transparent ? 'text-white' : 'text-primary'}`}>
             MO<span className="text-secondary">NIVIA</span>
           </span>
-          <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium ${transparent ? 'bg-white/20 text-white' : 'bg-green-100 text-green-800'}`}>
-            Iscritto all'Albo OAM dal 2019
-          </span>
         </Link>
 
         {/* Liens desktop */}

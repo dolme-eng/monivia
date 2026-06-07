@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { BadgeCheck, Building2, LockKeyhole, Scale } from 'lucide-react';
 
 const items = [
-  { icon: BadgeCheck, label: 'OAM', value: 'Intermediario registrato', href: '/trasparenza' },
+  { icon: BadgeCheck, label: 'OAM', value: 'Iscritto dal 2019', href: '/trasparenza' },
   { icon: LockKeyhole, label: 'SSL', value: 'Dati protetti 256-bit', href: '/privacy-policy' },
   { icon: Scale, label: 'GDPR', value: 'Privacy europea', href: '/privacy-policy' },
   { icon: Building2, label: 'Italia', value: 'Consulenza dedicata', href: '/contatti' },
