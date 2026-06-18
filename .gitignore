@@ -52,3 +52,8 @@ prisma/*.db
 *.node
 *.dll
 *.exe
+
+# IDE
+.idea/
+*.iml
+untitled/
