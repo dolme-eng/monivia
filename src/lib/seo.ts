@@ -16,7 +16,7 @@ export function buildPageMetadata({
   path,
   keywords = [],
   noindex = false,
-  image = '/og-default.png',
+  image = '/og-default.webp',
 }: SeoOptions): Metadata {
   const canonical = new URL(path, siteConfig.url).toString();
   const imageUrl = new URL(image, siteConfig.url).toString();

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import proBg from '../../public/assets/pro_bg.png';
+import proBg from '../../public/assets/pro_bg.webp';
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { calculateLoan } from '@/utils/finance';

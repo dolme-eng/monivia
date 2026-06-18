@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import premiumHero from '../../public/assets/premium_hero.png';
+import premiumHero from '../../public/assets/premium_hero.webp';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';

@@ -28,7 +28,7 @@ export default function PageHeroSplit({
   return (
     <section className="relative overflow-hidden bg-primary pb-16 pt-24 text-white sm:pt-28">
       <div className="absolute inset-0" aria-hidden>
-        <Image src="/assets/business_bg.png" alt="" fill priority className="object-cover opacity-15" />
+        <Image src="/assets/business_bg.webp" alt="" fill priority className="object-cover opacity-15" />
       </div>
       <div className="absolute inset-0 bg-linear-to-b from-primary/30 via-primary/75 to-primary" />
 

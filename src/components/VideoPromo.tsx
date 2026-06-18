@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Play } from 'lucide-react';
 import { fadeInUp, useReducedMotion } from '@/lib/motion';
 const VIDEO_SRC = '/lv_0_20240529163833.mp4';
-const POSTER_SRC = '/assets/business_bg.png';
+const POSTER_SRC = '/assets/business_bg.webp';
 
 export default function VideoPromo() {
   const [isPlaying, setIsPlaying] = useState(false);

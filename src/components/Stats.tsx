@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import statsBg from '../../public/assets/stats_bg.png';
+import statsBg from '../../public/assets/stats_bg.webp';
 import { ArrowRight, FileText, Users, Award, Star } from 'lucide-react';
 import { useReducedMotion, fadeInUp } from '@/lib/motion';
 

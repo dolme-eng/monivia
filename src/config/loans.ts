@@ -22,7 +22,7 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
       'Richiedi un prestito personale online con Monivia: importi flessibili, rata chiara e assistenza dedicata.',
     keywords: ['prestito personale', 'finanziamento personale', 'Monivia prestito'],
     benefits: ['Importi flessibili', 'Rata chiara', 'Richiesta guidata'],
-    ogImage: '/assets/hero_lifestyle.png',
+    ogImage: '/assets/hero_lifestyle.webp',
   },
   auto: {
     slug: 'auto',
@@ -33,7 +33,7 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
       'Finanzia la tua auto con un percorso digitale, veloce e chiaro. Scopri il prestito auto Monivia.',
     keywords: ['prestito auto', 'finanziamento auto', 'Monivia auto'],
     benefits: ['Fino a 50.000€', 'Erogazione rapida', 'Assicurazione inclusa opzionale'],
-    ogImage: '/assets/consultation.png',
+    ogImage: '/assets/consultation.webp',
   },
   immobiliare: {
     slug: 'immobiliare',
@@ -44,7 +44,7 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
       'Richiedi un prestito immobiliare per ristrutturare o acquistare casa con una soluzione digitale e semplice.',
     keywords: ['prestito immobiliare', 'finanziamento casa', 'Monivia immobiliare'],
     benefits: ['Fino a più di 500.000€', 'Piani fino a 360 mesi', 'Perizia gratuita'],
-    ogImage: '/assets/premium_hero.png',
+    ogImage: '/assets/premium_hero.webp',
   },
   consolidamento: {
     slug: 'consolidamento',
@@ -55,7 +55,7 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
       'Unisci i tuoi prestiti in un’unica rata e semplifica la gestione del tuo budget con Monivia.',
     keywords: ['consolidamento debiti', 'unica rata', 'prestito consolidamento'],
     benefits: ['Rata unica', 'Minori interessi totali', 'Gestione semplificata'],
-    ogImage: '/assets/hero_lifestyle_new.png',
+    ogImage: '/assets/hero_lifestyle_new.webp',
   },
   business: {
     slug: 'business',
@@ -66,7 +66,7 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
       'Sostieni la crescita della tua impresa con un prestito aziendale pensato per liquidità e flessibilità.',
     keywords: ['prestito aziendale', 'finanziamento impresa', 'Monivia impresa'],
     benefits: ['Liquidità immediata', 'Piani ammortamento flessibili', 'Consulenza dedicata'],
-    ogImage: '/assets/pro_bg.png',
+    ogImage: '/assets/pro_bg.webp',
   },
 };
 

@@ -22,7 +22,7 @@ export default function ChiSiamoClient() {
         title="Chi siamo"
         description="Siamo un attore di primo piano nella concessione di crediti a privati e professionisti, con un approccio digitale, chiaro e orientato al cliente."
         chips={['Processo digitale', 'Trasparenza totale', 'Assistenza dedicata']}
-        imageSrc="/assets/about_hero_1.png"
+        imageSrc="/assets/about_hero_1.webp"
         imageAlt="Consulenza finanziaria Monivia"
         imageCaption={{
           label: 'Guida fintech',
@@ -74,7 +74,7 @@ export default function ChiSiamoClient() {
               <motion.div {...fadeInUp} className="surface-card overflow-hidden p-3">
                 <div className="relative h-[260px] overflow-hidden rounded-lg sm:h-[320px]">
                   <Image
-                    src="/assets/about_hero_2.png"
+                    src="/assets/about_hero_2.webp"
                     alt="Team Monivia"
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
