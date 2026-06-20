@@ -6,7 +6,7 @@ import SkipToContent from "@/components/SkipToContent";
 import StickyConversionBar from "@/components/StickyConversionBar";
 import { siteConfig } from "@/config/site";
 import { Inter } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import GoogleAnalyticsWrapper from "@/components/GoogleAnalyticsWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -116,7 +116,7 @@ export default function RootLayout({
         <CookieBanner />
         <StickyConversionBar />
         <WhatsAppButton />
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
+        <GoogleAnalyticsWrapper gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
       </body>
     </html>
   );

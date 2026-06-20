@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     }
 
     const honeypot = normalizeText((body as Record<string, unknown>).website);
-    const guard = guardSubmission(request, { kind: 'loan', honeypot });
+    const guard = await guardSubmission(request, { kind: 'loan', honeypot });
     if (!guard.allowed) {
       return guard.silent
         ? NextResponse.json({ success: true, message: 'Richiesta inviata con successo' })

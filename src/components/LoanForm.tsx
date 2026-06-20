@@ -12,6 +12,7 @@ import {
   type LoanPrefill,
 } from '@/lib/loan-prefill';
 import { calculateLoan } from '@/utils/finance';
+import { loanProducts, isLoanSlug } from '@/config/loans';
 import TrustStrip from '@/components/TrustStrip';
 
 const steps = [
@@ -63,7 +64,7 @@ function getInitialPrefillBanner() {
   const prefill = readLoanPrefill();
   if (!prefill) return null;
   const monthly =
-    prefill.monthlyEstimate ?? calculateLoan(prefill.importo, prefill.durata, prefill.insurance).monthly;
+    prefill.monthlyEstimate ?? calculateLoan(prefill.importo, prefill.durata, prefill.insurance, 0.02, 0.0005).monthly;
   return buildPrefillBanner(prefill, monthly);
 }
 
@@ -87,6 +88,7 @@ export default function LoanForm() {
   const formTopRef = useRef<HTMLDivElement>(null);
 
   const { register, handleSubmit, control, trigger, setValue, formState: { errors, isSubmitting } } = useForm<FormValues>({
+    resolver: zodResolver(loanSchema),
     defaultValues: {
       nome: '', cognome: '', codiceFiscale: '', email: '', telefono: '',
       impiego: 'Dipendente Tempo Indeterminato', reddito: '', finalita: 'Acquisto Auto',

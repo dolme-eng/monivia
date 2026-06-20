@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { siteConfig } from '@/config/site';
+import { kv } from '@vercel/kv';
 
 type SubmissionKind = 'contact' | 'loan';
 
@@ -13,8 +14,6 @@ type GuardOptions = {
 type GuardResult =
   | { allowed: true }
   | { allowed: false; silent?: boolean; response?: NextResponse };
-
-const rateBuckets = new Map<string, { count: number; resetAt: number }>();
 
 const limitConfig: Record<SubmissionKind, { limit: number; windowMs: number }> = {
   contact: { limit: 5, windowMs: 10 * 60 * 1000 },
@@ -47,7 +46,6 @@ function isAllowedOrigin(request: Request) {
     const allowed = getAllowedHosts();
     if (allowed.has(host)) return true;
     
-    // Also allow www. prefix if base domain is allowed (and vice versa)
     if (host.startsWith('www.') && allowed.has(host.replace('www.', ''))) return true;
     if (allowed.has(`www.${host}`)) return true;
 
@@ -66,21 +64,28 @@ function getClientIdentifier(request: Request) {
   return request.headers.get('x-real-ip')?.trim() || 'unknown';
 }
 
-function isRateLimited(request: Request, kind: SubmissionKind, limit: number, windowMs: number) {
-  const key = `${kind}:${getClientIdentifier(request)}`;
-  const now = Date.now();
-  const current = rateBuckets.get(key);
+async function isRateLimited(request: Request, kind: SubmissionKind, limit: number, windowMs: number) {
+  const key = `rate_limit:${kind}:${getClientIdentifier(request)}`;
+  
+  try {
+    const current = await kv.get<number>(key);
+    
+    if (current === null) {
+      await kv.set(key, 1, { ex: Math.ceil(windowMs / 1000) });
+      return false;
+    }
 
-  if (!current || current.resetAt <= now) {
-    rateBuckets.set(key, { count: 1, resetAt: now + windowMs });
-    return false;
+    const count = current + 1;
+    await kv.set(key, count, { keepTtl: true });
+    
+    return count > limit;
+  } catch (error) {
+    console.error('Redis Rate Limit Error:', error);
+    return false; // Fail open to avoid blocking users if Redis is down
   }
-
-  current.count += 1;
-  return current.count > limit;
 }
 
-export function guardSubmission(request: Request, options: GuardOptions): GuardResult {
+export async function guardSubmission(request: Request, options: GuardOptions): Promise<GuardResult> {
   const { kind, honeypot = '', limit = limitConfig[kind].limit, windowMs = limitConfig[kind].windowMs } = options;
 
   if (honeypot.trim().length > 0) {
@@ -97,7 +102,7 @@ export function guardSubmission(request: Request, options: GuardOptions): GuardR
     };
   }
 
-  if (isRateLimited(request, kind, limit, windowMs)) {
+  if (await isRateLimited(request, kind, limit, windowMs)) {
     return {
       allowed: false,
       response: NextResponse.json(

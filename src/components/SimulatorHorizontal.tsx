@@ -8,6 +8,7 @@ import { motion, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { calculateLoan } from '@/utils/finance';
 import { saveLoanPrefill } from '@/lib/loan-prefill';
+import { loanProducts } from '@/config/loans';
 
 const MIN_AMOUNT = 5000;
 const MAX_AMOUNT = 1000000;
@@ -30,7 +31,13 @@ export default function SimulatorHorizontal() {
   const [months, setMonths]       = useState(48);
   const [insurance, setInsurance] = useState(true);
 
-  const { monthly, totalDue, taeg, tan } = calculateLoan(amount, months, insurance);
+  const { monthly, totalDue, taeg, tan } = calculateLoan(
+    amount, 
+    months, 
+    insurance, 
+    loanProducts.personale.tan, 
+    loanProducts.personale.insuranceRate
+  );
 
   const handleContinue = () => {
     saveLoanPrefill({
@@ -53,7 +60,7 @@ export default function SimulatorHorizontal() {
     setAmountInput(raw);
     const value = Number(raw);
     if (!Number.isNaN(value) && raw !== '' && value <= MAX_AMOUNT) {
-      setAmount(Math.max(0, value));
+      setAmount(Math.max(MIN_AMOUNT, value));
     }
   };
 

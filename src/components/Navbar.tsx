@@ -18,15 +18,11 @@ export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [openPathname, setOpenPathname] = useState<string | null>(null);
-  const menuVisible = isOpen && openPathname === pathname;
+  const menuVisible = isOpen;
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 16);
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    setIsOpen(false);
+  }, [pathname]);
 
   /* Verrouille le scroll du body quand le menu est ouvert */
   useEffect(() => {
@@ -35,12 +31,10 @@ export default function Navbar() {
   }, [menuVisible]);
 
   const openMenu = () => {
-    setOpenPathname(pathname);
     setIsOpen(true);
   };
   const closeMenu = () => {
     setIsOpen(false);
-    setOpenPathname(null);
   };
   const transparent = pathname === '/' && !scrolled && !menuVisible;
 

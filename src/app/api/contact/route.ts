@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
 import { siteConfig } from '@/config/site';
 import { sendEmail } from '@/lib/email';
 import { buildContactAutoReplyEmail, buildContactNotificationEmail } from '@/lib/email-templates';
 import { guardSubmission } from '@/lib/security';
 import { normalizeText } from '@/lib/sanitization';
+import { contactSchema } from '@/lib/validations';
 
 const contactSchema = z.object({
   nome: z.string().trim().min(2).max(80),
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     }
 
     const honeypot = normalizeText((body as Record<string, unknown>).website);
-    const guard = guardSubmission(request, { kind: 'contact', honeypot });
+    const guard = await guardSubmission(request, { kind: 'contact', honeypot });
     if (!guard.allowed) {
       return guard.silent
         ? NextResponse.json({ success: true, message: 'Messaggio inviato con successo' })

@@ -9,6 +9,8 @@ export type LoanProduct = {
   keywords: string[];
   benefits: string[];
   ogImage: string;
+  tan: number; // Taux Annuel Nominal (ex: 0.02 pour 2%)
+  insuranceRate: number; // Taux assurance mensuel (ex: 0.0005 pour 0.05%)
 };
 
 export const loanProducts: Record<LoanSlug, LoanProduct> = {
@@ -23,6 +25,8 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
     keywords: ['prestito personale', 'finanziamento personale', 'Monivia prestito'],
     benefits: ['Importi flessibili', 'Rata chiara', 'Richiesta guidata'],
     ogImage: '/assets/hero_lifestyle.webp',
+    tan: 0.02,
+    insuranceRate: 0.0005,
   },
   auto: {
     slug: 'auto',
@@ -34,6 +38,8 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
     keywords: ['prestito auto', 'finanziamento auto', 'Monivia auto'],
     benefits: ['Fino a 50.000€', 'Erogazione rapida', 'Assicurazione inclusa opzionale'],
     ogImage: '/assets/consultation.webp',
+    tan: 0.018, // Taux légèrement plus bas pour l'auto
+    insuranceRate: 0.0004,
   },
   immobiliare: {
     slug: 'immobiliare',
@@ -45,6 +51,8 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
     keywords: ['prestito immobiliare', 'finanziamento casa', 'Monivia immobiliare'],
     benefits: ['Fino a più di 500.000€', 'Piani fino a 360 mesi', 'Perizia gratuita'],
     ogImage: '/assets/premium_hero.webp',
+    tan: 0.025, // Taux plus élevé pour l'immobilier
+    insuranceRate: 0.0006,
   },
   consolidamento: {
     slug: 'consolidamento',
@@ -56,6 +64,8 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
     keywords: ['consolidamento debiti', 'unica rata', 'prestito consolidamento'],
     benefits: ['Rata unica', 'Minori interessi totali', 'Gestione semplificata'],
     ogImage: '/assets/hero_lifestyle_new.webp',
+    tan: 0.022,
+    insuranceRate: 0.0005,
   },
   business: {
     slug: 'business',
@@ -67,7 +77,10 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
     keywords: ['prestito aziendale', 'finanziamento impresa', 'Monivia impresa'],
     benefits: ['Liquidità immediata', 'Piani ammortamento flessibili', 'Consulenza dedicata'],
     ogImage: '/assets/pro_bg.webp',
+    tan: 0.03, // Taux plus élevé pour le business
+    insuranceRate: 0.0007,
   },
+
 };
 
 export const loanSlugs = Object.keys(loanProducts) as LoanSlug[];

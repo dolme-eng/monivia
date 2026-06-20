@@ -17,6 +17,7 @@ export default function CookieBanner() {
 
   const acceptCookies = () => {
     localStorage.setItem('monivia_cookie_consent', 'accepted');
+    window.dispatchEvent(new CustomEvent('monivia:cookie-consent', { detail: 'accepted' }));
     setIsVisible(false);
   };
 
