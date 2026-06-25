@@ -12,10 +12,9 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { fadeInUp } from '@/lib/motion';
+import { getCsrfToken } from '@/lib/csrf-client';
 
 const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(siteConfig.contact.address)}`;
-
-export const dynamic = 'force-dynamic';
 
 function ContattiContent() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -28,9 +27,13 @@ function ContattiContent() {
     const data = Object.fromEntries(formData.entries());
 
     try {
+      const csrfToken = await getCsrfToken();
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        },
         body: JSON.stringify({ ...data, sourcePage: pathname || '/contatti' }),
       });
       if (!response.ok) throw new Error();
@@ -130,11 +133,11 @@ function ContattiContent() {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="contact-nome" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
+                    <label htmlFor="page-contact-nome" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
                       Nome completo
                     </label>
                     <input
-                      id="contact-nome"
+                      id="page-contact-nome"
                       name="nome"
                       type="text"
                       autoComplete="name"
@@ -144,11 +147,11 @@ function ContattiContent() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="contact-email" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
+                    <label htmlFor="page-contact-email" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
                       Email
                     </label>
                     <input
-                      id="contact-email"
+                      id="page-contact-email"
                       name="email"
                       type="email"
                       inputMode="email"
@@ -161,11 +164,11 @@ function ContattiContent() {
                 </div>
 
                 <div>
-                  <label htmlFor="contact-oggetto" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
+                  <label htmlFor="page-contact-oggetto" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
                     Oggetto
                   </label>
                   <input
-                    id="contact-oggetto"
+                    id="page-contact-oggetto"
                     name="oggetto"
                     type="text"
                     placeholder="Oggetto del messaggio"
@@ -175,11 +178,11 @@ function ContattiContent() {
                 </div>
 
                 <div>
-                  <label htmlFor="contact-message" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
+                  <label htmlFor="page-contact-message" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
                     Messaggio
                   </label>
                   <textarea
-                    id="contact-message"
+                    id="page-contact-message"
                     name="message"
                     placeholder="Scrivi il tuo messaggio qui..."
                     rows={5}

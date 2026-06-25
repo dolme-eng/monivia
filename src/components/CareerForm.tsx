@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getCsrfToken } from '@/lib/csrf-client';
 
 export default function CareerForm() {
   const pathname = usePathname();
@@ -27,9 +28,13 @@ export default function CareerForm() {
     };
 
     try {
+      const csrfToken = await getCsrfToken();
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        },
         body: JSON.stringify(payload),
       });
       if (!response.ok) throw new Error();
@@ -42,18 +47,18 @@ export default function CareerForm() {
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4 text-left">
-      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="sr-only" />
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="sr-only" />
       <div>
         <label htmlFor="career-nome" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-400">
           Nome completo
         </label>
-        <input id="career-nome" name="nome" type="text" required className="field-shell" placeholder="Il tuo nome" />
+        <input id="career-nome" name="nome" type="text" required aria-required="true" className="field-shell" placeholder="Il tuo nome" />
       </div>
       <div>
         <label htmlFor="career-email" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-400">
           Email
         </label>
-        <input id="career-email" name="email" type="email" required className="field-shell" placeholder="email@esempio.it" />
+        <input id="career-email" name="email" type="email" required aria-required="true" className="field-shell" placeholder="email@esempio.it" />
       </div>
       <div>
         <label htmlFor="career-message" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-400">
@@ -64,6 +69,7 @@ export default function CareerForm() {
           name="message"
           rows={5}
           required
+          aria-required="true"
           minLength={20}
           className="field-shell resize-none"
           placeholder="Raccontaci il tuo percorso e il ruolo che ti interessa..."

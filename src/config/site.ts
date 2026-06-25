@@ -15,7 +15,7 @@ export const siteConfig = {
   },
   links: {
     facebook: "https://www.facebook.com/monivia",
-    twitter: "https://twitter.com/monivia",
+    twitter: "https://x.com/monivia",
     instagram: "https://www.instagram.com/monivia"
   }
 };

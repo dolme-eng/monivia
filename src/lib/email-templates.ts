@@ -77,7 +77,7 @@ export function buildContactNotificationEmail(data: { nome: string; email: strin
     body: `
       ${sectionCard('Dettagli contatto', [
         ['Nome', safeName],
-        ['Email', `<a href="mailto:${safeEmail}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a>`],
+        ['Email', `<a href="mailto:${encodeURIComponent(data.email)}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a>`],
         ['Oggetto', safeSubject],
       ])}
       <div style="background:#f1f5f9;border-left:4px solid #06b6d4;border-radius:14px;padding:20px;">
@@ -85,7 +85,7 @@ export function buildContactNotificationEmail(data: { nome: string; email: strin
         <div style="color:#334155;font-size:15px;line-height:1.75;">${safeMessage}</div>
       </div>
     `,
-    footer: `Rispondi direttamente a <a href="mailto:${safeEmail}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a> per continuare la conversazione.`,
+    footer: `Rispondi direttamente a <a href="mailto:${encodeURIComponent(data.email)}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a> per continuare la conversazione.`,
   });
 }
 
@@ -135,7 +135,7 @@ export function buildLoanNotificationEmail(data: {
     body: `
       ${sectionCard('Dettagli richiedente', [
         ['Nome', fullName],
-        ['Email', `<a href="mailto:${safeEmail}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a>`],
+        ['Email', `<a href="mailto:${encodeURIComponent(data.email)}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a>`],
         ['Telefono', safePhone],
         ['Codice fiscale', safeTaxCode],
       ])}
@@ -154,7 +154,7 @@ export function buildLoanNotificationEmail(data: {
         <p style="margin:0;color:#334155;font-size:15px;line-height:1.75;">Il dossier è stato salvato e può essere preso in carico manualmente dalla squadra. Il cliente riceverà subito una conferma automatica.</p>
       </div>
     `,
-    footer: `Rispondi direttamente al cliente con un clic: <a href="mailto:${safeEmail}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a>.`,
+    footer: `Rispondi direttamente al cliente con un clic: <a href="mailto:${encodeURIComponent(data.email)}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a>.`,
   });
 }
 

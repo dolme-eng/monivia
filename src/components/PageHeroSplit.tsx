@@ -59,7 +59,7 @@ export default function PageHeroSplit({
             className="relative h-[300px] overflow-hidden rounded-xl border border-white/15 bg-[#0f1f35] sm:h-[380px] lg:h-[420px]"
             style={{ boxShadow: 'var(--shadow-card)' }}
           >
-            <Image src={imageSrc} alt={imageAlt} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+            <Image src={imageSrc} alt={imageAlt} fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
             <div className="absolute inset-0 bg-linear-to-t from-primary/35 via-transparent to-transparent" />
             {imageCaption && (
               <div className="absolute bottom-5 left-5 right-5 rounded-lg border border-white/15 bg-primary/90 p-4">

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Mail, Menu, Phone, X } from 'lucide-react';
 import { siteConfig } from '@/config/site';
@@ -24,11 +24,46 @@ export default function Navbar() {
     setIsOpen(false);
   }, [pathname]);
 
-  /* Verrouille le scroll du body quand le menu est ouvert */
+  /* Blocca lo scroll del body quando il menu è aperto */
   useEffect(() => {
     document.body.style.overflow = menuVisible ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuVisible]);
+
+  /* Focus trap nel drawer mobile */
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const handleCloseRef = useRef<HTMLButtonElement>(null);
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!menuVisible || !drawerRef.current) return;
+    if (e.key === 'Escape') {
+      closeMenu();
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const focusable = drawerRef.current.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }, [menuVisible]);
+
+  useEffect(() => {
+    if (menuVisible) {
+      document.addEventListener('keydown', handleKeyDown);
+      // Focus first focusable element after animation
+      setTimeout(() => handleCloseRef.current?.focus(), 100);
+    }
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [menuVisible, handleKeyDown]);
 
   const openMenu = () => {
     setIsOpen(true);
@@ -48,7 +83,7 @@ export default function Navbar() {
           : 'border-b border-slate-200/70 bg-white text-primary shadow-sm'
       }`}
     >
-      {/* ── Barre utilitaire desktop uniquement ── */}
+      {/* ── Barra utilità solo desktop ── */}
       <div
         className={`hidden border-b text-[11px] font-black uppercase tracking-[0.18em] transition-all duration-300 md:block ${
           transparent ? 'border-white/10 text-white/65' : 'border-slate-100 text-slate-400'
@@ -75,7 +110,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* ── Barre principale ── */}
+      {/* ── Barra principale ── */}
       <div className="site-container flex h-[68px] items-center justify-between">
         {/* Logo */}
         <Link
@@ -88,7 +123,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Liens desktop */}
+        {/* Link desktop */}
         <nav className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => (
             <Link
@@ -109,9 +144,9 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Côté droit */}
+        {/* Lato destro */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* CTA mobile — masquée quand le menu est ouvert */}
+          {/* CTA mobile — nascosta quando il menu è aperto */}
           {!menuVisible && (
             <Link
               href="/#richiedi"
@@ -134,7 +169,7 @@ export default function Navbar() {
             <ArrowRight size={14} />
           </Link>
 
-          {/* Bouton hamburger */}
+          {/* Pulsante hamburger */}
           <button
             type="button"
             onClick={() => (menuVisible ? closeMenu() : openMenu())}
@@ -169,6 +204,7 @@ export default function Navbar() {
       <AnimatePresence>
         {menuVisible && (
           <motion.div
+            ref={drawerRef}
             id="mobile-menu"
             role="dialog"
             aria-modal="true"
@@ -179,10 +215,10 @@ export default function Navbar() {
             transition={{ type: 'tween', duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
             className="fixed inset-0 z-40 flex flex-col bg-primary md:hidden"
           >
-            {/* Spacer égal à la hauteur du header fixe (68px) */}
+            {/* Spaziatura uguale all'altezza dell'header fisso (68px) */}
             <div className="h-[68px] shrink-0" aria-hidden />
 
-            {/* Liens de navigation */}
+            {/* Link di navigazione */}
             <nav className="flex-1 overflow-y-auto px-4 pt-3">
               <div className="space-y-2">
                 {navLinks.map((link, index) => (
@@ -209,7 +245,7 @@ export default function Navbar() {
               </div>
             </nav>
 
-            {/* Carte de contact en bas */}
+            {/* Carta contatto in fondo */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}

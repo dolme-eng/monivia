@@ -3,7 +3,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, type Resolver } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronLeft, ChevronRight, Send } from 'lucide-react';
 import {
   buildPrefillBanner,
@@ -13,6 +14,8 @@ import {
 } from '@/lib/loan-prefill';
 import { calculateLoan } from '@/utils/finance';
 import { loanProducts, isLoanSlug } from '@/config/loans';
+import { loanFormSchema } from '@/lib/validations';
+import { getCsrfToken } from '@/lib/csrf-client';
 import TrustStrip from '@/components/TrustStrip';
 
 const steps = [
@@ -38,10 +41,10 @@ interface FormValues {
   sourcePage: string;
 }
 
-const Label = ({ children }: { children: React.ReactNode }) => (
-  <span className="mb-2 block ml-1 text-[11px] font-black uppercase tracking-widest text-slate-400">
+const Label = ({ children, htmlFor }: { children: React.ReactNode; htmlFor?: string }) => (
+  <label htmlFor={htmlFor} className="mb-2 block ml-1 text-[11px] font-black uppercase tracking-widest text-slate-400">
     {children}
-  </span>
+  </label>
 );
 
 const ErrorMessage = ({ message, id }: { message?: string; id?: string }) => {
@@ -88,7 +91,7 @@ export default function LoanForm() {
   const formTopRef = useRef<HTMLDivElement>(null);
 
   const { register, handleSubmit, control, trigger, setValue, formState: { errors, isSubmitting } } = useForm<FormValues>({
-    resolver: zodResolver(loanSchema),
+    resolver: zodResolver(loanFormSchema) as Resolver<FormValues>,
     defaultValues: {
       nome: '', cognome: '', codiceFiscale: '', email: '', telefono: '',
       impiego: 'Dipendente Tempo Indeterminato', reddito: '', finalita: 'Acquisto Auto',
@@ -145,7 +148,15 @@ export default function LoanForm() {
   const onSubmit = async (data: FormValues) => {
     setServerError('');
     try {
-      const response = await fetch('/api/loan', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const csrfToken = await getCsrfToken();
+      const response = await fetch('/api/loan', { 
+        method: 'POST', 
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        }, 
+        body: JSON.stringify(data) 
+      });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Errore durante l'invio");
       setPracticeId(String(result.practiceId || '').replace(/^PD-/, ''));
@@ -233,28 +244,28 @@ export default function LoanForm() {
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <Label>Nome *</Label>
-                    <input {...register('nome', { required: 'Il nome è obbligatorio', minLength: { value: 2, message: 'Minimo 2 caratteri' }, pattern: { value: /^[a-zA-ZÀ-ÿ\s'-]+$/, message: 'Caratteri non validi' } })} aria-invalid={!!errors.nome} aria-describedby={errors.nome ? 'error-nome' : undefined} placeholder="Es: Mario" autoComplete="given-name" className={fieldClass(!!errors.nome)} />
+                    <Label htmlFor="loan-nome">Nome *</Label>
+                    <input id="loan-nome" {...register('nome', { required: 'Il nome è obbligatorio', minLength: { value: 2, message: 'Minimo 2 caratteri' }, pattern: { value: /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\s'-]*$/, message: 'Deve iniziare con una lettera' } })} aria-invalid={!!errors.nome} aria-describedby={errors.nome ? 'error-nome' : undefined} placeholder="Es: Mario" autoComplete="given-name" className={fieldClass(!!errors.nome)} />
                     <ErrorMessage id="error-nome" message={errors.nome?.message} />
                   </div>
                   <div>
-                    <Label>Cognome *</Label>
-                    <input {...register('cognome', { required: 'Il cognome è obbligatorio', minLength: { value: 2, message: 'Minimo 2 caratteri' }, pattern: { value: /^[a-zA-ZÀ-ÿ\s'-]+$/, message: 'Caratteri non validi' } })} aria-invalid={!!errors.cognome} aria-describedby={errors.cognome ? 'error-cognome' : undefined} placeholder="Es: Rossi" autoComplete="family-name" className={fieldClass(!!errors.cognome)} />
+                    <Label htmlFor="loan-cognome">Cognome *</Label>
+                    <input id="loan-cognome" {...register('cognome', { required: 'Il cognome è obbligatorio', minLength: { value: 2, message: 'Minimo 2 caratteri' }, pattern: { value: /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\s'-]*$/, message: 'Deve iniziare con una lettera' } })} aria-invalid={!!errors.cognome} aria-describedby={errors.cognome ? 'error-cognome' : undefined} placeholder="Es: Rossi" autoComplete="family-name" className={fieldClass(!!errors.cognome)} />
                     <ErrorMessage id="error-cognome" message={errors.cognome?.message} />
                   </div>
                   <div>
-                    <Label>Codice Fiscale *</Label>
-                    <input {...register('codiceFiscale', { required: 'Il codice fiscale è obbligatorio', pattern: { value: /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i, message: 'Formato non valido' }, onChange: (e) => { e.target.value = e.target.value.toUpperCase(); } })} aria-invalid={!!errors.codiceFiscale} aria-describedby={errors.codiceFiscale ? 'error-cf' : undefined} placeholder="RSSMRA80A01H501W" className={`${fieldClass(!!errors.codiceFiscale)} uppercase`} />
+                    <Label htmlFor="loan-codiceFiscale">Codice Fiscale *</Label>
+                    <input id="loan-codiceFiscale" {...register('codiceFiscale', { required: 'Il codice fiscale è obbligatorio', pattern: { value: /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i, message: 'Formato non valido' }, onChange: (e) => { e.target.value = e.target.value.toUpperCase(); } })} aria-invalid={!!errors.codiceFiscale} aria-describedby={errors.codiceFiscale ? 'error-cf' : undefined} placeholder="RSSMRA80A01H501W" className={`${fieldClass(!!errors.codiceFiscale)} uppercase`} />
                     <ErrorMessage id="error-cf" message={errors.codiceFiscale?.message} />
                   </div>
                   <div>
-                    <Label>Email *</Label>
-                    <input type="email" inputMode="email" autoComplete="email" {...register('email', { required: "L'email è obbligatoria", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Email non valida' } })} aria-invalid={!!errors.email} aria-describedby={errors.email ? 'error-email' : undefined} placeholder="mario.rossi@email.it" className={fieldClass(!!errors.email)} />
+                    <Label htmlFor="loan-email">Email *</Label>
+                    <input id="loan-email" type="email" inputMode="email" autoComplete="email" {...register('email', { required: "L'email è obbligatoria", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Email non valida' } })} aria-invalid={!!errors.email} aria-describedby={errors.email ? 'error-email' : undefined} placeholder="mario.rossi@email.it" className={fieldClass(!!errors.email)} />
                     <ErrorMessage id="error-email" message={errors.email?.message} />
                   </div>
                   <div className="sm:col-span-2">
-                    <Label>Telefono *</Label>
-                    <input type="tel" inputMode="tel" autoComplete="tel" {...register('telefono', { required: 'Il telefono è obbligatorio', pattern: { value: /^(\+?\d{1,3})?[- .]?[\d- .]{8,15}$/, message: 'Numero non valido' } })} aria-invalid={!!errors.telefono} aria-describedby={errors.telefono ? 'error-telefono' : undefined} placeholder="Es: +39 333 1234567" className={fieldClass(!!errors.telefono)} />
+                    <Label htmlFor="loan-telefono">Telefono *</Label>
+                    <input id="loan-telefono" type="tel" inputMode="tel" autoComplete="tel" {...register('telefono', { required: 'Il telefono è obbligatorio', pattern: { value: /^(\+?\d{1,3})?[- .]?[\d- .]{8,15}$/, message: 'Numero non valido' } })} aria-invalid={!!errors.telefono} aria-describedby={errors.telefono ? 'error-telefono' : undefined} placeholder="Es: +39 333 1234567" className={fieldClass(!!errors.telefono)} />
                     <ErrorMessage id="error-telefono" message={errors.telefono?.message} />
                   </div>
                 </div>
@@ -271,7 +282,7 @@ export default function LoanForm() {
 
                 {/* Importo slider */}
                 <div>
-                  <Label>Importo richiesto (€) *</Label>
+                  <Label htmlFor="loan-importo">Importo richiesto (€) *</Label>
                   <div className={`rounded-lg border-2 bg-slate-50 p-5 ${errors.importo ? 'border-red-300' : 'border-slate-200'}`}>
                     <Controller name="importo" control={control} rules={{ required: 'Richiesto', min: { value: 5000, message: 'Minimo 5.000€' }, max: { value: 1000000, message: 'Massimo 1.000.000€' } }}
                       render={({ field }) => (
@@ -279,7 +290,7 @@ export default function LoanForm() {
                           <div className="mb-4 flex items-baseline justify-between">
                             <div className="flex items-baseline gap-1">
                               <span className="text-2xl font-black text-primary">€</span>
-                              <input type="number" min={5000} max={1000000} step={1000} aria-label="Importo prestito" aria-invalid={!!errors.importo} aria-describedby={errors.importo ? 'error-importo' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 1000000) v = 1000000; field.onChange(v); }} onBlur={() => { if (field.value < 5000) field.onChange(5000); field.onBlur(); }} className="w-28 bg-transparent text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
+                              <input id="loan-importo" type="number" min={5000} max={1000000} step={1000} aria-label="Importo prestito" aria-invalid={!!errors.importo} aria-describedby={errors.importo ? 'error-importo' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 1000000) v = 1000000; field.onChange(v); }} onBlur={() => { if (field.value < 5000) field.onChange(5000); field.onBlur(); }} className="w-28 bg-transparent text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
                             </div>
                             <div className="text-right text-[10px] font-bold uppercase tracking-wider text-slate-400">
                               <p>Min 5.000€</p><p>Max 1.000.000€</p>
@@ -295,14 +306,14 @@ export default function LoanForm() {
 
                 {/* Durata slider */}
                 <div>
-                  <Label>Durata del prestito (mesi) *</Label>
+                  <Label htmlFor="loan-durata">Durata del prestito (mesi) *</Label>
                   <div className={`rounded-lg border-2 bg-slate-50 p-5 ${errors.durata ? 'border-red-300' : 'border-slate-200'}`}>
                     <Controller name="durata" control={control} rules={{ required: 'Richiesto', min: { value: 12, message: 'Minimo 12 mesi' }, max: { value: 360, message: 'Massimo 360 mesi' } }}
                       render={({ field }) => (
                         <>
                           <div className="mb-4 flex items-baseline justify-between">
                             <div className="flex items-baseline gap-2">
-                              <input type="number" min={12} max={360} step={6} aria-label="Durata prestito in mesi" aria-invalid={!!errors.durata} aria-describedby={errors.durata ? 'error-durata' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 360) v = 360; field.onChange(v); }} onBlur={() => { if (field.value < 12) field.onChange(12); field.onBlur(); }} className="w-20 bg-transparent text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
+                              <input id="loan-durata" type="number" min={12} max={360} step={6} aria-label="Durata prestito in mesi" aria-invalid={!!errors.durata} aria-describedby={errors.durata ? 'error-durata' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 360) v = 360; field.onChange(v); }} onBlur={() => { if (field.value < 12) field.onChange(12); field.onBlur(); }} className="w-20 bg-transparent text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
                               <span className="text-lg font-bold text-slate-500">mesi</span>
                             </div>
                             <div className="text-right text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -320,8 +331,8 @@ export default function LoanForm() {
                 {/* Campi aggiuntivi */}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <Label>Tipo di impiego</Label>
-                    <select {...register('impiego')} className="field-shell">
+                    <Label htmlFor="loan-impiego">Tipo di impiego</Label>
+                    <select id="loan-impiego" {...register('impiego')} className="field-shell">
                       <option>Dipendente Tempo Indeterminato</option>
                       <option>Dipendente Tempo Determinato</option>
                       <option>Autonomo / Libero Professionista</option>
@@ -329,13 +340,13 @@ export default function LoanForm() {
                     </select>
                   </div>
                   <div>
-                    <Label>Reddito mensile netto (€) *</Label>
-                    <input type="number" {...register('reddito', { required: 'Obbligatorio', min: { value: 500, message: 'Min 500€' }, max: { value: 1000000, message: 'Max 1.000.000€' } })} aria-invalid={!!errors.reddito} aria-describedby={errors.reddito ? 'error-reddito' : undefined} placeholder="Es: 2500" className={fieldClass(!!errors.reddito)} />
+                    <Label htmlFor="loan-reddito">Reddito mensile netto (€) *</Label>
+                    <input id="loan-reddito" type="number" {...register('reddito', { required: 'Obbligatorio', min: { value: 500, message: 'Min 500€' }, max: { value: 1000000, message: 'Max 1.000.000€' } })} aria-invalid={!!errors.reddito} aria-describedby={errors.reddito ? 'error-reddito' : undefined} placeholder="Es: 2500" className={fieldClass(!!errors.reddito)} />
                     <ErrorMessage id="error-reddito" message={errors.reddito?.message} />
                   </div>
                   <div>
-                    <Label>Finalità</Label>
-                    <select {...register('finalita')} className="field-shell">
+                    <Label htmlFor="loan-finalita">Finalità</Label>
+                    <select id="loan-finalita" {...register('finalita')} className="field-shell">
                       <option>Acquisto Auto</option>
                       <option>Ristrutturazione Casa</option>
                       <option>Consolidamento Debiti</option>
@@ -344,8 +355,8 @@ export default function LoanForm() {
                     </select>
                   </div>
                   <div>
-                    <Label>Anzianità lavorativa (anni) *</Label>
-                    <input type="number" {...register('anzianita', { required: 'Obbligatorio', min: { value: 0, message: 'Minimo 0' }, max: { value: 50, message: 'Massimo 50' } })} aria-invalid={!!errors.anzianita} aria-describedby={errors.anzianita ? 'error-anzianita' : undefined} placeholder="Es: 5" className={fieldClass(!!errors.anzianita)} />
+                    <Label htmlFor="loan-anzianita">Anzianità lavorativa (anni) *</Label>
+                    <input id="loan-anzianita" type="number" {...register('anzianita', { required: 'Obbligatorio', min: { value: 0, message: 'Minimo 0' }, max: { value: 50, message: 'Massimo 50' } })} aria-invalid={!!errors.anzianita} aria-describedby={errors.anzianita ? 'error-anzianita' : undefined} placeholder="Es: 5" className={fieldClass(!!errors.anzianita)} />
                     <ErrorMessage id="error-anzianita" message={errors.anzianita?.message} />
                   </div>
                 </div>

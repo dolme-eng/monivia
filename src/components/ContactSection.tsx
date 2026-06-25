@@ -2,15 +2,22 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useForm } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TestimonialSlider from '@/components/Testimonials';
 import { siteConfig } from '@/config/site';
 import { fadeInUp } from '@/lib/motion';
 import { contactSchema } from '@/lib/validations';
-import type { z } from 'zod';
+import { getCsrfToken } from '@/lib/csrf-client';
 
-type ContactFormValues = z.infer<typeof contactSchema>;
+type ContactFormValues = {
+  nome: string;
+  email: string;
+  oggetto: string;
+  message: string;
+  sourcePage: string;
+  website?: string;
+};
 
 const ErrorMessage = ({ message, id }: { message?: string; id?: string }) => {
   if (!message) return null;
@@ -35,8 +42,8 @@ export default function ContactSection() {
     handleSubmit, 
     reset, 
     formState: { errors, isSubmitting } 
-  } = useForm<ContactFormValues & { website?: string }>({
-    resolver: zodResolver(contactSchema),
+  } = useForm<ContactFormValues>({
+    resolver: zodResolver(contactSchema) as Resolver<ContactFormValues>,
     defaultValues: {
       nome: '',
       email: '',
@@ -47,12 +54,16 @@ export default function ContactSection() {
     },
   });
 
-  const onSubmit = async (data: ContactFormValues & { website?: string }) => {
+  const onSubmit = async (data: ContactFormValues) => {
     setContactStatus('loading');
     try {
+      const csrfToken = await getCsrfToken();
       const response = await fetch('/api/contact', { 
         method: 'POST', 
-        headers: { 'Content-Type': 'application/json' }, 
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        }, 
         body: JSON.stringify(data) 
       });
       if (!response.ok) throw new Error();

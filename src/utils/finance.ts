@@ -11,7 +11,7 @@ export function calculateLoan(amount: number, months: number, insurance: boolean
   
   // Amortization formula
   const x = Math.pow(1 + monthlyRate, months);
-  const baseMonthly = (amount * x * monthlyRate) / (x - 1);
+  const baseMonthly = monthlyRate === 0 ? amount / months : (amount * x * monthlyRate) / (x - 1);
   const insuranceCost = insurance ? amount * insuranceRate : 0;
   const totalMonthly = baseMonthly + insuranceCost;
   

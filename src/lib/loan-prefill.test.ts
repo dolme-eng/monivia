@@ -54,11 +54,11 @@ describe('Loan Prefill', () => {
   });
 
   it('extracts finalita from pathname correctly', () => {
-    expect(finalitaFromPathname('/prestiti/personale')).toBe('personale');
-    expect(finalitaFromPathname('/prestiti/auto')).toBe('auto');
-    expect(finalitaFromPathname('/prestiti/immobiliare')).toBe('immobiliare');
-    expect(finalitaFromPathname('/prestiti/consolidamento')).toBe('consolidamento');
-    expect(finalitaFromPathname('/prestiti/business')).toBe('business');
+    expect(finalitaFromPathname('/prestiti/personale')).toBe('Viaggi / Benessere');
+    expect(finalitaFromPathname('/prestiti/auto')).toBe('Acquisto Auto');
+    expect(finalitaFromPathname('/prestiti/immobiliare')).toBe('Ristrutturazione Casa');
+    expect(finalitaFromPathname('/prestiti/consolidamento')).toBe('Consolidamento Debiti');
+    expect(finalitaFromPathname('/prestiti/business')).toBe('Altro');
   });
 
   it('returns undefined for unknown pathname', () => {

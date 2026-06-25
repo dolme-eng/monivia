@@ -1,9 +1,14 @@
-'use client';
-
 import Link from 'next/link';
 import { ArrowLeft, FileQuestion } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: '404 — Pagina non trovata | Monivia',
+  description: 'La pagina che stai cercando non esiste o è stata spostata.',
+  robots: { index: false },
+};
 
 export default function NotFound() {
   return (

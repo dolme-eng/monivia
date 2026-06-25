@@ -5,17 +5,22 @@ import { buildContactAutoReplyEmail, buildContactNotificationEmail } from '@/lib
 import { guardSubmission } from '@/lib/security';
 import { normalizeText } from '@/lib/sanitization';
 import { contactSchema } from '@/lib/validations';
-
-const contactSchema = z.object({
-  nome: z.string().trim().min(2).max(80),
-  email: z.string().trim().email().max(120),
-  oggetto: z.string().trim().min(2).max(120),
-  message: z.string().trim().min(10).max(4000),
-  sourcePage: z.string().trim().max(200).optional().default('/contatti'),
-});
+import { verifyCsrfToken } from '@/lib/csrf';
 
 export async function POST(request: Request) {
   try {
+    // CSRF check
+    const csrfToken = request.headers.get('x-csrf-token');
+    if (!verifyCsrfToken(csrfToken)) {
+      return NextResponse.json({ error: 'Token CSRF non valido' }, { status: 403 });
+    }
+
+    // Content-Type check
+    const contentType = request.headers.get('content-type');
+    if (!contentType?.includes('application/json')) {
+      return NextResponse.json({ error: 'Content-Type non valido' }, { status: 415 });
+    }
+
     const body = await request.json().catch(() => null);
     if (!body || typeof body !== 'object') {
       return NextResponse.json({ error: 'Dati non validi' }, { status: 400 });

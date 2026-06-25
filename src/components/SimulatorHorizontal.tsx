@@ -81,9 +81,9 @@ export default function SimulatorHorizontal() {
 
   /* ─────────────────────────────────────────────────────────────
      LAYOUT
-     Mobile  : résultat bandeau bas + sliders empilés
-     Tablette (sm–lg) : grille 2×2
-     Desktop (lg+) : 4 colonnes
+     Mobile  : risultato barra bassa + sliders impilati
+     Tablette (sm–lg) : griglia 2×2
+     Desktop (lg+) : 4 colonne
   ───────────────────────────────────────────────────────────── */
   return (
     <div
@@ -102,7 +102,7 @@ export default function SimulatorHorizontal() {
       </div>
       <div className="pointer-events-none absolute inset-0 bg-primary/80 backdrop-blur-[4px]" aria-hidden />
 
-      {/* ─── Zone contrôles ─── */}
+      {/* ─── Zona controlli ─── */}
       <div className="relative z-10 p-3 sm:p-4">
 
         {/* Desktop 4-col / Tablette 2-col / Mobile 1-col */}
@@ -138,6 +138,10 @@ export default function SimulatorHorizontal() {
               value={Math.max(MIN_AMOUNT, Math.min(MAX_AMOUNT, amount))}
               onChange={handleSliderChange}
               aria-label="Seleziona importo prestito"
+              aria-valuemin={MIN_AMOUNT}
+              aria-valuemax={MAX_AMOUNT}
+              aria-valuenow={amount}
+              aria-valuetext={`${amount.toLocaleString('it-IT')} euro`}
             />
             <div className="mt-2.5 flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-400">
               <span>5.000€</span>
@@ -165,6 +169,10 @@ export default function SimulatorHorizontal() {
               value={months}
               onChange={(e) => setMonths(Number(e.target.value))}
               aria-label="Seleziona durata prestito in mesi"
+              aria-valuemin={MIN_MONTHS}
+              aria-valuemax={MAX_MONTHS}
+              aria-valuenow={months}
+              aria-valuetext={`${months} mesi`}
             />
             <div className="mt-2.5 flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-400">
               <span>12 mesi</span>
@@ -178,6 +186,7 @@ export default function SimulatorHorizontal() {
             onClick={() => setInsurance((v) => !v)}
             className="rounded-lg border border-slate-200 bg-white p-5 text-left transition-all hover:border-secondary/40 hover:shadow-md sm:p-6"
             aria-pressed={insurance}
+            aria-label={`Assicurazione ${insurance ? 'inclusa' : 'non inclusa'}`}
           >
             {/* Icône + label */}
             <div className="flex items-center gap-3 sm:flex-col sm:items-start sm:gap-0">
@@ -211,8 +220,8 @@ export default function SimulatorHorizontal() {
 
           {/* ── Risultato ──
               Desktop : colonna destra
-              Tablette : span-2 (occupe toute la largeur de la 2e ligne)
-              Mobile  : masqué ici, affiché dans le bandeau bas
+              Tablette : span-2 (occupa tutta la larghezza della 2a riga)
+              Mobile  : nascosto qui, mostrato nella barra bassa
           */}
           <div className="relative hidden overflow-hidden rounded-lg bg-primary p-5 text-white sm:block sm:p-6 lg:block">
             <div className="flex h-full flex-col justify-between gap-4">
@@ -249,8 +258,8 @@ export default function SimulatorHorizontal() {
         </div>
       </div>
 
-      {/* ── Bandeau risultato mobile (< sm) ──
-          Affiché uniquement sur téléphone, collé en bas du widget.
+      {/* ── Barra risultato mobile (< sm) ──
+          Mostrato solo su telefono, fissato in fondo al widget.
       */}
       <div className="relative z-10 flex items-center justify-between gap-3 rounded-b-[32px] bg-primary px-5 py-4 sm:hidden">
         <div>

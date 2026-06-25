@@ -9,8 +9,8 @@ export type LoanProduct = {
   keywords: string[];
   benefits: string[];
   ogImage: string;
-  tan: number; // Taux Annuel Nominal (ex: 0.02 pour 2%)
-  insuranceRate: number; // Taux assurance mensuel (ex: 0.0005 pour 0.05%)
+  tan: number; // TAN annuale (es: 0.02 per 2%)
+  insuranceRate: number; // Tasso assicurativo mensile (es: 0.0005 per 0.05%)
 };
 
 export const loanProducts: Record<LoanSlug, LoanProduct> = {
@@ -38,7 +38,7 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
     keywords: ['prestito auto', 'finanziamento auto', 'Monivia auto'],
     benefits: ['Fino a 50.000€', 'Erogazione rapida', 'Assicurazione inclusa opzionale'],
     ogImage: '/assets/consultation.webp',
-    tan: 0.018, // Taux légèrement plus bas pour l'auto
+    tan: 0.018, // TAN leggermente più basso per l'auto
     insuranceRate: 0.0004,
   },
   immobiliare: {
@@ -51,7 +51,7 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
     keywords: ['prestito immobiliare', 'finanziamento casa', 'Monivia immobiliare'],
     benefits: ['Fino a più di 500.000€', 'Piani fino a 360 mesi', 'Perizia gratuita'],
     ogImage: '/assets/premium_hero.webp',
-    tan: 0.025, // Taux plus élevé pour l'immobilier
+    tan: 0.025, // TAN più elevato per l'immobiliare
     insuranceRate: 0.0006,
   },
   consolidamento: {
@@ -77,7 +77,7 @@ export const loanProducts: Record<LoanSlug, LoanProduct> = {
     keywords: ['prestito aziendale', 'finanziamento impresa', 'Monivia impresa'],
     benefits: ['Liquidità immediata', 'Piani ammortamento flessibili', 'Consulenza dedicata'],
     ogImage: '/assets/pro_bg.webp',
-    tan: 0.03, // Taux plus élevé pour le business
+    tan: 0.03, // TAN più elevato per business
     insuranceRate: 0.0007,
   },
 

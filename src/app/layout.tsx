@@ -14,6 +14,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: siteConfig.name,
   description: siteConfig.description,
+  alternates: {
+    canonical: siteConfig.url,
+    languages: {
+      'it': siteConfig.url,
+    },
+  },
   keywords: [
     'prestiti personali',
     'prestito online',
@@ -22,17 +28,6 @@ export const metadata: Metadata = {
     'credito italia',
     'Monivia',
   ],
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
   openGraph: {
     title: siteConfig.name,
     description: siteConfig.description,
@@ -42,7 +37,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     images: [
       {
-        url: '/logo.svg',
+        url: '/og-default.png',
         width: 1200,
         height: 630,
         alt: siteConfig.name,
@@ -53,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: siteConfig.name,
     description: siteConfig.description,
-    images: ['/logo.svg'],
+    images: ['/og-default.png'],
   },
 };
 
@@ -100,7 +95,6 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
         <link rel="manifest" href="/site.webmanifest" />
-        <link rel="canonical" href={siteConfig.url} />
         <meta name="msapplication-TileColor" content="#0f172a" />
         <meta name="theme-color" content="#0f172a" />
         <script

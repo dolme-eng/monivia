@@ -34,6 +34,9 @@ export default function CookieBanner() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 16, scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 280, damping: 26 }}
+          role="alertdialog"
+          aria-labelledby="cookie-title"
+          aria-describedby="cookie-desc"
           className="fixed bottom-[5rem] left-3 right-3 z-[100] sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-sm"
         >
           <div className="rounded-xl border border-slate-200 bg-white p-5" style={{ boxShadow: 'var(--shadow-card)' }}>
@@ -41,11 +44,11 @@ export default function CookieBanner() {
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary/10 text-secondary" aria-hidden>
                 <Cookie size={18} />
               </div>
-              <h3 className="text-base font-black text-primary">Utilizziamo i cookie</h3>
+              <h3 id="cookie-title" className="text-base font-black text-primary">Utilizziamo i cookie</h3>
             </div>
 
             {/* Body */}
-            <p className="mb-4 text-sm leading-relaxed text-slate-500">
+            <p id="cookie-desc" className="mb-4 text-sm leading-relaxed text-slate-500">
               Per migliorare la tua esperienza e analizzare il traffico.{' '}
               <Link href="/cookie-policy" className="font-bold text-secondary hover:underline">
                 Informativa cookie

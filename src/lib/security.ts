@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { siteConfig } from '@/config/site';
 import { kv } from '@vercel/kv';
+import { generateCsrfToken } from '@/lib/csrf';
 
 type SubmissionKind = 'contact' | 'loan';
 
@@ -19,6 +20,32 @@ const limitConfig: Record<SubmissionKind, { limit: number; windowMs: number }> =
   contact: { limit: 5, windowMs: 10 * 60 * 1000 },
   loan: { limit: 3, windowMs: 10 * 60 * 1000 },
 };
+
+// In-memory fallback when Redis is down
+const memoryStore = new Map<string, { count: number; expiresAt: number }>();
+
+// Periodic cleanup of expired entries (every 5 minutes)
+if (typeof setInterval !== 'undefined') {
+  setInterval(() => {
+    const now = Date.now();
+    for (const [key, entry] of memoryStore) {
+      if (now > entry.expiresAt) memoryStore.delete(key);
+    }
+  }, 5 * 60 * 1000);
+}
+
+function getMemoryRateLimit(key: string, limit: number, windowMs: number): boolean {
+  const now = Date.now();
+  const entry = memoryStore.get(key);
+
+  if (!entry || now > entry.expiresAt) {
+    memoryStore.set(key, { count: 1, expiresAt: now + windowMs });
+    return false;
+  }
+
+  entry.count += 1;
+  return entry.count > limit;
+}
 
 function getAllowedHosts() {
   const hosts = new Set<string>(['localhost', 'localhost:3000', '127.0.0.1', '127.0.0.1:3000', '::1']);
@@ -39,7 +66,7 @@ function getAllowedHosts() {
 
 function isAllowedOrigin(request: Request) {
   const origin = request.headers.get('origin') ?? request.headers.get('referer');
-  if (!origin) return true;
+  if (!origin) return false;
 
   try {
     const host = new URL(origin).host;
@@ -51,7 +78,7 @@ function isAllowedOrigin(request: Request) {
 
     return false;
   } catch {
-    return true;
+    return false;
   }
 }
 
@@ -80,8 +107,9 @@ async function isRateLimited(request: Request, kind: SubmissionKind, limit: numb
     
     return count > limit;
   } catch (error) {
-    console.error('Redis Rate Limit Error:', error);
-    return false; // Fail open to avoid blocking users if Redis is down
+    console.error('Redis Rate Limit Error — falling back to in-memory:', error);
+    // Fail closed: use in-memory fallback
+    return getMemoryRateLimit(key, limit, windowMs);
   }
 }
 

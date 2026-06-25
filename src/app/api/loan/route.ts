@@ -1,31 +1,27 @@
 import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
 import { siteConfig } from '@/config/site';
 import { sendEmail } from '@/lib/email';
 import { buildLoanAutoReplyEmail, buildLoanNotificationEmail } from '@/lib/email-templates';
 import { guardSubmission } from '@/lib/security';
 import { normalizeText } from '@/lib/sanitization';
-
-const loanSchema = z.object({
-  importo: z.coerce.number().min(5000).max(1000000),
-  durata: z.coerce.number().int().min(12).max(360),
-  impiego: z.string().trim().min(2).max(120),
-  nome: z.string().trim().min(2).max(80),
-  cognome: z.string().trim().min(2).max(80),
-  email: z.string().trim().email().max(120),
-  telefono: z.string().trim().max(30).regex(/^(\+?\d{1,3})?[- .]?[\d- .]{8,15}$/, 'Numero di telefono non valido'),
-  codiceFiscale: z.string().trim().regex(/^[A-Z0-9]{16}$/i, 'Codice fiscale non valido'),
-  reddito: z.coerce.number().min(500).max(1000000),
-  finalita: z.string().trim().min(2).max(120),
-  anzianita: z.coerce.number().int().min(0).max(50),
-  privacy: z.literal(true),
-  crif: z.literal(true),
-  sourcePage: z.string().trim().max(200).optional().default('/'),
-});
+import { loanSchema } from '@/lib/validations';
+import { verifyCsrfToken } from '@/lib/csrf';
 
 export async function POST(request: Request) {
   try {
+    // CSRF check
+    const csrfToken = request.headers.get('x-csrf-token');
+    if (!verifyCsrfToken(csrfToken)) {
+      return NextResponse.json({ error: 'Token CSRF non valido' }, { status: 403 });
+    }
+
+    // Content-Type check
+    const contentType = request.headers.get('content-type');
+    if (!contentType?.includes('application/json')) {
+      return NextResponse.json({ error: 'Content-Type non valido' }, { status: 415 });
+    }
+
     const body = await request.json().catch(() => null);
     if (!body || typeof body !== 'object') {
       return NextResponse.json({ error: 'Dati non validi' }, { status: 400 });

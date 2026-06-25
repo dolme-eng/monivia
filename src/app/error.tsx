@@ -30,7 +30,7 @@ export default function Error({
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-white/60">
             Si è verificato un errore imprevisto durante l&apos;elaborazione della tua richiesta.
-            Il nostro team è stato notificato.
+            Puoi riprovare oppure tornare alla pagina iniziale.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <button onClick={() => reset()} className="btn-secondary inline-flex items-center gap-2 px-8 py-4">

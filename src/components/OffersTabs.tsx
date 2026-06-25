@@ -74,12 +74,16 @@ export default function OffersTabs() {
         </motion.div>
 
         {/* Mobile tabs — pill scrollabili */}
-        <div className="mb-5 lg:hidden">
+        <div className="mb-5 lg:hidden" role="tablist" aria-label="Tipi di prestito">
           <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-3 scrollbar-hide sm:-mx-6 sm:px-6">
             {offers.map((offer, index) => (
               <button
                 key={offer.title}
                 type="button"
+                role="tab"
+                aria-selected={activeTab === index}
+                aria-controls={`panel-${offer.slug}`}
+                id={`tab-${offer.slug}`}
                 onClick={() => setActiveTab(index)}
                 className={`flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-black transition-all ${
                   activeTab === index
@@ -98,11 +102,15 @@ export default function OffersTabs() {
         <div className="grid gap-5 lg:grid-cols-[0.42fr_0.58fr] lg:gap-8">
 
           {/* Sidebar desktop only */}
-          <div className="hidden flex-col gap-3 lg:flex">
+          <div className="hidden flex-col gap-3 lg:flex" role="tablist" aria-label="Tipi di prestito">
             {offers.map((offer, index) => (
               <button
                 key={offer.title}
                 type="button"
+                role="tab"
+                aria-selected={activeTab === index}
+                aria-controls={`panel-${offer.slug}`}
+                id={`tab-${offer.slug}`}
                 onClick={() => setActiveTab(index)}
                 className={`flex items-center gap-4 rounded-lg border p-4 text-left transition-all duration-200 ${
                   activeTab === index
@@ -133,6 +141,9 @@ export default function OffersTabs() {
 
           {/* Content panel */}
           <div
+            id={`panel-${activeOffer.slug}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${activeOffer.slug}`}
             className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50"
             style={{ boxShadow: 'var(--shadow-soft)' }}
           >

@@ -8,49 +8,49 @@ describe('Security Guard', () => {
     (global as any).rateBuckets = new Map();
   });
 
-  it('blocks submissions with honeypot field filled', () => {
+  it('blocks submissions with honeypot field filled', async () => {
     const request = new Request('https://monivia.it/api/loan', {
       method: 'POST',
       headers: { 'origin': 'https://monivia.it' }
     });
-    const result = guardSubmission(request, { kind: 'loan', honeypot: 'spam' });
+    const result = await guardSubmission(request, { kind: 'loan', honeypot: 'spam' });
     expect(result.allowed).toBe(false);
     if (!result.allowed) {
       expect(result.silent).toBe(true);
     }
   });
 
-  it('allows submissions with empty honeypot', () => {
+  it('allows submissions with empty honeypot', async () => {
     const request = new Request('https://monivia.it/api/loan', {
       method: 'POST',
       headers: { 'origin': 'https://monivia.it' }
     });
-    const result = guardSubmission(request, { kind: 'loan', honeypot: '' });
+    const result = await guardSubmission(request, { kind: 'loan', honeypot: '' });
     expect(result.allowed).toBe(true);
   });
 
-  it('allows submissions from localhost', () => {
+  it('allows submissions from localhost', async () => {
     const request = new Request('http://localhost:3000/api/loan', {
       method: 'POST',
       headers: { 'origin': 'http://localhost:3000' }
     });
-    const result = guardSubmission(request, { kind: 'loan', honeypot: '' });
+    const result = await guardSubmission(request, { kind: 'loan', honeypot: '' });
     expect(result.allowed).toBe(true);
   });
 
-  it('blocks submissions from unauthorized origins', () => {
+  it('blocks submissions from unauthorized origins', async () => {
     const request = new Request('https://evil-site.com/api/loan', {
       method: 'POST',
       headers: { 'origin': 'https://evil-site.com' }
     });
-    const result = guardSubmission(request, { kind: 'loan', honeypot: '' });
+    const result = await guardSubmission(request, { kind: 'loan', honeypot: '' });
     expect(result.allowed).toBe(false);
     if (!result.allowed) {
       expect(result.response).toBeInstanceOf(NextResponse);
     }
   });
 
-  it('implements rate limiting for loan submissions', () => {
+  it('implements rate limiting for loan submissions', async () => {
     const request = new Request('https://monivia.it/api/loan', {
       method: 'POST',
       headers: { 
@@ -60,34 +60,26 @@ describe('Security Guard', () => {
     });
 
     // First submission should be allowed
-    let result = guardSubmission(request, { kind: 'loan', honeypot: '' });
+    let result = await guardSubmission(request, { kind: 'loan', honeypot: '' });
     expect(result.allowed).toBe(true);
 
     // Second submission should be allowed
-    result = guardSubmission(request, { kind: 'loan', honeypot: '' });
+    result = await guardSubmission(request, { kind: 'loan', honeypot: '' });
     expect(result.allowed).toBe(true);
 
     // Third submission should be allowed
-    result = guardSubmission(request, { kind: 'loan', honeypot: '' });
+    result = await guardSubmission(request, { kind: 'loan', honeypot: '' });
     expect(result.allowed).toBe(true);
 
     // Fourth submission should be rate limited (limit is 3)
-    result = guardSubmission(request, { kind: 'loan', honeypot: '' });
+    result = await guardSubmission(request, { kind: 'loan', honeypot: '' });
     expect(result.allowed).toBe(false);
     if (!result.allowed) {
       expect(result.response).toBeInstanceOf(NextResponse);
     }
   });
 
-  it('implements different rate limits for different submission kinds', () => {
-    const loanRequest = new Request('https://monivia.it/api/loan', {
-      method: 'POST',
-      headers: { 
-        'origin': 'https://monivia.it',
-        'x-forwarded-for': '192.168.1.2'
-      }
-    });
-
+  it('implements different rate limits for different submission kinds', async () => {
     const contactRequest = new Request('https://monivia.it/api/contact', {
       method: 'POST',
       headers: { 
@@ -98,24 +90,24 @@ describe('Security Guard', () => {
 
     // Contact has higher limit (5) than loan (3)
     for (let i = 0; i < 5; i++) {
-      const result = guardSubmission(contactRequest, { kind: 'contact', honeypot: '' });
+      const result = await guardSubmission(contactRequest, { kind: 'contact', honeypot: '' });
       expect(result.allowed).toBe(true);
     }
 
     // 6th contact submission should be blocked
-    const result = guardSubmission(contactRequest, { kind: 'contact', honeypot: '' });
+    const result = await guardSubmission(contactRequest, { kind: 'contact', honeypot: '' });
     expect(result.allowed).toBe(false);
     if (!result.allowed) {
       expect(result.response).toBeInstanceOf(NextResponse);
     }
   });
 
-  it('handles requests without IP headers gracefully', () => {
+  it('handles requests without IP headers gracefully', async () => {
     const request = new Request('https://monivia.it/api/loan', {
       method: 'POST',
       headers: { 'origin': 'https://monivia.it' }
     });
-    const result = guardSubmission(request, { kind: 'loan', honeypot: '' });
+    const result = await guardSubmission(request, { kind: 'loan', honeypot: '' });
     expect(result.allowed).toBe(true);
   });
 });

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { useReducedMotion } from '@/lib/motion';
@@ -80,9 +81,11 @@ export default function TestimonialSlider() {
               &quot;{testimonials[index].quote}&quot;
             </p>
             <div className="flex items-center gap-3">
-              <img
+              <Image
                 src={testimonials[index].image}
                 alt={testimonials[index].name}
+                width={44}
+                height={44}
                 className="h-11 w-11 rounded-full object-cover"
               />
               <div>

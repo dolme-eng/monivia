@@ -13,11 +13,11 @@ export default function GoogleAnalyticsWrapper({ gaId }: { gaId: string }) {
     }
 
     // Listen for consent event from CookieBanner
-    const handleConsent = (event: any) => {
+    const handleConsent = ((event: CustomEvent) => {
       if (event.detail === 'accepted') {
         setHasConsent(true);
       }
-    };
+    }) as EventListener;
 
     window.addEventListener('monivia:cookie-consent', handleConsent);
     return () => window.removeEventListener('monivia:cookie-consent', handleConsent);

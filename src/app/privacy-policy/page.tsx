@@ -67,7 +67,7 @@ export default function PrivacyPolicy() {
             title: '4. I tuoi diritti',
             content: (
               <p>
-                Hai il diritto di accedere ai tuoi dati, chiederne la rettifica, la cancellazione o opporti al loro
+                Hai il diritto di accedere ai tuoi dati, chiederne la rettifica, la cancellazione o opporsi al loro
                 trattamento contattandoci all&apos;indirizzo {siteConfig.contact.email}.
               </p>
             ),

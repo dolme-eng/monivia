@@ -34,10 +34,12 @@ export default function NoteLegali() {
             title: 'Informazioni societarie',
             content: (
               <>
-                <p>Monivia S.p.A.</p>
-                <p>Sede Legale: Via Dante, 10 - 20121 Milano (MI)</p>
-                <p>P.IVA: 01234567890</p>
-                <p>Iscrizione OAM n. M123456</p>
+                <p>Monivia S.r.l.</p>
+                <p>Sede Legale: Via Savona, 15 — 20144 Milano (MI)</p>
+                <p>P.IVA / C.F. 10984760583</p>
+                <p>Iscrizione OAM n. A23741</p>
+                <p>REA MI-2139056</p>
+                <p>Capitale Sociale: € 95.000 i.v.</p>
               </>
             ),
           },
