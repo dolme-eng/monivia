@@ -22,7 +22,7 @@ export default function Icon() {
             fontSize: '96px',
             fontFamily: 'sans-serif',
             fontWeight: 900,
-            color: '#06b6d4',
+            color: '#00d4ff',
             marginTop: '8px',
           }}
         >

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { siteConfig } from '@/config/site';
 import { kv } from '@vercel/kv';
-import { generateCsrfToken } from '@/lib/csrf';
 
 type SubmissionKind = 'contact' | 'loan';
 

@@ -23,7 +23,7 @@ function brandEmailShell({ eyebrow, title, intro, body, footer }: BrandEmailShel
     <div style="margin:0;padding:0;background:#f8fafc;">
       <div style="max-width:640px;margin:0 auto;padding:24px 16px 40px 16px;">
         <div style="background:#0a1628;border-radius:24px 24px 0 0;padding:32px;text-align:center;">
-          <div style="color:#ffffff;font-size:32px;font-weight:900;letter-spacing:-1px;">MO<span style="color:#06b6d4;">NIVIA</span></div>
+          <div style="color:#ffffff;font-size:32px;font-weight:900;letter-spacing:-1px;">MO<span style="color:#00d4ff;">NIVIA</span></div>
           <div style="margin-top:8px;color:#94a3b8;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">${safeEyebrow}</div>
         </div>
         <div style="background:#ffffff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 24px 24px;padding:32px;">
@@ -77,7 +77,7 @@ export function buildContactNotificationEmail(data: { nome: string; email: strin
     body: `
       ${sectionCard('Dettagli contatto', [
         ['Nome', safeName],
-        ['Email', `<a href="mailto:${encodeURIComponent(data.email)}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a>`],
+        ['Email', `<a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a>`],
         ['Oggetto', safeSubject],
       ])}
       <div style="background:#f1f5f9;border-left:4px solid #06b6d4;border-radius:14px;padding:20px;">
@@ -85,7 +85,7 @@ export function buildContactNotificationEmail(data: { nome: string; email: strin
         <div style="color:#334155;font-size:15px;line-height:1.75;">${safeMessage}</div>
       </div>
     `,
-    footer: `Rispondi direttamente a <a href="mailto:${encodeURIComponent(data.email)}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a> per continuare la conversazione.`,
+    footer: `Rispondi direttamente a <a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a> per continuare la conversazione.`,
   });
 }
 
@@ -101,7 +101,7 @@ export function buildContactAutoReplyEmail(data: { nome: string; oggetto: string
       ${paragraph(`Abbiamo registrato il tuo messaggio relativo a <strong>${safeSubject}</strong>.`)}
       ${paragraph('In genere rispondiamo entro 24 ore lavorative.')}
       <div style="text-align:center;margin-top:28px;">
-        <a href="${siteConfig.url}" style="display:inline-block;background:#06b6d4;color:#ffffff;text-decoration:none;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:14px 22px;border-radius:14px;">Torna al sito</a>
+        <a href="${siteConfig.url}" style="display:inline-block;background:#00d4ff;color:#ffffff;text-decoration:none;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:14px 22px;border-radius:14px;">Torna al sito</a>
       </div>
     `,
   });
@@ -135,7 +135,7 @@ export function buildLoanNotificationEmail(data: {
     body: `
       ${sectionCard('Dettagli richiedente', [
         ['Nome', fullName],
-        ['Email', `<a href="mailto:${encodeURIComponent(data.email)}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a>`],
+        ['Email', `<a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a>`],
         ['Telefono', safePhone],
         ['Codice fiscale', safeTaxCode],
       ])}
@@ -154,7 +154,7 @@ export function buildLoanNotificationEmail(data: {
         <p style="margin:0;color:#334155;font-size:15px;line-height:1.75;">Il dossier è stato salvato e può essere preso in carico manualmente dalla squadra. Il cliente riceverà subito una conferma automatica.</p>
       </div>
     `,
-    footer: `Rispondi direttamente al cliente con un clic: <a href="mailto:${encodeURIComponent(data.email)}" style="color:#06b6d4;text-decoration:none;">${safeEmail}</a>.`,
+    footer: `Rispondi direttamente al cliente con un clic: <a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a>.`,
   });
 }
 
@@ -183,7 +183,7 @@ export function buildLoanAutoReplyEmail(data: {
         ['Finalità', escapeHtml(data.finalita ?? '-')],
       ])}
       <div style="text-align:center;margin-top:28px;">
-        <a href="${siteConfig.url}" style="display:inline-block;background:#06b6d4;color:#ffffff;text-decoration:none;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:14px 22px;border-radius:14px;">Visita Monivia</a>
+        <a href="${siteConfig.url}" style="display:inline-block;background:#00d4ff;color:#ffffff;text-decoration:none;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:14px 22px;border-radius:14px;">Visita Monivia</a>
       </div>
     `,
     footer: 'Tempo medio di risposta: entro 48 ore lavorative.',

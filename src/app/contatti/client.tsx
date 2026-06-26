@@ -1,44 +1,82 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useForm, type Resolver } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname } from 'next/navigation';
+import { Phone, Mail, MapPin } from 'lucide-react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import { siteConfig } from '@/config/site';
 import PageHero from '@/components/PageHero';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import TrustStrip from '@/components/TrustStrip';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { siteConfig } from '@/config/site';
 import { fadeInUp } from '@/lib/motion';
+import { contactSchema } from '@/lib/validations';
 import { getCsrfToken } from '@/lib/csrf-client';
+
+type ContactFormValues = {
+  nome: string;
+  email: string;
+  oggetto: string;
+  message: string;
+  sourcePage: string;
+  website?: string;
+};
 
 const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(siteConfig.contact.address)}`;
 
+const ErrorMessage = ({ message, id }: { message?: string; id?: string }) => {
+  if (!message) return null;
+  return (
+    <p id={id} className="mt-1.5 flex items-center gap-1 text-[11px] font-bold text-red-500">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+        <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      {message}
+    </p>
+  );
+};
+
+const fieldClass = (hasError?: boolean) =>
+  `field-shell transition-all ${hasError ? 'border-red-300 bg-red-50 focus:ring-red-200' : ''}`;
+
 function ContattiContent() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const pathname = usePathname();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setStatus('loading');
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormValues>({
+    resolver: zodResolver(contactSchema) as Resolver<ContactFormValues>,
+    defaultValues: {
+      nome: '',
+      email: '',
+      oggetto: '',
+      message: '',
+      sourcePage: pathname || '/contatti',
+      website: '',
+    },
+  });
 
+  const onSubmit = async (data: ContactFormValues) => {
     try {
       const csrfToken = await getCsrfToken();
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': csrfToken,
         },
-        body: JSON.stringify({ ...data, sourcePage: pathname || '/contatti' }),
+        body: JSON.stringify(data),
       });
       if (!response.ok) throw new Error();
       setStatus('success');
-      (e.target as HTMLFormElement).reset();
+      reset();
     } catch {
       setStatus('error');
     }
@@ -119,88 +157,85 @@ function ContattiContent() {
             </motion.div>
 
             <motion.div {...fadeInUp} className="surface-card p-6 sm:p-8 lg:p-10">
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 {/* Honeypot */}
-                <input
-                  type="text"
-                  name="website"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  aria-hidden="true"
-                  className="sr-only"
-                />
-                <input type="hidden" name="sourcePage" value={pathname || '/contatti'} />
+                <input type="text" {...register('website')} tabIndex={-1} autoComplete="off" className="sr-only" aria-hidden="true" />
+                <input type="hidden" {...register('sourcePage')} />
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label htmlFor="page-contact-nome" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
-                      Nome completo
+                      Nome *
                     </label>
                     <input
                       id="page-contact-nome"
-                      name="nome"
+                      {...register('nome')}
                       type="text"
                       autoComplete="name"
                       placeholder="Il tuo nome"
-                      className="field-shell"
-                      required
+                      className={fieldClass(!!errors.nome)}
+                      aria-invalid={!!errors.nome}
+                      aria-describedby={errors.nome ? 'error-page-nome' : undefined}
                     />
+                    <ErrorMessage id="error-page-nome" message={errors.nome?.message} />
                   </div>
                   <div>
                     <label htmlFor="page-contact-email" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
-                      Email
+                      Email *
                     </label>
                     <input
                       id="page-contact-email"
-                      name="email"
+                      {...register('email')}
                       type="email"
                       inputMode="email"
                       autoComplete="email"
                       placeholder="nome@email.it"
-                      className="field-shell"
-                      required
+                      className={fieldClass(!!errors.email)}
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? 'error-page-email' : undefined}
                     />
+                    <ErrorMessage id="error-page-email" message={errors.email?.message} />
                   </div>
                 </div>
 
                 <div>
                   <label htmlFor="page-contact-oggetto" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
-                    Oggetto
+                    Oggetto *
                   </label>
                   <input
                     id="page-contact-oggetto"
-                    name="oggetto"
+                    {...register('oggetto')}
                     type="text"
                     placeholder="Oggetto del messaggio"
-                    className="field-shell"
-                    required
+                    className={fieldClass(!!errors.oggetto)}
+                    aria-invalid={!!errors.oggetto}
+                    aria-describedby={errors.oggetto ? 'error-page-oggetto' : undefined}
                   />
+                  <ErrorMessage id="error-page-oggetto" message={errors.oggetto?.message} />
                 </div>
 
                 <div>
                   <label htmlFor="page-contact-message" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
-                    Messaggio
+                    Messaggio *
                   </label>
                   <textarea
                     id="page-contact-message"
-                    name="message"
+                    {...register('message')}
                     placeholder="Scrivi il tuo messaggio qui..."
                     rows={5}
-                    className="field-shell resize-none"
-                    required
+                    className={`field-shell min-h-[120px] resize-y ${fieldClass(!!errors.message)}`}
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? 'error-page-message' : undefined}
                   />
+                  <ErrorMessage id="error-page-message" message={errors.message?.message} />
                 </div>
 
                 <button
                   type="submit"
-                  disabled={status === 'loading'}
+                  disabled={isSubmitting}
                   className="btn-primary w-full py-4 text-sm uppercase tracking-widest"
                 >
-                  {status === 'loading'
-                    ? 'Invio in corso...'
-                    : status === 'success'
-                      ? 'Messaggio inviato ✓'
-                      : 'Invia messaggio'}
+                  {isSubmitting ? 'Invio in corso...' : 'Invia messaggio'}
                 </button>
 
                 <AnimatePresence>
@@ -221,7 +256,7 @@ function ContattiContent() {
                       exit={{ opacity: 0 }}
                       className="rounded-lg border border-red-100 bg-red-50 p-4 text-center text-sm font-bold text-red-500"
                     >
-                      Errore durante l&apos;invio. Riprova più tardi.
+                      Errore durante l&apos;invio. Riprova o scrivici a {siteConfig.contact.email}.
                     </motion.p>
                   )}
                 </AnimatePresence>

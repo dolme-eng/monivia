@@ -1,17 +1,16 @@
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 
-const CSRF_SECRET = process.env.CSRF_SECRET || process.env.NEXTAUTH_SECRET || '';
+const CSRF_SECRET = process.env.CSRF_SECRET || process.env.NEXTAUTH_SECRET;
 const CSRF_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 export function generateCsrfToken(): string {
   if (!CSRF_SECRET) {
-    console.warn('CSRF_SECRET not set — CSRF protection disabled');
+    throw new Error('CSRF_SECRET or NEXTAUTH_SECRET must be set in environment variables');
   }
   const timestamp = Date.now();
   const nonce = randomBytes(16).toString('hex');
   const payload = `${timestamp}:${nonce}`;
-  const secret = CSRF_SECRET || 'monivia-fallback';
-  const signature = createHmac('sha256', secret).update(payload).digest('hex');
+  const signature = createHmac('sha256', CSRF_SECRET).update(payload).digest('hex');
   return Buffer.from(`${payload}:${signature}`).toString('base64url');
 }
 
