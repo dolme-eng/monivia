@@ -6,10 +6,11 @@ type BrandEmailShellProps = {
   title: string;
   intro?: string;
   body: string;
+  plainText: string;
   footer?: string;
 };
 
-function brandEmailShell({ eyebrow, title, intro, body, footer }: BrandEmailShellProps) {
+function brandEmailShell({ eyebrow, title, intro, body, plainText, footer }: BrandEmailShellProps) {
   const safeEyebrow = escapeHtml(eyebrow);
   const safeTitle = escapeHtml(title);
   const safeIntro = intro
@@ -19,7 +20,7 @@ function brandEmailShell({ eyebrow, title, intro, body, footer }: BrandEmailShel
     ? `<div style="margin-top:32px;padding-top:20px;border-top:1px solid #e2e8f0;color:#64748b;font-size:12px;line-height:1.6;">${footer}</div>`
     : '';
 
-  return `
+  const html = `
     <div style="margin:0;padding:0;background:#f8fafc;">
       <div style="max-width:640px;margin:0 auto;padding:24px 16px 40px 16px;">
         <div style="background:#0a1628;border-radius:24px 24px 0 0;padding:32px;text-align:center;">
@@ -33,11 +34,22 @@ function brandEmailShell({ eyebrow, title, intro, body, footer }: BrandEmailShel
           ${safeFooter}
         </div>
         <div style="padding:18px 8px 0 8px;text-align:center;color:#94a3b8;font-size:11px;line-height:1.6;">
-          ${escapeHtml(siteConfig.name)} · ${escapeHtml(siteConfig.contact.address)} · ${escapeHtml(siteConfig.contact.email)}
+          ${escapeHtml(siteConfig.name)} &middot; ${escapeHtml(siteConfig.contact.address)} &middot; ${escapeHtml(siteConfig.contact.email)}<br/>
+          <a href="mailto:${siteConfig.contact.email}?subject=Disiscrizione" style="color:#94a3b8;text-decoration:underline;">Gestisci notifiche</a>
         </div>
       </div>
     </div>
   `;
+
+  const fullPlainText = [
+    plainText,
+    '',
+    '---',
+    `${siteConfig.name} · ${siteConfig.contact.address} · ${siteConfig.contact.email}`,
+    `Per gestire le notifiche, scrivi a ${siteConfig.contact.email}`,
+  ].join('\n');
+
+  return { html, text: fullPlainText };
 }
 
 function sectionCard(title: string, rows: Array<[string, string]>) {
@@ -72,8 +84,8 @@ export function buildContactNotificationEmail(data: { nome: string; email: strin
 
   return brandEmailShell({
     eyebrow: 'Nuovo contatto',
-    title: `Nuovo messaggio da ${safeName}`,
-    intro: 'Hai ricevuto un nuovo messaggio dal form contatti del sito.',
+    title: `Messaggio da ${safeName}`,
+    intro: 'Hai ricevuto un nuovo messaggio dal form contatti.',
     body: `
       ${sectionCard('Dettagli contatto', [
         ['Nome', safeName],
@@ -85,7 +97,17 @@ export function buildContactNotificationEmail(data: { nome: string; email: strin
         <div style="color:#334155;font-size:15px;line-height:1.75;">${safeMessage}</div>
       </div>
     `,
-    footer: `Rispondi direttamente a <a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a> per continuare la conversazione.`,
+    plainText: [
+      `NUOVO CONTATTO`,
+      '',
+      `Nome: ${data.nome}`,
+      `Email: ${data.email}`,
+      `Oggetto: ${data.oggetto}`,
+      '',
+      `Messaggio:`,
+      data.message,
+    ].join('\n'),
+    footer: `Rispondi a <a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a> per continuare.`,
   });
 }
 
@@ -95,15 +117,20 @@ export function buildContactAutoReplyEmail(data: { nome: string; oggetto: string
 
   return brandEmailShell({
     eyebrow: 'Conferma contatto',
-    title: `Grazie ${safeName}, abbiamo ricevuto il tuo messaggio`,
-    intro: 'Ti confermiamo la ricezione della tua richiesta. Un consulente Monivia la prenderà in carico al più presto.',
+    title: `Grazie ${safeName}`,
+    intro: 'Abbiamo ricevuto il tuo messaggio. Un consulente Monivia ti contatterà al piu presto.',
     body: `
-      ${paragraph(`Abbiamo registrato il tuo messaggio relativo a <strong>${safeSubject}</strong>.`)}
-      ${paragraph('In genere rispondiamo entro 24 ore lavorative.')}
-      <div style="text-align:center;margin-top:28px;">
-        <a href="${siteConfig.url}" style="display:inline-block;background:#00d4ff;color:#ffffff;text-decoration:none;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:14px 22px;border-radius:14px;">Torna al sito</a>
-      </div>
+      ${paragraph(`Messaggio relativo a: <strong>${safeSubject}</strong>`)}
+      ${paragraph('Rispondiamo entro 24 ore lavorative.')}
     `,
+    plainText: [
+      `Ciao ${data.nome},`,
+      '',
+      `Abbiamo ricevuto il tuo messaggio relativo a "${data.oggetto}".`,
+      'Un consulente Monivia ti contattera al piu presto.',
+      '',
+      'Rispondiamo entro 24 ore lavorative.',
+    ].join('\n'),
   });
 }
 
@@ -129,32 +156,42 @@ export function buildLoanNotificationEmail(data: {
   const safeTaxCode = escapeHtml(data.codiceFiscale);
 
   return brandEmailShell({
-    eyebrow: 'Nuova pratica finanziamento',
+    eyebrow: 'Nuova pratica',
     title: `Pratica ${escapeHtml(data.practiceId)}`,
-    intro: 'Hai ricevuto una nuova richiesta di prestito dal sito Monivia.',
+    intro: 'Nuova richiesta di prestito ricevuta dal sito.',
     body: `
-      ${sectionCard('Dettagli richiedente', [
+      ${sectionCard('Richiedente', [
         ['Nome', fullName],
         ['Email', `<a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a>`],
         ['Telefono', safePhone],
-        ['Codice fiscale', safeTaxCode],
+        ['Cod. Fiscale', safeTaxCode],
       ])}
-      ${sectionCard('Dettagli prestito', [
+      ${sectionCard('Prestito', [
         ['Pratica', escapeHtml(data.practiceId)],
         ['Importo', formatEuro(data.importo, 0)],
         ['Durata', `${escapeHtml(String(data.durata))} mesi`],
         ['Impiego', escapeHtml(data.impiego)],
-        ['Finalità', escapeHtml(data.finalita ?? '-')],
-        ['Reddito mensile', data.reddito != null ? formatEuro(data.reddito, 0) : '-'],
-        ['Anzianità lavorativa', data.anzianita != null ? `${escapeHtml(String(data.anzianita))} anni` : '-'],
-        ['Privacy', data.privacy ? 'Accettata' : 'Non indicata'],
-        ['CRIF', data.crif ? 'Autorizzato' : 'Non indicato'],
+        ['Finalita', escapeHtml(data.finalita ?? '-')],
+        ['Reddito', data.reddito != null ? formatEuro(data.reddito, 0) : '-'],
+        ['Anzianita', data.anzianita != null ? `${escapeHtml(String(data.anzianita))} anni` : '-'],
       ])}
-      <div style="background:#f1f5f9;border-left:4px solid #10b981;border-radius:14px;padding:20px;">
-        <p style="margin:0;color:#334155;font-size:15px;line-height:1.75;">Il dossier è stato salvato e può essere preso in carico manualmente dalla squadra. Il cliente riceverà subito una conferma automatica.</p>
-      </div>
     `,
-    footer: `Rispondi direttamente al cliente con un clic: <a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a>.`,
+    plainText: [
+      `NUOVA PRATICA: ${data.practiceId}`,
+      '',
+      `RICHIEDENTE`,
+      `Nome: ${data.nome} ${data.cognome}`,
+      `Email: ${data.email}`,
+      `Telefono: ${data.telefono}`,
+      `Cod. Fiscale: ${data.codiceFiscale}`,
+      '',
+      `PRESTITO`,
+      `Importo: ${data.importo} EUR`,
+      `Durata: ${data.durata} mesi`,
+      `Impiego: ${data.impiego}`,
+      `Finalita: ${data.finalita ?? '-'}`,
+    ].join('\n'),
+    footer: `Rispondi a <a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a> per gestire la pratica.`,
   });
 }
 
@@ -171,21 +208,27 @@ export function buildLoanAutoReplyEmail(data: {
 
   return brandEmailShell({
     eyebrow: 'Conferma pratica',
-    title: `Grazie ${safeName}, la tua pratica è stata ricevuta`,
-    intro: `Ti confermiamo la ricezione della pratica ${escapeHtml(data.practiceId)}.`,
+    title: `Pratica ${escapeHtml(data.practiceId)} ricevuta`,
+    intro: `Grazie ${safeName}. La tua richiesta e stata registrata.`,
     body: `
-      ${paragraph('La nostra squadra sta analizzando la tua richiesta e ti contatterà al più presto con il prossimo passo.')}
-      ${sectionCard('Riepilogo pratica', [
+      ${paragraph('La nostra squadra analizza la richiesta e ti contattera con il prossimo passo.')}
+      ${sectionCard('Riepilogo', [
         ['Pratica', escapeHtml(data.practiceId)],
         ['Importo', formatEuro(data.importo, 0)],
         ['Durata', `${escapeHtml(String(data.durata))} mesi`],
         ['Impiego', escapeHtml(data.impiego)],
-        ['Finalità', escapeHtml(data.finalita ?? '-')],
       ])}
-      <div style="text-align:center;margin-top:28px;">
-        <a href="${siteConfig.url}" style="display:inline-block;background:#00d4ff;color:#ffffff;text-decoration:none;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:14px 22px;border-radius:14px;">Visita Monivia</a>
-      </div>
     `,
-    footer: 'Tempo medio di risposta: entro 48 ore lavorative.',
+    plainText: [
+      `Ciao ${data.nome} ${data.cognome},`,
+      '',
+      `La tua pratica ${data.practiceId} e stata registrata.`,
+      '',
+      `Importo: ${data.importo} EUR`,
+      `Durata: ${data.durata} mesi`,
+      `Impiego: ${data.impiego}`,
+      '',
+      'La nostra squadra ti contattera con il prossimo passo.',
+    ].join('\n'),
   });
 }

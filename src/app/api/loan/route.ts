@@ -62,21 +62,21 @@ export async function POST(request: Request) {
 
     const practiceId = `PD-${randomUUID().split('-')[0].toUpperCase()}`;
 
-    const [teamEmail, autoReplyEmail] = await Promise.all([
+    const [teamEmailResult, autoReplyEmailResult] = await Promise.all([
       sendEmail({
         to: siteConfig.contact.email,
         replyTo: data.email,
         subject: `Nuova pratica ${practiceId} - ${data.nome} ${data.cognome}`,
-        html: buildLoanNotificationEmail({ ...data, practiceId }),
+        ...buildLoanNotificationEmail({ ...data, practiceId }),
       }),
       sendEmail({
         to: data.email,
         subject: `Conferma pratica ${practiceId} | Monivia`,
-        html: buildLoanAutoReplyEmail({ ...data, practiceId }),
+        ...buildLoanAutoReplyEmail({ ...data, practiceId }),
       }),
     ]);
 
-    if (!teamEmail.success) {
+    if (!teamEmailResult.success) {
       console.error('Internal loan notification email failed to send');
       return NextResponse.json(
         { error: 'Impossibile inviare la richiesta in questo momento. Riprova più tardi.' },
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!autoReplyEmail.success) {
+    if (!autoReplyEmailResult.success) {
       console.warn('Loan auto-reply email failed to send');
     }
 

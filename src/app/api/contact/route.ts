@@ -50,21 +50,21 @@ export async function POST(request: Request) {
       sourcePage: normalizeText(result.data.sourcePage) || '/contatti',
     };
 
-    const [teamEmail, autoReplyEmail] = await Promise.all([
+    const [teamEmailResult, autoReplyEmailResult] = await Promise.all([
       sendEmail({
         to: siteConfig.contact.email,
         replyTo: data.email,
         subject: `Nuovo messaggio da ${data.nome} - ${data.oggetto}`,
-        html: buildContactNotificationEmail(data),
+        ...buildContactNotificationEmail(data),
       }),
       sendEmail({
         to: data.email,
-        subject: 'Abbiamo ricevuto il tuo messaggio | Monivia',
-        html: buildContactAutoReplyEmail(data),
+        subject: 'Messaggio ricevuto | Monivia',
+        ...buildContactAutoReplyEmail(data),
       }),
     ]);
 
-    if (!teamEmail.success) {
+    if (!teamEmailResult.success) {
       console.error('Internal contact notification email failed to send');
       return NextResponse.json(
         { error: 'Impossibile inviare il messaggio in questo momento. Riprova più tardi.' },
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!autoReplyEmail.success) {
+    if (!autoReplyEmailResult.success) {
       console.warn('Contact auto-reply email failed to send');
     }
 
