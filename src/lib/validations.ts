@@ -8,6 +8,13 @@ export const contactSchema = z.object({
   sourcePage: z.string().trim().max(200).optional().default('/contatti'),
 });
 
+export const careerSchema = z.object({
+  nome: z.string().trim().min(2, 'Il nome deve contenere almeno 2 caratteri').max(80),
+  email: z.string().trim().email('Indirizzo email non valido').max(120),
+  message: z.string().trim().min(20, 'La presentazione deve contenere almeno 20 caratteri').max(4000),
+  website: z.string().optional(),
+});
+
 const baseLoanFields = {
   importo: z.coerce.number().min(5000, 'Minimo 5.000€').max(1000000, 'Massimo 1.000.000€'),
   durata: z.coerce.number().int().min(12, 'Minimo 12 mesi').max(360, 'Massimo 360 mesi'),

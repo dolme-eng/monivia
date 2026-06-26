@@ -9,39 +9,16 @@ import { siteConfig } from '@/config/site';
 import { fadeInUp } from '@/lib/motion';
 import { contactSchema } from '@/lib/validations';
 import { getCsrfToken } from '@/lib/csrf-client';
-
-type ContactFormValues = {
-  nome: string;
-  email: string;
-  oggetto: string;
-  message: string;
-  sourcePage: string;
-  website?: string;
-};
-
-const ErrorMessage = ({ message, id }: { message?: string; id?: string }) => {
-  if (!message) return null;
-  return (
-    <p id={id} className="mt-1.5 flex items-center gap-1 text-[11px] font-bold text-red-500">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-        <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
-      </svg>
-      {message}
-    </p>
-  );
-};
-
-const fieldClass = (hasError?: boolean) =>
-  `field-shell transition-all ${hasError ? 'border-red-300 bg-red-50 focus:ring-red-200' : ''}`;
+import { ErrorMessage, fieldClass, type ContactFormValues } from '@/components/form-shared';
 
 export default function ContactSection() {
   const [contactStatus, setContactStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  const { 
-    register, 
-    handleSubmit, 
-    reset, 
-    formState: { errors, isSubmitting } 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting }
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema) as Resolver<ContactFormValues>,
     defaultValues: {
@@ -58,13 +35,13 @@ export default function ContactSection() {
     setContactStatus('loading');
     try {
       const csrfToken = await getCsrfToken();
-      const response = await fetch('/api/contact', { 
-        method: 'POST', 
-        headers: { 
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': csrfToken,
-        }, 
-        body: JSON.stringify(data) 
+        },
+        body: JSON.stringify(data)
       });
       if (!response.ok) throw new Error();
       setContactStatus('success');
@@ -81,73 +58,73 @@ export default function ContactSection() {
           <motion.div {...fadeInUp} className="rounded-xl bg-white p-6 sm:p-8 lg:p-10" style={{ boxShadow: 'var(--shadow-card)' }}>
             <h2 className="text-2xl font-black tracking-tight text-primary sm:text-3xl">Hai una domanda?</h2>
             <p className="mb-7 mt-2 text-slate-500">La nostra squadra è a tua completa disposizione.</p>
-            
+
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Honeypot */}
               <input type="text" {...register('website')} tabIndex={-1} autoComplete="off" className="sr-only" aria-hidden="true" />
-              
+
               <div>
                 <label htmlFor="contact-nome" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Nome *</label>
-                <input 
-                  id="contact-nome" 
-                  {...register('nome')} 
-                  className={fieldClass(!!errors.nome)} 
-                  placeholder="Il tuo nome" 
+                <input
+                  id="contact-nome"
+                  {...register('nome')}
+                  className={fieldClass(!!errors.nome)}
+                  placeholder="Il tuo nome"
                   aria-invalid={!!errors.nome}
                   aria-describedby={errors.nome ? 'error-nome' : undefined}
                 />
                 <ErrorMessage id="error-nome" message={errors.nome?.message} />
               </div>
-              
+
               <div>
                 <label htmlFor="contact-email" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Email *</label>
-                <input 
-                  id="contact-email" 
-                  type="email" 
-                  {...register('email')} 
-                  className={fieldClass(!!errors.email)} 
-                  placeholder="nome@email.it" 
+                <input
+                  id="contact-email"
+                  type="email"
+                  {...register('email')}
+                  className={fieldClass(!!errors.email)}
+                  placeholder="nome@email.it"
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? 'error-email' : undefined}
                 />
                 <ErrorMessage id="error-email" message={errors.email?.message} />
               </div>
-              
+
               <div>
                 <label htmlFor="contact-oggetto" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Oggetto *</label>
-                <input 
-                  id="contact-oggetto" 
-                  {...register('oggetto')} 
-                  className={fieldClass(!!errors.oggetto)} 
-                  placeholder="Di cosa hai bisogno?" 
+                <input
+                  id="contact-oggetto"
+                  {...register('oggetto')}
+                  className={fieldClass(!!errors.oggetto)}
+                  placeholder="Di cosa hai bisogno?"
                   aria-invalid={!!errors.oggetto}
                   aria-describedby={errors.oggetto ? 'error-oggetto' : undefined}
                 />
                 <ErrorMessage id="error-oggetto" message={errors.oggetto?.message} />
               </div>
-              
+
               <div>
                 <label htmlFor="contact-message" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Messaggio *</label>
-                <textarea 
-                  id="contact-message" 
-                  {...register('message')} 
-                  rows={4} 
-                  className={`field-shell min-h-[120px] resize-y ${fieldClass(!!errors.message)}`} 
-                  placeholder="Scrivi qui il tuo messaggio..." 
+                <textarea
+                  id="contact-message"
+                  {...register('message')}
+                  rows={4}
+                  className={`field-shell min-h-[120px] resize-y ${fieldClass(!!errors.message)}`}
+                  placeholder="Scrivi qui il tuo messaggio..."
                   aria-invalid={!!errors.message}
                   aria-describedby={errors.message ? 'error-message' : undefined}
                 />
                 <ErrorMessage id="error-message" message={errors.message?.message} />
               </div>
-              
-              <button 
-                type="submit" 
-                disabled={isSubmitting} 
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
                 className="btn-primary w-full py-4"
               >
                 {isSubmitting ? 'Invio in corso...' : 'Invia messaggio'}
               </button>
-              
+
               {contactStatus === 'success' && (
                 <p className="rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-center text-sm font-bold text-emerald-700">
                   Messaggio inviato! Ti risponderemo al più presto.
@@ -160,7 +137,7 @@ export default function ContactSection() {
               )}
             </form>
           </motion.div>
-          
+
           <motion.div {...fadeInUp} className="lg:pt-4">
             <TestimonialSlider />
           </motion.div>

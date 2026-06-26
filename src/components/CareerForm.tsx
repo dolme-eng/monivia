@@ -3,86 +3,115 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useForm, type Resolver } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { getCsrfToken } from '@/lib/csrf-client';
+import { careerSchema } from '@/lib/validations';
+import { ErrorMessage, fieldClass } from '@/components/form-shared';
+
+type CareerFormValues = {
+  nome: string;
+  email: string;
+  message: string;
+  website?: string;
+};
 
 export default function CareerForm() {
   const pathname = usePathname();
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setStatus('loading');
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<CareerFormValues>({
+    resolver: zodResolver(careerSchema) as Resolver<CareerFormValues>,
+    defaultValues: { nome: '', email: '', message: '' },
+  });
 
-    const formData = new FormData(event.currentTarget);
-    const nome = String(formData.get('nome') ?? '').trim();
-    const email = String(formData.get('email') ?? '').trim();
-    const message = String(formData.get('message') ?? '').trim();
-
-    const payload = {
-      nome,
-      email,
-      oggetto: 'Candidatura spontanea',
-      message: `Candidatura da ${pathname || '/lavora-con-noi'}\n\n${message}`,
-      sourcePage: pathname || '/lavora-con-noi',
-      website: '',
-    };
-
+  const onSubmit = async (data: CareerFormValues) => {
     try {
       const csrfToken = await getCsrfToken();
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': csrfToken,
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          ...data,
+          oggetto: 'Candidatura spontanea',
+          message: `Candidatura da ${pathname || '/lavora-con-noi'}\n\n${data.message}`,
+          sourcePage: pathname || '/lavora-con-noi',
+          website: '',
+        }),
       });
       if (!response.ok) throw new Error();
       setStatus('success');
-      event.currentTarget.reset();
+      reset();
     } catch {
       setStatus('error');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 space-y-4 text-left">
-      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="sr-only" />
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4 text-left">
+      <input type="text" {...register('website')} tabIndex={-1} autoComplete="off" aria-hidden="true" className="sr-only" />
       <div>
         <label htmlFor="career-nome" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-400">
-          Nome completo
+          Nome completo *
         </label>
-        <input id="career-nome" name="nome" type="text" required aria-required="true" className="field-shell" placeholder="Il tuo nome" />
+        <input
+          id="career-nome"
+          {...register('nome')}
+          type="text"
+          className={fieldClass(!!errors.nome)}
+          placeholder="Il tuo nome"
+          aria-invalid={!!errors.nome}
+          aria-describedby={errors.nome ? 'error-career-nome' : undefined}
+        />
+        <ErrorMessage id="error-career-nome" message={errors.nome?.message} />
       </div>
       <div>
         <label htmlFor="career-email" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-400">
-          Email
+          Email *
         </label>
-        <input id="career-email" name="email" type="email" required aria-required="true" className="field-shell" placeholder="email@esempio.it" />
+        <input
+          id="career-email"
+          {...register('email')}
+          type="email"
+          inputMode="email"
+          className={fieldClass(!!errors.email)}
+          placeholder="email@esempio.it"
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? 'error-career-email' : undefined}
+        />
+        <ErrorMessage id="error-career-email" message={errors.email?.message} />
       </div>
       <div>
         <label htmlFor="career-message" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-400">
-          Presentazione breve
+          Presentazione breve *
         </label>
         <textarea
           id="career-message"
-          name="message"
+          {...register('message')}
           rows={5}
-          required
-          aria-required="true"
-          minLength={20}
-          className="field-shell resize-none"
+          className={`field-shell resize-none ${fieldClass(!!errors.message)}`}
           placeholder="Raccontaci il tuo percorso e il ruolo che ti interessa..."
+          aria-invalid={!!errors.message}
+          aria-describedby={errors.message ? 'error-career-message' : undefined}
         />
+        <ErrorMessage id="error-career-message" message={errors.message?.message} />
       </div>
       <motion.button
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         type="submit"
-        disabled={status === 'loading'}
+        disabled={isSubmitting}
         className="btn-primary w-full py-4 text-xs font-black uppercase tracking-widest"
       >
-        {status === 'loading' ? 'Invio in corso...' : status === 'success' ? 'Candidatura inviata' : 'Invia candidatura'}
+        {isSubmitting ? 'Invio in corso...' : status === 'success' ? 'Candidatura inviata' : 'Invia candidatura'}
       </motion.button>
       <AnimatePresence>
         {status === 'success' && (

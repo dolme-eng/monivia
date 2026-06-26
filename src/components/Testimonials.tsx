@@ -1,20 +1,19 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { useReducedMotion } from '@/lib/motion';
 
 const testimonials = [
-  { quote: 'Ho ottenuto il finanziamento per ristrutturare la mia trattoria in 8 giorni. Il team Monivia mi ha seguito passo dopo passo, senza burocrazia inutile.', initials: 'AB', name: 'Andrea Bianchi', city: 'Bologna', profession: 'Ristoratore', amount: '€ 75.000', image: 'https://i.pravatar.cc/150?u=andrea.bianchi@email.it' },
-  { quote: 'Da freelance, le banche tradizionali mi davano sempre problemi. Con Monivia ho trovato ascolto e una rata che rispetta il mio cash flow mensile.', initials: 'EF', name: 'Elena Ferraro', city: 'Torino', profession: 'Consulente freelance', amount: '€ 22.000', image: 'https://i.pravatar.cc/150?u=elena.ferraro@pec.it' },
-  { quote: 'Abbiamo usato il capitale per acquistare nuovi macchinari. I tempi sono stati rispettati al giorno. Ora consiglio Monivia a tutti i colleghi del settore.', initials: 'DM', name: 'Davide Moretti', city: 'Padova', profession: 'Titolare, EdilMoretti Snc', amount: '€ 150.000', image: 'https://i.pravatar.cc/150?u=d.moretti@edilmoretti.it' },
-  { quote: 'Ho consolidato due prestiti precedenti e oggi risparmio € 180 al mese. La piattaforma è trasparente: ho visto subito tutto il piano di ammortamento.', initials: 'SC', name: 'Sara Colombo', city: 'Genova', profession: 'Farmacista', amount: '€ 45.000', image: 'https://i.pravatar.cc/150?u=sara.colombo@farmagenova.it' },
-  { quote: 'Ristrutturazione delle camere finanziata al 100%. Documentazione minimale e risposta in 48 ore. Un\'esperienza che rifarei domani mattina.', initials: 'LM', name: 'Luca Marchetti', city: 'Firenze', profession: 'Titolare, B&B Il Girasole', amount: '€ 60.000', image: 'https://i.pravatar.cc/150?u=luca.marchetti@girasolebnb.it' },
-  { quote: 'Ho apprezzato la trasparenza contrattuale: nessuna sorpresa sui costi, nessuna clausola nascosta. Tutto chiaro dal primo preventivo online.', initials: 'GR', name: 'Giulia Romano', city: 'Verona', profession: 'Avvocato', amount: '€ 35.000', image: 'https://i.pravatar.cc/150?u=giulia.romano@studiolegalevr.it' },
-  { quote: 'Ho ampliato il mio negozio di elettronica con due nuovi punti vendita. Il consulente dedicato di Monivia ha capito subito le esigenze del mio business.', initials: 'MG', name: 'Matteo Gallo', city: 'Napoli', profession: 'Commerciante', amount: '€ 90.000', image: 'https://i.pravatar.cc/150?u=matteo.gallo@techstore.na.it' },
-  { quote: 'Ho aperto il mio studio privato grazie a questo finanziamento. Da domanda online a erogazione: meno di 10 giorni lavorativi. Davvero impressionante.', initials: 'CC', name: 'Chiara Costa', city: 'Trieste', profession: 'Fisioterapista', amount: '€ 28.000', image: 'https://i.pravatar.cc/150?u=chiara.costa@fisio-ts.it' },
+  { quote: 'Ho ottenuto il finanziamento per ristrutturare la mia trattoria in 8 giorni. Il team Monivia mi ha seguito passo dopo passo, senza burocrazia inutile.', initials: 'AB', name: 'Andrea Bianchi', city: 'Bologna', profession: 'Ristoratore', amount: '€ 75.000', color: '#00d4ff' },
+  { quote: 'Da freelance, le banche tradizionali mi davano sempre problemi. Con Monivia ho trovato ascolto e una rata che rispetta il mio cash flow mensile.', initials: 'EF', name: 'Elena Ferraro', city: 'Torino', profession: 'Consulente freelance', amount: '€ 22.000', color: '#6366f1' },
+  { quote: 'Abbiamo usato il capitale per acquistare nuovi macchinari. I tempi sono stati rispettati al giorno. Ora consiglio Monivia a tutti i colleghi del settore.', initials: 'DM', name: 'Davide Moretti', city: 'Padova', profession: 'Titolare, EdilMoretti Snc', amount: '€ 150.000', color: '#00d4ff' },
+  { quote: 'Ho consolidato due prestiti precedenti e oggi risparmio € 180 al mese. La piattaforma è trasparente: ho visto subito tutto il piano di ammortamento.', initials: 'SC', name: 'Sara Colombo', city: 'Genova', profession: 'Farmacista', amount: '€ 45.000', color: '#6366f1' },
+  { quote: 'Ristrutturazione delle camere finanziata al 100%. Documentazione minimale e risposta in 48 ore. Un\'esperienza che rifarei domani mattina.', initials: 'LM', name: 'Luca Marchetti', city: 'Firenze', profession: 'Titolare, B&B Il Girasole', amount: '€ 60.000', color: '#00d4ff' },
+  { quote: 'Ho apprezzato la trasparenza contrattuale: nessuna sorpresa sui costi, nessuna clausola nascosta. Tutto chiaro dal primo preventivo online.', initials: 'GR', name: 'Giulia Romano', city: 'Verona', profession: 'Avvocato', amount: '€ 35.000', color: '#6366f1' },
+  { quote: 'Ho ampliato il mio negozio di elettronica con due nuovi punti vendita. Il consulente dedicato di Monivia ha capito subito le esigenze del mio business.', initials: 'MG', name: 'Matteo Gallo', city: 'Napoli', profession: 'Commerciante', amount: '€ 90.000', color: '#00d4ff' },
+  { quote: 'Ho aperto il mio studio privato grazie a questo finanziamento. Da domanda online a erogazione: meno di 10 giorni lavorativi. Davvero impressionante.', initials: 'CC', name: 'Chiara Costa', city: 'Trieste', profession: 'Fisioterapista', amount: '€ 28.000', color: '#6366f1' },
 ];
 
 const swipeConfidenceThreshold = 10000;
@@ -39,6 +38,8 @@ export default function TestimonialSlider() {
     const timer = setInterval(() => setIndex((prev) => (prev + 1) % testimonials.length), 6000);
     return () => clearInterval(timer);
   }, [paused, reducedMotion]);
+
+  const t = testimonials[index];
 
   return (
     <div
@@ -69,29 +70,30 @@ export default function TestimonialSlider() {
             }}
             className="w-full cursor-grab active:cursor-grabbing"
           >
-            {/* Stars — last star uses accent color */}
+            {/* Stars — all gold */}
             <div className="mb-4 flex gap-1" aria-hidden>
               {[...Array(5)].map((_, i) => (
-                <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill={i === 4 ? 'var(--color-accent)' : '#FACC15'}>
+                <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#FACC15">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
               ))}
             </div>
             <p className="mb-6 text-base font-medium italic leading-relaxed text-white/88 sm:text-lg">
-              &quot;{testimonials[index].quote}&quot;
+              &quot;{t.quote}&quot;
             </p>
             <div className="flex items-center gap-3">
-              <Image
-                src={testimonials[index].image}
-                alt={testimonials[index].name}
-                width={44}
-                height={44}
-                className="h-11 w-11 rounded-full object-cover"
-              />
+              {/* Initials avatar */}
+              <div
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-black text-white"
+                style={{ backgroundColor: t.color }}
+                aria-hidden
+              >
+                {t.initials}
+              </div>
               <div>
-                <p className="text-base font-bold text-white">{testimonials[index].name}</p>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">{testimonials[index].profession} — {testimonials[index].city}</p>
-                <p className="text-[10px] font-medium text-white/60">{testimonials[index].amount}</p>
+                <p className="text-base font-bold text-white">{t.name}</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">{t.profession} — {t.city}</p>
+                <p className="text-[10px] font-medium text-white/60">{t.amount}</p>
               </div>
             </div>
           </motion.div>
