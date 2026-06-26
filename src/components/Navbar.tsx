@@ -24,6 +24,14 @@ export default function Navbar() {
     setIsOpen(false);
   }, [pathname]);
 
+  /* Aggiorna lo stato scrolled al scroll della pagina */
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   /* Blocca lo scroll del body quando il menu è aperto */
   useEffect(() => {
     document.body.style.overflow = menuVisible ? 'hidden' : '';

@@ -54,7 +54,7 @@ export default function LegalDocument({ updatedAt, sections }: LegalDocumentProp
             <TocLinks sections={sections} className="mt-4 space-y-2" />
             <Link
               href="/#richiedi"
-              className="mt-6 block rounded-lg bg-secondary px-4 py-3 text-center text-[10px] font-black uppercase tracking-widest text-white transition-colors hover:bg-cyan-500"
+              className="mt-6 block rounded-lg bg-secondary px-4 py-3 text-center text-[10px] font-black uppercase tracking-widest text-primary transition-colors hover:bg-cyan-500"
             >
               Torna alla richiesta
             </Link>
@@ -77,7 +77,7 @@ export default function LegalDocument({ updatedAt, sections }: LegalDocumentProp
             ))}
             <Link
               href="/#richiedi"
-              className="not-prose mt-10 inline-flex rounded-lg bg-secondary px-5 py-3 text-[10px] font-black uppercase tracking-widest text-white lg:hidden"
+              className="not-prose mt-10 inline-flex rounded-lg bg-secondary px-5 py-3 text-[10px] font-black uppercase tracking-widest text-primary lg:hidden"
             >
               Torna alla richiesta
             </Link>

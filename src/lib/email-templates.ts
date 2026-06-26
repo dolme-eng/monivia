@@ -80,7 +80,7 @@ export function buildContactNotificationEmail(data: { nome: string; email: strin
         ['Email', `<a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a>`],
         ['Oggetto', safeSubject],
       ])}
-      <div style="background:#f1f5f9;border-left:4px solid #06b6d4;border-radius:14px;padding:20px;">
+      <div style="background:#f1f5f9;border-left:4px solid #00d4ff;border-radius:14px;padding:20px;">
         <p style="margin:0 0 8px 0;color:#0f172a;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;">Messaggio</p>
         <div style="color:#334155;font-size:15px;line-height:1.75;">${safeMessage}</div>
       </div>
