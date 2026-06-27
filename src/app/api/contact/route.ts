@@ -54,7 +54,7 @@ export async function POST(request: Request) {
       sendEmail({
         to: siteConfig.contact.email,
         replyTo: data.email,
-        subject: `Nuovo messaggio da ${data.nome} - ${data.oggetto}`,
+        subject: `Nuovo messaggio da ${data.nome}`,
         ...buildContactNotificationEmail(data),
       }),
       sendEmail({

@@ -63,10 +63,7 @@ export const sendEmail = async (payload: EmailPayload): Promise<{ success: boole
       headers: {
         'List-Unsubscribe': `<mailto:${siteConfig.contact.email}?subject=Disiscrizione>`,
         'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-        'Precedence': 'bulk',
         'X-Mailer': 'Monivia-Mail/1.0',
-        'X-Auto-Response-Suppress': 'All',
-        'Auto-Submitted': 'auto-generated',
       },
     });
     return { success: true };

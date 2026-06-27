@@ -66,7 +66,7 @@ export async function POST(request: Request) {
       sendEmail({
         to: siteConfig.contact.email,
         replyTo: data.email,
-        subject: `Nuova pratica ${practiceId} - ${data.nome} ${data.cognome}`,
+        subject: `Nuova pratica ${practiceId}`,
         ...buildLoanNotificationEmail({ ...data, practiceId }),
       }),
       sendEmail({

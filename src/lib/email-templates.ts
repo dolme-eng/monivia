@@ -95,9 +95,10 @@ export function buildContactNotificationEmail(data: { nome: string; email: strin
         <div style="color:#334155;font-size:15px;line-height:1.75;">${safeMessage}</div>
       </div>
       <div style="margin-top:24px;">
-        <a href="mailto:${encodeURIComponent(data.email)}?subject=Re: ${encodeURIComponent(data.oggetto)}" style="display:block;text-align:center;background:#00d4ff;color:#0a1628;font-size:14px;font-weight:900;text-decoration:none;padding:14px 0;border-radius:12px;">
-          Rispondi al cliente
-        </a>
+        <p style="margin:0;color:#475569;font-size:14px;">
+          Per rispondere, invia una email a
+          <a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a>
+        </p>
       </div>
     `,
     plainText: [
@@ -179,9 +180,10 @@ export function buildLoanNotificationEmail(data: {
         ['Anzianità', data.anzianita != null ? `${escapeHtml(String(data.anzianita))} anni` : '-'],
       ])}
       <div style="margin-top:24px;">
-        <a href="mailto:${encodeURIComponent(data.email)}?subject=Re: Pratica ${encodeURIComponent(data.practiceId)}" style="display:block;text-align:center;background:#00d4ff;color:#0a1628;font-size:14px;font-weight:900;text-decoration:none;padding:14px 0;border-radius:12px;">
-          Rispondi al cliente
-        </a>
+        <p style="margin:0;color:#475569;font-size:14px;">
+          Per rispondere, invia una email a
+          <a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a>
+        </p>
       </div>
     `,
     plainText: [
