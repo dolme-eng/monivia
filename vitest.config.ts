@@ -7,6 +7,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: [],
     testTimeout: 10000,
+    exclude: ['e2e/**', 'e2e/**/*.spec.ts'],
   },
   resolve: {
     alias: {
