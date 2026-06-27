@@ -34,8 +34,7 @@ function brandEmailShell({ eyebrow, title, intro, body, plainText, footer }: Bra
           ${safeFooter}
         </div>
         <div style="padding:18px 8px 0 8px;text-align:center;color:#94a3b8;font-size:11px;line-height:1.6;">
-          ${escapeHtml(siteConfig.name)} &middot; ${escapeHtml(siteConfig.contact.address)} &middot; ${escapeHtml(siteConfig.contact.email)}<br/>
-          <a href="mailto:${siteConfig.contact.email}?subject=Disiscrizione" style="color:#94a3b8;text-decoration:underline;">Gestisci notifiche</a>
+          <a href="mailto:${siteConfig.contact.email}" style="color:#94a3b8;text-decoration:underline;">${escapeHtml(siteConfig.contact.email)}</a>
         </div>
       </div>
     </div>
@@ -45,8 +44,7 @@ function brandEmailShell({ eyebrow, title, intro, body, plainText, footer }: Bra
     plainText,
     '',
     '---',
-    `${siteConfig.name} · ${siteConfig.contact.address} · ${siteConfig.contact.email}`,
-    `Per gestire le notifiche, scrivi a ${siteConfig.contact.email}`,
+    `${siteConfig.contact.email}`,
   ].join('\n');
 
   return { html, text: fullPlainText };
