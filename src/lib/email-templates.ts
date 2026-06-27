@@ -94,6 +94,11 @@ export function buildContactNotificationEmail(data: { nome: string; email: strin
         <p style="margin:0 0 8px 0;color:#0f172a;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;">Messaggio</p>
         <div style="color:#334155;font-size:15px;line-height:1.75;">${safeMessage}</div>
       </div>
+      <div style="margin-top:24px;">
+        <a href="mailto:${encodeURIComponent(data.email)}?subject=Re: ${encodeURIComponent(data.oggetto)}" style="display:block;text-align:center;background:#00d4ff;color:#0a1628;font-size:14px;font-weight:900;text-decoration:none;padding:14px 0;border-radius:12px;">
+          Rispondi al cliente
+        </a>
+      </div>
     `,
     plainText: [
       `NUOVO CONTATTO`,
@@ -173,6 +178,11 @@ export function buildLoanNotificationEmail(data: {
         ['Reddito', data.reddito != null ? formatEuro(data.reddito, 0) : '-'],
         ['Anzianità', data.anzianita != null ? `${escapeHtml(String(data.anzianita))} anni` : '-'],
       ])}
+      <div style="margin-top:24px;">
+        <a href="mailto:${encodeURIComponent(data.email)}?subject=Re: Pratica ${encodeURIComponent(data.practiceId)}" style="display:block;text-align:center;background:#00d4ff;color:#0a1628;font-size:14px;font-weight:900;text-decoration:none;padding:14px 0;border-radius:12px;">
+          Rispondi al cliente
+        </a>
+      </div>
     `,
     plainText: [
       `NUOVA PRATICA: ${data.practiceId}`,
