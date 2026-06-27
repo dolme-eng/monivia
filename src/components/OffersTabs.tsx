@@ -57,7 +57,7 @@ export default function OffersTabs() {
   return (
     <section id="prestiti" className="section-pad bg-white">
       <div className="site-container">
-        {/* Header — animé au scroll */}
+        {/* Header — animato allo scroll */}
         <motion.div {...fadeInUp} className="mb-12 mx-auto max-w-3xl text-center">
           <div
             className="badge inline-flex mb-4"

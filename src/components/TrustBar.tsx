@@ -21,7 +21,7 @@ export default function TrustBar() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          {/* Grille 2×2 sur mobile, 4 colonnes sur desktop */}
+          {/* Griglia 2×2 su mobile, 4 colonne su desktop */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {items.map((item) => (
               <Link

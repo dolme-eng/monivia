@@ -48,7 +48,7 @@ export default function CreditAccessibility() {
   return (
     <section className="section-pad bg-surface">
       <div className="site-container">
-        {/* Header centré avec animation au scroll */}
+        {/* Header centrato con animazione allo scroll */}
         <motion.div
           {...fadeInUp}
           className="mb-12 text-center"
@@ -66,7 +66,7 @@ export default function CreditAccessibility() {
           </p>
         </motion.div>
 
-        {/* Cards : 1 col mobile, 2 col sm, 4 col xl */}
+        {/* Cards: 1 colonna mobile, 2 col sm, 4 col xl */}
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {profiles.map((profile, index) => (
             <motion.div

@@ -51,7 +51,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Grid principal */}
+        {/* Griglia principale */}
         <div className="border-t border-white/6 py-12 sm:py-16">
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {/* Col 1 — Brand */}

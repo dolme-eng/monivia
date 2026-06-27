@@ -186,7 +186,7 @@ export default function SimulatorHorizontal() {
             aria-pressed={insurance}
             aria-label={`Assicurazione ${insurance ? 'inclusa' : 'non inclusa'}`}
           >
-            {/* Icône + label */}
+            {/* Icona + label */}
             <div className="flex items-center gap-3 sm:flex-col sm:items-start sm:gap-0">
               <div
                 className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg transition-colors sm:mb-4 ${

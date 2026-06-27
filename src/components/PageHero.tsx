@@ -27,7 +27,7 @@ export default function PageHero({
 
   return (
     <section className="relative overflow-hidden bg-primary pt-24 pb-16 text-white sm:pt-28 sm:pb-20">
-      {/* Fond */}
+      {/* Sfondo */}
       {variant === 'image' && imageSrc ? (
         <>
           <motion.div
