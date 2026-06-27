@@ -10,7 +10,7 @@ const ContentSecurityPolicy = [
   "img-src 'self' data: blob: https://i.pravatar.cc https://www.google-analytics.com",
   "manifest-src 'self' https://vercel.com",
   "media-src 'self' blob:",
-  "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com",
+  "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://analytics.google.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

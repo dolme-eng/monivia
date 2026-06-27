@@ -116,7 +116,7 @@ export function buildContactAutoReplyEmail(data: { nome: string; oggetto: string
   return brandEmailShell({
     eyebrow: 'Conferma contatto',
     title: `Grazie ${safeName}`,
-    intro: 'Abbiamo ricevuto il tuo messaggio. Un consulente Monivia ti contatterà al piu presto.',
+    intro: 'Abbiamo ricevuto il tuo messaggio. Un consulente Monivia ti contatterà al più presto.',
     body: `
       ${paragraph(`Messaggio relativo a: <strong>${safeSubject}</strong>`)}
       ${paragraph('Rispondiamo entro 24 ore lavorative.')}
@@ -125,7 +125,7 @@ export function buildContactAutoReplyEmail(data: { nome: string; oggetto: string
       `Ciao ${data.nome},`,
       '',
       `Abbiamo ricevuto il tuo messaggio relativo a "${data.oggetto}".`,
-      'Un consulente Monivia ti contattera al piu presto.',
+      'Un consulente Monivia ti contatterà al più presto.',
       '',
       'Rispondiamo entro 24 ore lavorative.',
     ].join('\n'),
@@ -169,9 +169,9 @@ export function buildLoanNotificationEmail(data: {
         ['Importo', formatEuro(data.importo, 0)],
         ['Durata', `${escapeHtml(String(data.durata))} mesi`],
         ['Impiego', escapeHtml(data.impiego)],
-        ['Finalita', escapeHtml(data.finalita ?? '-')],
+        ['Finalità', escapeHtml(data.finalita ?? '-')],
         ['Reddito', data.reddito != null ? formatEuro(data.reddito, 0) : '-'],
-        ['Anzianita', data.anzianita != null ? `${escapeHtml(String(data.anzianita))} anni` : '-'],
+        ['Anzianità', data.anzianita != null ? `${escapeHtml(String(data.anzianita))} anni` : '-'],
       ])}
     `,
     plainText: [
@@ -187,7 +187,7 @@ export function buildLoanNotificationEmail(data: {
       `Importo: ${data.importo} EUR`,
       `Durata: ${data.durata} mesi`,
       `Impiego: ${data.impiego}`,
-      `Finalita: ${data.finalita ?? '-'}`,
+      `Finalità: ${data.finalita ?? '-'}`,
     ].join('\n'),
     footer: `Rispondi a <a href="mailto:${encodeURIComponent(data.email)}" style="color:#00d4ff;text-decoration:none;">${safeEmail}</a> per gestire la pratica.`,
   });
@@ -207,9 +207,9 @@ export function buildLoanAutoReplyEmail(data: {
   return brandEmailShell({
     eyebrow: 'Conferma pratica',
     title: `Pratica ${escapeHtml(data.practiceId)} ricevuta`,
-    intro: `Grazie ${safeName}. La tua richiesta e stata registrata.`,
+    intro: `Grazie ${safeName}. La tua richiesta è stata registrata.`,
     body: `
-      ${paragraph('La nostra squadra analizza la richiesta e ti contattera con il prossimo passo.')}
+      ${paragraph('La nostra squadra analizza la richiesta e ti contatterà con il prossimo passo.')}
       ${sectionCard('Riepilogo', [
         ['Pratica', escapeHtml(data.practiceId)],
         ['Importo', formatEuro(data.importo, 0)],
@@ -220,13 +220,13 @@ export function buildLoanAutoReplyEmail(data: {
     plainText: [
       `Ciao ${data.nome} ${data.cognome},`,
       '',
-      `La tua pratica ${data.practiceId} e stata registrata.`,
+      `La tua pratica ${data.practiceId} è stata registrata.`,
       '',
       `Importo: ${data.importo} EUR`,
       `Durata: ${data.durata} mesi`,
       `Impiego: ${data.impiego}`,
       '',
-      'La nostra squadra ti contattera con il prossimo passo.',
+      'La nostra squadra ti contatterà con il prossimo passo.',
     ].join('\n'),
   });
 }
