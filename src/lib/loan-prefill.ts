@@ -77,7 +77,8 @@ export const FINALITA_BY_PRODUCT_SLUG: Record<string, string> = {
 };
 
 export function finalitaFromPathname(pathname: string): string | undefined {
-  const match = pathname.match(/\/prestiti\/([^/]+)/);
+  const clean = pathname.split('?')[0];
+  const match = clean.match(/\/prestiti\/([^/]+)/);
   if (!match) return undefined;
   return FINALITA_BY_PRODUCT_SLUG[match[1]];
 }
