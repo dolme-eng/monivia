@@ -1,10 +1,19 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+const kvStore = new Map<string, number>();
+vi.mock('@vercel/kv', () => ({
+  kv: {
+    get: vi.fn((key: string) => Promise.resolve(kvStore.get(key) ?? null)),
+    set: vi.fn((key: string, value: number) => { kvStore.set(key, value); return Promise.resolve('OK'); }),
+  },
+}));
+
 import { guardSubmission } from './security';
 import { NextResponse } from 'next/server';
 
 describe('Security Guard', () => {
   beforeEach(() => {
-    // Clear rate limit buckets before each test
+    kvStore.clear();
     (global as any).rateBuckets = new Map();
   });
 
