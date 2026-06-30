@@ -33,7 +33,7 @@ export default function PrivacyPolicy() {
       </div>
 
       <LegalDocument
-        updatedAt="01/06/2024"
+        updatedAt="01/06/2026"
         sections={[
           {
             id: 'titolare',
