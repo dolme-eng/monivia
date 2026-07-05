@@ -93,19 +93,19 @@ export const transparencyDocuments = [
   {
     id: 'guida-consumatori',
     title: 'Guida al Credito ai Consumatori',
-    file: '/documents/guida-credito-consumatori.md',
+    file: '/documents/guida-credito-consumatori.pdf',
     available: true,
   },
   {
     id: 'guida-abf',
     title: 'Guida Arbitro Bancario Finanziario (ABF)',
-    file: '/documents/guida-abf.md',
+    file: '/documents/guida-abf.pdf',
     available: true,
   },
   {
     id: 'tegm',
     title: 'Tassi Effettivi Globali Medi (TEGM)',
-    file: '/documents/tegm.md',
+    file: '/documents/tegm.pdf',
     available: true,
   },
 ] as const;

@@ -150,7 +150,7 @@ export default function AdminLoansPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-8">
-          {['ALL', 'PENDING', 'REVIEWED', 'APPROVED', 'REJECTED'].map((s) => (
+          {['ALL', 'PENDING', 'REVIEWED', 'APPROVED', 'REJECTED', 'CONTACTED'].map((s) => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}

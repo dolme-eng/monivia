@@ -17,6 +17,11 @@ export async function PATCH(
     const body = await req.json();
     const data = updateSchema.parse(body);
 
+    const existing = await prisma.loanApplication.findUnique({ where: { id }, select: { id: true } });
+    if (!existing) {
+      return NextResponse.json({ success: false, error: 'Pratica non trovata' }, { status: 404 });
+    }
+
     const updateData: Record<string, unknown> = { ...data };
     if (data.status && data.status !== 'PENDING') {
       updateData.reviewedAt = new Date();
