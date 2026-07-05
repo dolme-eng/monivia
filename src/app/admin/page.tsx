@@ -70,16 +70,22 @@ export default function AdminLoansPage() {
   const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 20, total: 0, pages: 0 });
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [selectedApp, setSelectedApp] = useState<LoanApplication | null>(null);
   const [updating, setUpdating] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 400);
+    return () => clearTimeout(timer);
+  }, [search]);
 
   const fetchApplications = useCallback(async (page = 1) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({ page: String(page), limit: '20' });
       if (statusFilter !== 'ALL') params.set('status', statusFilter);
-      if (search.trim()) params.set('q', search.trim());
+      if (debouncedSearch.trim()) params.set('q', debouncedSearch.trim());
 
       const res = await fetch(`/admin/api/loans?${params}`);
       const data = await res.json();
@@ -92,7 +98,7 @@ export default function AdminLoansPage() {
     } finally {
       setLoading(false);
     }
-  }, [statusFilter, search]);
+  }, [statusFilter, debouncedSearch]);
 
   useEffect(() => {
     fetchApplications(1);
