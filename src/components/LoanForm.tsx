@@ -75,6 +75,7 @@ export default function LoanForm() {
   const [prefillBanner, setPrefillBanner] = useState(getInitialPrefillBanner);
   const pathname = usePathname();
   const formTopRef = useRef<HTMLDivElement>(null);
+  const stepTitleRef = useRef<HTMLHeadingElement>(null);
 
   const { register, handleSubmit, control, trigger, setValue, formState: { errors, isSubmitting } } = useForm<FormValues>({
     resolver: zodResolver(loanFormSchema) as Resolver<FormValues>,
@@ -122,6 +123,7 @@ export default function LoanForm() {
       if (isValid) {
         setCurrentStep(2);
         scrollToTop();
+        setTimeout(() => stepTitleRef.current?.focus(), 100);
       }
     }
   };
@@ -129,6 +131,7 @@ export default function LoanForm() {
   const prevStep = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
     scrollToTop();
+    setTimeout(() => stepTitleRef.current?.focus(), 100);
   };
 
   const onSubmit = async (data: FormValues) => {
@@ -196,15 +199,18 @@ export default function LoanForm() {
       )}
 
       {/* Progress stepper */}
-      <div className="relative mb-8 flex justify-between px-2">
+      <div className="relative mb-8 flex justify-between px-2" role="group" aria-label="Passaggi del formulario">
         <div className="absolute top-5 left-6 right-6 h-0.5 -z-10 bg-slate-100" aria-hidden />
         {steps.map((step) => (
           <div key={step.id} className="flex flex-col items-center gap-2">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-black transition-all duration-500 ${
-              currentStep >= step.id
-                ? 'border-secondary bg-secondary text-primary'
-                : 'border-slate-200 bg-white text-slate-400'
-            }`}>
+            <div
+              aria-current={currentStep === step.id ? 'step' : undefined}
+              className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-black transition-all duration-500 ${
+                currentStep >= step.id
+                  ? 'border-secondary bg-secondary text-primary'
+                  : 'border-slate-200 bg-white text-slate-400'
+              }`}
+            >
               {step.id}
             </div>
             <span className={`text-[10px] font-black uppercase tracking-wider ${currentStep >= step.id ? 'text-secondary' : 'text-slate-400'}`}>
@@ -225,33 +231,33 @@ export default function LoanForm() {
             {currentStep === 1 && (
               <motion.div key="step1" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ type: 'spring', stiffness: 320, damping: 28 }} className="space-y-5">
                 <div className="mb-6">
-                  <h3 className="text-xl font-black text-primary sm:text-2xl">Informazioni personali</h3>
+                  <h3 ref={stepTitleRef} tabIndex={-1} className="text-xl font-black text-primary sm:text-2xl outline-none">Informazioni personali</h3>
                   <p className="mt-1 text-sm text-slate-500">Inserisci i tuoi dati anagrafici corretti.</p>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="loan-nome">Nome *</Label>
-                    <input id="loan-nome" {...register('nome', { required: 'Il nome è obbligatorio', minLength: { value: 2, message: 'Minimo 2 caratteri' }, pattern: { value: /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\s'-]*$/, message: 'Deve iniziare con una lettera' } })} aria-invalid={!!errors.nome} aria-describedby={errors.nome ? 'error-nome' : undefined} placeholder="Es: Mario" autoComplete="given-name" className={fieldClass(!!errors.nome)} />
+                    <input id="loan-nome" {...register('nome')} aria-invalid={!!errors.nome} aria-describedby={errors.nome ? 'error-nome' : undefined} placeholder="Es: Mario" autoComplete="given-name" className={fieldClass(!!errors.nome)} />
                     <ErrorMessage id="error-nome" message={errors.nome?.message} />
                   </div>
                   <div>
                     <Label htmlFor="loan-cognome">Cognome *</Label>
-                    <input id="loan-cognome" {...register('cognome', { required: 'Il cognome è obbligatorio', minLength: { value: 2, message: 'Minimo 2 caratteri' }, pattern: { value: /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\s'-]*$/, message: 'Deve iniziare con una lettera' } })} aria-invalid={!!errors.cognome} aria-describedby={errors.cognome ? 'error-cognome' : undefined} placeholder="Es: Rossi" autoComplete="family-name" className={fieldClass(!!errors.cognome)} />
+                    <input id="loan-cognome" {...register('cognome')} aria-invalid={!!errors.cognome} aria-describedby={errors.cognome ? 'error-cognome' : undefined} placeholder="Es: Rossi" autoComplete="family-name" className={fieldClass(!!errors.cognome)} />
                     <ErrorMessage id="error-cognome" message={errors.cognome?.message} />
                   </div>
                   <div>
                     <Label htmlFor="loan-codiceFiscale">Codice Fiscale *</Label>
-                    <input id="loan-codiceFiscale" {...register('codiceFiscale', { required: 'Il codice fiscale è obbligatorio', pattern: { value: /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i, message: 'Formato non valido' }, onChange: (e) => { e.target.value = e.target.value.toUpperCase(); } })} aria-invalid={!!errors.codiceFiscale} aria-describedby={errors.codiceFiscale ? 'error-cf' : undefined} placeholder="RSSMRA80A01H501W" className={`${fieldClass(!!errors.codiceFiscale)} uppercase`} />
+                    <input id="loan-codiceFiscale" {...register('codiceFiscale', { onChange: (e) => { e.target.value = e.target.value.toUpperCase(); } })} aria-invalid={!!errors.codiceFiscale} aria-describedby={errors.codiceFiscale ? 'error-cf' : undefined} placeholder="RSSMRA80A01H501W" className={`${fieldClass(!!errors.codiceFiscale)} uppercase`} />
                     <ErrorMessage id="error-cf" message={errors.codiceFiscale?.message} />
                   </div>
                   <div>
                     <Label htmlFor="loan-email">Email *</Label>
-                    <input id="loan-email" type="email" inputMode="email" autoComplete="email" {...register('email', { required: "L'email è obbligatoria", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Email non valida' } })} aria-invalid={!!errors.email} aria-describedby={errors.email ? 'error-email' : undefined} placeholder="mario.rossi@email.it" className={fieldClass(!!errors.email)} />
+                    <input id="loan-email" type="email" inputMode="email" autoComplete="email" {...register('email')} aria-invalid={!!errors.email} aria-describedby={errors.email ? 'error-email' : undefined} placeholder="mario.rossi@email.it" className={fieldClass(!!errors.email)} />
                     <ErrorMessage id="error-email" message={errors.email?.message} />
                   </div>
                   <div className="sm:col-span-2">
                     <Label htmlFor="loan-telefono">Telefono *</Label>
-                    <input id="loan-telefono" type="tel" inputMode="tel" autoComplete="tel" {...register('telefono', { required: 'Il telefono è obbligatorio', pattern: { value: /^(\+?\d{1,3})?[- .]?[\d- .]{8,15}$/, message: 'Numero non valido' } })} aria-invalid={!!errors.telefono} aria-describedby={errors.telefono ? 'error-telefono' : undefined} placeholder="Es: +39 333 1234567" className={fieldClass(!!errors.telefono)} />
+                    <input id="loan-telefono" type="tel" inputMode="tel" autoComplete="tel" {...register('telefono')} aria-invalid={!!errors.telefono} aria-describedby={errors.telefono ? 'error-telefono' : undefined} placeholder="Es: +39 333 1234567" className={fieldClass(!!errors.telefono)} />
                     <ErrorMessage id="error-telefono" message={errors.telefono?.message} />
                   </div>
                 </div>
@@ -262,7 +268,7 @@ export default function LoanForm() {
             {currentStep === 2 && (
               <motion.div key="step2" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ type: 'spring', stiffness: 320, damping: 28 }} className="space-y-5">
                 <div className="mb-6">
-                  <h3 className="text-xl font-black text-primary sm:text-2xl">Dettagli finanziari</h3>
+                  <h3 ref={stepTitleRef} tabIndex={-1} className="text-xl font-black text-primary sm:text-2xl outline-none">Dettagli finanziari</h3>
                   <p className="mt-1 text-sm text-slate-500">Aiutaci a capire meglio le tue esigenze.</p>
                 </div>
 
@@ -350,7 +356,7 @@ export default function LoanForm() {
                 {/* Consensi */}
                 <div className="space-y-3 pt-2">
                   {serverError && (
-                    <div className="flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-600">
+                    <div role="alert" aria-live="assertive" className="flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-600">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
                       {serverError}
                     </div>
@@ -386,7 +392,7 @@ export default function LoanForm() {
               </button>
             ) : (
               <button type="submit" disabled={isSubmitting} className="btn-primary flex w-full items-center px-7 py-4 text-xs uppercase tracking-widest disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto">
-                {isSubmitting ? 'Invio in corso...' : <><Send size={14} /> Invia richiesta</>}
+                {isSubmitting ? <span role="status" aria-live="polite">Invio in corso...</span> : <><Send size={14} /> Invia richiesta</>}
               </button>
             )}
           </div>

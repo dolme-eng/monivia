@@ -13,6 +13,7 @@ import { ErrorMessage, fieldClass, type ContactFormValues } from '@/components/f
 
 export default function ContactSection() {
   const [contactStatus, setContactStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const {
     register,
@@ -43,11 +44,13 @@ export default function ContactSection() {
         },
         body: JSON.stringify(data)
       });
-      if (!response.ok) throw new Error();
+      const result = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(result?.error || "Errore durante l'invio");
       setContactStatus('success');
       reset();
-    } catch {
+    } catch (err) {
       setContactStatus('error');
+      setErrorMessage(err instanceof Error ? err.message : "Errore durante l'invio");
     }
   };
 
@@ -122,17 +125,17 @@ export default function ContactSection() {
                 disabled={isSubmitting}
                 className="btn-primary w-full py-4"
               >
-                {isSubmitting ? 'Invio in corso...' : 'Invia messaggio'}
+                {isSubmitting ? <span role="status" aria-live="polite">Invio in corso...</span> : 'Invia messaggio'}
               </button>
 
               {contactStatus === 'success' && (
-                <p className="rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-center text-sm font-bold text-emerald-700">
+                <p role="status" aria-live="polite" className="rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-center text-sm font-bold text-emerald-700">
                   Messaggio inviato! Ti risponderemo al più presto.
                 </p>
               )}
               {contactStatus === 'error' && (
-                <p className="rounded-lg border border-red-100 bg-red-50 p-4 text-center text-sm font-bold text-red-500">
-                  Errore durante l&apos;invio. Riprova o scrivici a {siteConfig.contact.email}.
+                <p role="alert" aria-live="assertive" className="rounded-lg border border-red-100 bg-red-50 p-4 text-center text-sm font-bold text-red-500">
+                  {errorMessage || <>Errore durante l&apos;invio. Riprova o scrivici a {siteConfig.contact.email}.</>}
                 </p>
               )}
             </form>
