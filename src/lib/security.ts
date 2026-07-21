@@ -23,8 +23,11 @@ const limitConfig: Record<SubmissionKind, { limit: number; windowMs: number }> =
 // In-memory fallback when Redis is down
 const memoryStore = new Map<string, { count: number; expiresAt: number }>();
 
-// Periodic cleanup of expired entries (every 5 minutes)
-if (typeof setInterval !== 'undefined') {
+// Lazy periodic cleanup — only starts on first use, no orphaned timers on serverless
+let cleanupStarted = false;
+function ensureCleanup() {
+  if (cleanupStarted) return;
+  cleanupStarted = true;
   setInterval(() => {
     const now = Date.now();
     for (const [key, entry] of memoryStore) {
@@ -34,6 +37,7 @@ if (typeof setInterval !== 'undefined') {
 }
 
 function getMemoryRateLimit(key: string, limit: number, windowMs: number): boolean {
+  ensureCleanup();
   const now = Date.now();
   const entry = memoryStore.get(key);
 

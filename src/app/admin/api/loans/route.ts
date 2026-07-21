@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 
 export async function GET(req: NextRequest) {
   try {
+    const { prisma } = await import('@/lib/prisma');
+    if (!prisma) {
+      return NextResponse.json({ success: false, error: 'Database non configurato' }, { status: 503 });
+    }
+
     const { searchParams } = new URL(req.url);
     const status = searchParams.get('status');
     const q = searchParams.get('q');

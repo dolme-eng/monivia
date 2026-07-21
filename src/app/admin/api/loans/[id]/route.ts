@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
 const updateSchema = z.object({
   status: z.enum(['PENDING', 'REVIEWED', 'APPROVED', 'REJECTED', 'CONTACTED']).optional(),
-  notes: z.string().optional(),
+  notes: z.string().max(5000).optional(),
   reviewedBy: z.string().optional(),
 });
 
@@ -13,6 +12,11 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { prisma } = await import('@/lib/prisma');
+    if (!prisma) {
+      return NextResponse.json({ success: false, error: 'Database non configurato' }, { status: 503 });
+    }
+
     const { id } = await params;
     const body = await req.json();
     const data = updateSchema.parse(body);
