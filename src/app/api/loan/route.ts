@@ -7,7 +7,6 @@ import { guardSubmission } from '@/lib/security';
 import { normalizeText } from '@/lib/sanitization';
 import { loanSchema } from '@/lib/validations';
 import { verifyCsrfToken } from '@/lib/csrf';
-import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
@@ -63,23 +62,31 @@ export async function POST(request: Request) {
 
     const practiceId = `PD-${randomUUID().split('-')[0].toUpperCase()}`;
 
-    await prisma.loanApplication.create({
-      data: {
-        practiceId,
-        importo: data.importo,
-        durata: data.durata,
-        impiego: data.impiego,
-        nome: data.nome,
-        cognome: data.cognome,
-        email: data.email,
-        telefono: data.telefono,
-        codiceFiscale: data.codiceFiscale,
-        reddito: data.reddito,
-        finalita: data.finalita,
-        anzianita: data.anzianita,
-        sourcePage: data.sourcePage,
-      },
-    });
+    // DB write is non-blocking: if it fails, emails still send
+    try {
+      const { prisma } = await import('@/lib/prisma');
+      if (prisma) {
+        await prisma.loanApplication.create({
+          data: {
+            practiceId,
+            importo: data.importo,
+            durata: data.durata,
+            impiego: data.impiego,
+            nome: data.nome,
+            cognome: data.cognome,
+            email: data.email,
+            telefono: data.telefono,
+            codiceFiscale: data.codiceFiscale,
+            reddito: data.reddito,
+            finalita: data.finalita,
+            anzianita: data.anzianita,
+            sourcePage: data.sourcePage,
+          },
+        });
+      }
+    } catch (dbError) {
+      console.error('Prisma DB write failed (non-blocking):', dbError);
+    }
 
     const [teamEmailResult, autoReplyEmailResult] = await Promise.all([
       sendEmail({
