@@ -132,7 +132,7 @@ export default function Navbar() {
         </Link>
 
         {/* Link desktop */}
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Menu principale">
           {navLinks.map((link) => (
             <Link
               key={link.name}

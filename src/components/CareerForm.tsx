@@ -100,7 +100,7 @@ export default function CareerForm() {
           id="career-message"
           {...register('message')}
           rows={5}
-          className={`field-shell resize-none ${fieldClass(!!errors.message)}`}
+          className={`resize-none ${fieldClass(!!errors.message)}`}
           placeholder="Raccontaci il tuo percorso e il ruolo che ti interessa..."
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? 'error-career-message' : undefined}

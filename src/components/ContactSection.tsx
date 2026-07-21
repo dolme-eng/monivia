@@ -112,7 +112,7 @@ export default function ContactSection() {
                   id="contact-message"
                   {...register('message')}
                   rows={4}
-                  className={`field-shell min-h-[120px] resize-y ${fieldClass(!!errors.message)}`}
+                  className={`min-h-[120px] resize-y ${fieldClass(!!errors.message)}`}
                   placeholder="Scrivi qui il tuo messaggio..."
                   aria-invalid={!!errors.message}
                   aria-describedby={errors.message ? 'error-message' : undefined}

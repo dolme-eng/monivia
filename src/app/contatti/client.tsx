@@ -200,7 +200,7 @@ function ContattiContent() {
                     {...register('message')}
                     placeholder="Scrivi il tuo messaggio qui..."
                     rows={5}
-                    className={`field-shell min-h-[120px] resize-y ${fieldClass(!!errors.message)}`}
+                    className={`min-h-[120px] resize-y ${fieldClass(!!errors.message)}`}
                     aria-invalid={!!errors.message}
                     aria-describedby={errors.message ? 'error-page-message' : undefined}
                   />
