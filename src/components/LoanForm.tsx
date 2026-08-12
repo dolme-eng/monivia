@@ -111,7 +111,7 @@ export default function LoanForm() {
 
     window.addEventListener('monivia:loan-prefill', onPrefillUpdated);
     return () => window.removeEventListener('monivia:loan-prefill', onPrefillUpdated);
-  }, [pathname, setValue]);
+  }, [setValue]);
 
   const scrollToTop = () => {
     setTimeout(() => formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);

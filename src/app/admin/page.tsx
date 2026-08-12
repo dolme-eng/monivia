@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   Search,
-  Filter,
   ChevronLeft,
   ChevronRight,
   Eye,
@@ -12,11 +11,7 @@ import {
   Phone,
   Mail,
   FileText,
-  Clock,
   Loader2,
-  User,
-  Euro,
-  Calendar,
   ArrowUpDown,
 } from 'lucide-react';
 
@@ -149,7 +144,7 @@ export default function AdminLoansPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           {['ALL', 'PENDING', 'REVIEWED', 'APPROVED', 'REJECTED', 'CONTACTED'].map((s) => (
             <button
               key={s}

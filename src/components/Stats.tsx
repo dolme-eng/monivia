@@ -47,7 +47,7 @@ function AnimatedStat({ end, suffix = '' }: { end: number; suffix?: string }) {
 
   return (
     <span ref={ref} className="tabular-nums">
-      {value.toLocaleString('it-IT')}
+      {value.toLocaleString('it-IT', { useGrouping: false })}
       {suffix}
     </span>
   );

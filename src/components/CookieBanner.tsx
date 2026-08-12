@@ -23,6 +23,7 @@ export default function CookieBanner() {
 
   const declineCookies = () => {
     localStorage.setItem('monivia_cookie_consent', 'declined');
+    window.dispatchEvent(new CustomEvent('monivia:cookie-consent', { detail: 'declined' }));
     setIsVisible(false);
   };
 
