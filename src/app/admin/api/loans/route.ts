@@ -19,12 +19,12 @@ export async function GET(req: NextRequest) {
       where.status = status;
     }
     if (q) {
+      const qSafe = q.trim().slice(0, 200);
       where.OR = [
-        { nome: { contains: q, mode: 'insensitive' } },
-        { cognome: { contains: q, mode: 'insensitive' } },
-        { email: { contains: q, mode: 'insensitive' } },
-        { practiceId: { contains: q, mode: 'insensitive' } },
-        { codiceFiscale: { contains: q, mode: 'insensitive' } },
+        { nome: { contains: qSafe, mode: 'insensitive' } },
+        { cognome: { contains: qSafe, mode: 'insensitive' } },
+        { email: { contains: qSafe, mode: 'insensitive' } },
+        { practiceId: { contains: qSafe, mode: 'insensitive' } },
       ];
     }
 

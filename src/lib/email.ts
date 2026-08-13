@@ -38,12 +38,12 @@ export const sendEmail = async (payload: EmailPayload): Promise<{ success: boole
 
   if (!transporter) {
     console.log('================= MOCK EMAIL SENT =================');
-    console.log(`To: ${Array.isArray(payload.to) ? payload.to.join(', ') : payload.to}`);
+    console.log(`To: [REDACTED]`);
     console.log(`Subject: ${payload.subject}`);
     if (payload.replyTo) {
-      console.log(`Reply-To: ${payload.replyTo}`);
+      console.log(`Reply-To: [REDACTED]`);
     }
-    console.log(`Body (HTML):\n${payload.html}`);
+    console.log(`Body (HTML): [REDACTED — SMTP non configurato]`);
     console.log('===================================================');
     return { success: true, mocked: true };
   }

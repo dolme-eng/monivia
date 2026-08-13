@@ -98,20 +98,14 @@ async function isRateLimited(request: Request, kind: SubmissionKind, limit: numb
   const key = `rate_limit:${kind}:${getClientIdentifier(request)}`;
   
   try {
-    const current = await kv.get<number>(key);
-    
-    if (current === null) {
-      await kv.set(key, 1, { ex: Math.ceil(windowMs / 1000) });
-      return false;
+    // Atomic increment — avoids TOCTOU race condition
+    const count = await kv.incr(key);
+    if (count === 1) {
+      await kv.expire(key, Math.ceil(windowMs / 1000));
     }
-
-    const count = current + 1;
-    await kv.set(key, count, { keepTtl: true });
-    
     return count > limit;
   } catch (error) {
     console.error('Redis Rate Limit Error — falling back to in-memory:', error);
-    // Fail closed: use in-memory fallback
     return getMemoryRateLimit(key, limit, windowMs);
   }
 }

@@ -62,10 +62,9 @@ export async function POST(request: Request) {
 
     const practiceId = `PD-${randomUUID().split('-')[0].toUpperCase()}`;
 
-    // DB write is non-blocking: if it fails, emails still send
-    try {
-      const { prisma } = await import('@/lib/prisma');
-      if (prisma) {
+    const { prisma } = await import('@/lib/prisma');
+    if (prisma) {
+      try {
         await prisma.loanApplication.create({
           data: {
             practiceId,
@@ -83,9 +82,13 @@ export async function POST(request: Request) {
             sourcePage: data.sourcePage,
           },
         });
+      } catch (dbError) {
+        console.error('Prisma DB write failed:', dbError);
+        return NextResponse.json(
+          { error: 'Impossibile salvare la richiesta. Riprova più tardi.' },
+          { status: 503 }
+        );
       }
-    } catch (dbError) {
-      console.error('Prisma DB write failed (non-blocking):', dbError);
     }
 
     const [teamEmailResult, autoReplyEmailResult] = await Promise.all([

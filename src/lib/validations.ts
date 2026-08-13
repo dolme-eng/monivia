@@ -23,7 +23,7 @@ const baseLoanFields = {
   cognome: z.string().trim().min(2, 'Il cognome è obbligatorio').max(80),
   email: z.string().trim().email('Email non valida').max(120),
   telefono: z.string().trim().max(30).regex(/^\+?[\d\s\-().]{8,20}$/, 'Numero di telefono non valido'),
-  codiceFiscale: z.string().trim().regex(/^[A-Z0-9]{16}$/i, 'Codice fiscale non valido'),
+  codiceFiscale: z.string().trim().regex(/^[A-Z]{6}\d{2}[A-EHLMPR-T]\d{2}[A-Z]\d{3}[A-Z]$/i, 'Codice fiscale non valido'),
   reddito: z.coerce.number().min(500, 'Minimo 500€').max(1000000),
   finalita: z.string().trim().min(2).max(120),
   anzianita: z.coerce.number().int().min(0).max(50),
