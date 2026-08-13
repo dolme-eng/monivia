@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     const result = loanSchema.safeParse(body);
     if (!result.success) {
       return NextResponse.json(
-        { error: 'Dati non validi', details: result.error.format() },
+        { error: 'Dati non validi' },
         { status: 400 }
       );
     }
