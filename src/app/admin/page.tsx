@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { getCsrfToken } from '@/lib/csrf-client';
 import {
   Search,
   ChevronLeft,
@@ -102,10 +103,14 @@ export default function AdminLoansPage() {
   const updateStatus = async (id: string, status: string, notes?: string) => {
     setUpdating(true);
     try {
+      const csrfToken = await getCsrfToken();
       const res = await fetch(`/admin/api/loans/${id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status, notes, reviewedBy: 'Admin' }),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
+        body: JSON.stringify({ status, notes }),
       });
       const data = await res.json();
       if (data.success) {

@@ -7,16 +7,13 @@ export default function GoogleAnalyticsWrapper({ gaId }: { gaId: string }) {
   const [hasConsent, setHasConsent] = useState(false);
 
   useEffect(() => {
-    // Check initial consent
-    if (localStorage.getItem('monivia_cookie_consent') === 'accepted') {
+    const consent = localStorage.getItem('monivia_cookie_consent');
+    if (consent === 'accepted') {
       setHasConsent(true);
     }
 
-    // Listen for consent event from CookieBanner
     const handleConsent = ((event: CustomEvent) => {
-      if (event.detail === 'accepted') {
-        setHasConsent(true);
-      }
+      setHasConsent(event.detail === 'accepted');
     }) as EventListener;
 
     window.addEventListener('monivia:cookie-consent', handleConsent);

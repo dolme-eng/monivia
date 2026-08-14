@@ -18,7 +18,6 @@ async function requireAdmin(req: NextRequest) {
 const updateSchema = z.object({
   status: z.enum(['PENDING', 'REVIEWED', 'APPROVED', 'REJECTED', 'CONTACTED']).optional(),
   notes: z.string().max(5000).optional(),
-  reviewedBy: z.string().optional(),
 });
 
 export async function PATCH(
@@ -53,6 +52,7 @@ export async function PATCH(
     const updateData: Record<string, unknown> = { ...data };
     if (data.status && data.status !== 'PENDING') {
       updateData.reviewedAt = new Date();
+      updateData.reviewedBy = admin.email || admin.userId || 'Admin';
     }
 
     const application = await prisma.loanApplication.update({
