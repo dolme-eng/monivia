@@ -1,5 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { jwtVerify } from 'jose';
+import { verifyCsrfToken } from '@/lib/csrf';
+
+async function requireAdmin(req: NextRequest) {
+  const token = req.cookies.get('authjs.session-token')?.value
+    || req.cookies.get('__Secure-authjs.session-token')?.value;
+  if (!token) return null;
+  try {
+    const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
+    const { payload } = await jwtVerify(token, secret);
+    if (payload.role !== 'ADMIN') return null;
+    return payload;
+  } catch { return null; }
+}
 
 const updateSchema = z.object({
   status: z.enum(['PENDING', 'REVIEWED', 'APPROVED', 'REJECTED', 'CONTACTED']).optional(),
@@ -11,6 +25,16 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const admin = await requireAdmin(req);
+  if (!admin) {
+    return NextResponse.json({ success: false, error: 'Non autorizzato' }, { status: 401 });
+  }
+
+  const csrfToken = req.headers.get('x-csrf-token');
+  if (!verifyCsrfToken(csrfToken)) {
+    return NextResponse.json({ success: false, error: 'Token CSRF non valido' }, { status: 403 });
+  }
+
   try {
     const { prisma } = await import('@/lib/prisma');
     if (!prisma) {
