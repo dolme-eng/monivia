@@ -30,6 +30,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/prestito-cessione-quinto`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
     { url: `${baseUrl}/prestito-ristrutturazione`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
     { url: `${baseUrl}/prestito-moto`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${baseUrl}/confronto/prestito-online-vs-banca`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/confronto/consolidamento-vs-riprovvidentazione`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/confronto/migliori-prestiti-personali-2026`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${baseUrl}/confronto/prestito-personale-vs-revolving`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
   ];
 
   const blogPages: MetadataRoute.Sitemap = blogArticles.map((article) => ({
