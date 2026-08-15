@@ -34,6 +34,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/confronto/consolidamento-vs-riprovvidentazione`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/confronto/migliori-prestiti-personali-2026`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${baseUrl}/confronto/prestito-personale-vs-revolving`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/prestiti-a-milano`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${baseUrl}/prestiti-a-roma`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${baseUrl}/prestiti-a-torino`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/prestiti-a-napoli`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/prestiti-a-firenze`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
   ];
 
   const blogPages: MetadataRoute.Sitemap = blogArticles.map((article) => ({
