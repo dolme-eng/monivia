@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import BackToTop from "@/components/BackToTop";
-import ExitIntentModal from "@/components/ExitIntentModal";
 import SkipToContent from "@/components/SkipToContent";
-import StickyConversionBar from "@/components/StickyConversionBar";
 import { siteConfig } from "@/config/site";
 import { Inter } from "next/font/google";
 import GoogleAnalyticsWrapper from "@/components/GoogleAnalyticsWrapper";
 import { headers } from "next/headers";
+
+const ExitIntentModal = dynamic(() => import("@/components/ExitIntentModal"), { ssr: false });
+const StickyConversionBar = dynamic(() => import("@/components/StickyConversionBar"), { ssr: false });
 
 const inter = Inter({ subsets: ["latin"] });
 
