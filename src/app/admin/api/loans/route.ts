@@ -9,9 +9,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const { prisma } = await import('@/lib/prisma');
-    if (!prisma) {
-      return NextResponse.json({ success: false, error: 'Database non configurato' }, { status: 503 });
-    }
+    const VALID_STATUSES = ['ALL', 'PENDING', 'IN_REVIEW', 'APPROVED', 'REJECTED', 'CONTACTED'];
 
     const { searchParams } = new URL(req.url);
     const status = searchParams.get('status');
@@ -22,6 +20,9 @@ export async function GET(req: NextRequest) {
 
     const where: Record<string, unknown> = {};
     if (status && status !== 'ALL') {
+      if (!VALID_STATUSES.includes(status)) {
+        return NextResponse.json({ success: false, error: 'Status non valido' }, { status: 400 });
+      }
       where.status = status;
     }
     if (q) {

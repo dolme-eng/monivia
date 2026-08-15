@@ -3,8 +3,8 @@ import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 const CSRF_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 function getSecret(): string {
-  const secret = process.env.CSRF_SECRET || process.env.NEXTAUTH_SECRET;
-  if (!secret) throw new Error('CSRF_SECRET or NEXTAUTH_SECRET must be set in environment variables');
+  const secret = process.env.AUTH_SECRET || process.env.CSRF_SECRET;
+  if (!secret) throw new Error('AUTH_SECRET must be set in environment variables');
   return secret;
 }
 

@@ -37,14 +37,9 @@ export const sendEmail = async (payload: EmailPayload): Promise<{ success: boole
   const transporter = createTransporter();
 
   if (!transporter) {
-    console.log('================= MOCK EMAIL SENT =================');
-    console.log(`To: [REDACTED]`);
-    console.log(`Subject: ${payload.subject}`);
-    if (payload.replyTo) {
-      console.log(`Reply-To: [REDACTED]`);
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[EMAIL MOCK] SMTP non configurato — email non inviata');
     }
-    console.log(`Body (HTML): [REDACTED — SMTP non configurato]`);
-    console.log('===================================================');
     return { success: true, mocked: true };
   }
 

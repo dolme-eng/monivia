@@ -50,6 +50,9 @@ function brandEmailShell({ eyebrow, title, intro, body, plainText, footer }: Bra
   return { html, text: fullPlainText };
 }
 
+/** Builds an HTML card with label/value rows.
+ *  IMPORTANT: All values MUST be pre-escaped with escapeHtml() before passing.
+ *  This function does NOT escape values to allow HTML in values (e.g., mailto links). */
 function sectionCard(title: string, rows: Array<[string, string]>) {
   return `
     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:20px;margin:24px 0;">
