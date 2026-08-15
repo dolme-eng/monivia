@@ -5,7 +5,7 @@ export type LoanPrefill = {
   durata: number;
   insurance: boolean;
   monthlyEstimate?: number;
-  source: 'simulator' | 'offer';
+  source: 'simulator' | 'offer' | 'calculator';
   finalita?: string;
   updatedAt: number;
 };

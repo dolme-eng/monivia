@@ -13,10 +13,8 @@ import {
   Users,
   TrendingUp,
   Clock,
-  CheckCircle,
   Target,
   Heart,
-  Lightbulb,
   Handshake,
   Calendar,
 } from 'lucide-react';

@@ -66,7 +66,7 @@ export default function TariffePage() {
                     <div>
                       <p className="text-xs text-slate-400">Totale rimborsato</p>
                       <p className="text-lg font-black text-slate-900">
-                        {ex.total.toLocaleString('it-IT', { maximumFractionDigits: 0 })}€
+                        {ex.totalDue.toLocaleString('it-IT', { maximumFractionDigits: 0 })}€
                       </p>
                     </div>
                     <div>

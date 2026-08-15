@@ -5,9 +5,6 @@ import { motion, useSpring, useTransform } from 'framer-motion';
 import {
   ArrowRight,
   ShieldCheck,
-  Calculator,
-  TrendingDown,
-  TrendingUp,
   BarChart3,
   Share2,
 } from 'lucide-react';

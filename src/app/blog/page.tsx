@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     title: 'Blog Monivia',
     description: 'Consigli, guide e aggiornamenti sui prestiti.',
     url: 'https://www.monivia.it/blog',
+    siteName: 'Monivia',
+    locale: 'it_IT',
+    type: 'website',
   },
 };
 
