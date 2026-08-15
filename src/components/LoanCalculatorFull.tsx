@@ -120,7 +120,7 @@ export default function LoanCalculatorFull() {
   const comparison = loanSlugs.map((slug) => {
     const p = loanProducts[slug];
     const ex = calculateLoan(amount, months, true, p.tan, p.insuranceRate);
-    return { slug, ...p, ...ex };
+    return { ...p, ...ex };
   });
 
   return (
