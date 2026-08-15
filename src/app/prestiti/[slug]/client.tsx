@@ -158,7 +158,7 @@ function PrestitoDettaglioContent() {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   {[
-                    { stat: '2%', label: 'Tasso fisso', desc: 'Nessuna sorpresa: la tua rata resta bloccata per tutta la durata.' },
+                    { stat: `${(product.tan * 100).toFixed(1)}%`, label: 'Tasso fisso', desc: 'Nessuna sorpresa: la tua rata resta bloccata per tutta la durata.' },
                     { stat: '48h', label: 'Risposta rapida', desc: "Ricevi l'esito della pratica entro due giorni lavorativi." },
                     { stat: '100%', label: 'Digitale', desc: 'Dalla simulazione alla firma, tutto online senza code.' },
                     { stat: '0€', label: 'Costi nascosti', desc: 'Trasparenza totale: vedi sempre il costo reale del prestito.' },
