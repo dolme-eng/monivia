@@ -1,21 +1,7 @@
 import type { NextConfig } from "next";
 
-// NOTE: 'unsafe-inline' e 'unsafe-eval' sono necessari per Next.js (hydration, dev mode).
-// Per un hardening futuro, considerare nonce-based CSP con next-plugin-nonce.
-const ContentSecurityPolicy = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com",
-  "img-src 'self' data: blob: https://www.google-analytics.com",
-  "manifest-src 'self' https://vercel.com",
-  "media-src 'self' blob:",
-  "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://analytics.google.com",
-  "frame-ancestors 'none'",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-].join("; ");
+// NOTE: CSP is now set dynamically in src/middleware.ts with per-request nonces.
+// Other security headers that do NOT need per-request values stay here.
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -35,10 +21,6 @@ const nextConfig: NextConfig = {
           {
             key: "Referrer-Policy",
             value: "strict-origin-when-cross-origin",
-          },
-          {
-            key: "Content-Security-Policy",
-            value: ContentSecurityPolicy,
           },
           {
             key: "Strict-Transport-Security",

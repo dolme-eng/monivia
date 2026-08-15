@@ -7,6 +7,7 @@ import StickyConversionBar from "@/components/StickyConversionBar";
 import { siteConfig } from "@/config/site";
 import { Inter } from "next/font/google";
 import GoogleAnalyticsWrapper from "@/components/GoogleAnalyticsWrapper";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -52,11 +53,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get("x-nonce") ?? "";
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FinancialService',
@@ -110,7 +112,7 @@ export default function RootLayout({
         <CookieBanner />
         <StickyConversionBar />
         <WhatsAppButton />
-        <GoogleAnalyticsWrapper gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
+        <GoogleAnalyticsWrapper gaId={process.env.NEXT_PUBLIC_GA_ID || ""} nonce={nonce} />
       </body>
     </html>
   );

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
-export default function GoogleAnalyticsWrapper({ gaId }: { gaId: string }) {
+export default function GoogleAnalyticsWrapper({ gaId, nonce }: { gaId: string; nonce?: string }) {
   const [hasConsent, setHasConsent] = useState(false);
 
   useEffect(() => {
@@ -22,5 +22,5 @@ export default function GoogleAnalyticsWrapper({ gaId }: { gaId: string }) {
 
   if (!hasConsent || !gaId) return null;
 
-  return <GoogleAnalytics gaId={gaId} />;
+  return <GoogleAnalytics gaId={gaId} nonce={nonce} />;
 }
