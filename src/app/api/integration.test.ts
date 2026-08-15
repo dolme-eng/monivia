@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { generateCsrfToken } from './csrf';
+import { generateCsrfToken } from '@/lib/csrf';
 
 process.env.CSRF_SECRET = 'test-secret-for-api-integration';
 

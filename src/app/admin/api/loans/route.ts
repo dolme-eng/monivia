@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const { prisma } = await import('@/lib/prisma');
-    const VALID_STATUSES = ['ALL', 'PENDING', 'IN_REVIEW', 'APPROVED', 'REJECTED', 'CONTACTED'];
+    const VALID_STATUSES = ['ALL', 'PENDING', 'REVIEWED', 'APPROVED', 'REJECTED', 'CONTACTED'];
 
     const { searchParams } = new URL(req.url);
     const status = searchParams.get('status');

@@ -72,10 +72,21 @@ export default function LoanForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [practiceId, setPracticeId] = useState('');
   const [serverError, setServerError] = useState('');
-  const [prefillBanner, setPrefillBanner] = useState(getInitialPrefillBanner);
+  const [prefillBanner, setPrefillBanner] = useState<ReturnType<typeof buildPrefillBanner> | null>(null);
   const pathname = usePathname();
   const formTopRef = useRef<HTMLDivElement>(null);
   const stepTitleRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const prefill = readLoanPrefill();
+    if (prefill) {
+      const slug = isLoanSlug(pathname.split('/').pop() || '') ? (pathname.split('/').pop() as keyof typeof loanProducts) : 'personale';
+      const product = loanProducts[slug];
+      const monthly =
+        prefill.monthlyEstimate ?? calculateLoan(prefill.importo, prefill.durata, prefill.insurance, product.tan, product.insuranceRate).monthly;
+      setPrefillBanner(buildPrefillBanner(prefill, monthly));
+    }
+  }, [pathname]);
 
   const { register, handleSubmit, control, trigger, setValue, formState: { errors, isSubmitting } } = useForm<FormValues>({
     resolver: zodResolver(loanFormSchema) as Resolver<FormValues>,

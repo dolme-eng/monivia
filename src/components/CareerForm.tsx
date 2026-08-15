@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { getCsrfToken } from '@/lib/csrf-client';
 import { careerSchema } from '@/lib/validations';
 import { ErrorMessage, fieldClass } from '@/components/form-shared';
+import { siteConfig } from '@/config/site';
 
 type CareerFormValues = {
   nome: string;
@@ -139,8 +140,8 @@ export default function CareerForm() {
             className="rounded-xl border border-red-100 bg-red-50 p-3 text-center text-xs font-bold text-red-600"
           >
             {errorMessage || <>Errore durante l&apos;invio. Puoi scriverci a{' '}
-            <a href="mailto:lavoro@monivia.it" className="text-secondary underline">
-              lavoro@monivia.it
+            <a href={`mailto:${siteConfig.contact.career}`} className="text-secondary underline">
+              {siteConfig.contact.career}
             </a>
             .</>}
           </motion.p>

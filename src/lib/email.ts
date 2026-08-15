@@ -39,8 +39,10 @@ export const sendEmail = async (payload: EmailPayload): Promise<{ success: boole
   if (!transporter) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('[EMAIL MOCK] SMTP non configurato — email non inviata');
+    } else {
+      console.error('[EMAIL] SMTP non configurato — email non inviata in produzione');
     }
-    return { success: true, mocked: true };
+    return { success: false, mocked: true };
   }
 
   const fromEmail = process.env.SMTP_USER || siteConfig.contact.email;

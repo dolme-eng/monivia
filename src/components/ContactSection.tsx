@@ -12,7 +12,7 @@ import { getCsrfToken } from '@/lib/csrf-client';
 import { ErrorMessage, fieldClass, type ContactFormValues } from '@/components/form-shared';
 
 export default function ContactSection() {
-  const [contactStatus, setContactStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [contactStatus, setContactStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
   const {
@@ -33,7 +33,6 @@ export default function ContactSection() {
   });
 
   const onSubmit = async (data: ContactFormValues) => {
-    setContactStatus('loading');
     try {
       const csrfToken = await getCsrfToken();
       const response = await fetch('/api/contact', {

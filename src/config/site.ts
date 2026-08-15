@@ -11,6 +11,7 @@ export const siteConfig = {
       link: "https://wa.me/393508533366"
     },
     email: "contatto@monivia.it",
+    career: "lavoro@monivia.it",
     address: "Via Savona, 15 — 20144 Milano (MI)"
   },
   links: {
