@@ -41,3 +41,29 @@ enum LoanStatus {
   REJECTED
   CONTACTED
 }
+
+model ContactMessage {
+  id         String   @id @default(uuid())
+  nome       String
+  email      String
+  oggetto    String
+  message    String
+  sourcePage String   @default("/contatti")
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([email])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  entity     String
+  entityId   String
+  action     String
+  details    String?
+  adminEmail String
+  createdAt  DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+}

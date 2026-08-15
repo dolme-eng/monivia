@@ -24,15 +24,11 @@ export async function PATCH(
 
   try {
     const { prisma } = await import('@/lib/prisma');
-    if (!prisma) {
-      return NextResponse.json({ success: false, error: 'Database non configurato' }, { status: 503 });
-    }
-
     const { id } = await params;
     const body = await req.json();
     const data = updateSchema.parse(body);
 
-    const existing = await prisma.loanApplication.findUnique({ where: { id }, select: { id: true } });
+    const existing = await prisma.loanApplication.findUnique({ where: { id }, select: { id: true, status: true } });
     if (!existing) {
       return NextResponse.json({ success: false, error: 'Pratica non trovata' }, { status: 404 });
     }
@@ -43,10 +39,20 @@ export async function PATCH(
       updateData.reviewedBy = admin.email || admin.userId || 'Admin';
     }
 
-    const application = await prisma.loanApplication.update({
-      where: { id },
-      data: updateData,
-    });
+    const adminEmail = admin.email || admin.userId || 'Admin';
+
+    const [application] = await prisma.$transaction([
+      prisma.loanApplication.update({ where: { id }, data: updateData }),
+      prisma.auditLog.create({
+        data: {
+          entity: 'LoanApplication',
+          entityId: id,
+          action: data.status ? `STATUS:${existing.status}->${data.status}` : 'NOTES_UPDATE',
+          details: data.notes ? data.notes.slice(0, 500) : undefined,
+          adminEmail,
+        },
+      }),
+    ]);
 
     return NextResponse.json({ success: true, application });
   } catch (error) {

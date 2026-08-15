@@ -50,6 +50,14 @@ export async function POST(request: Request) {
       sourcePage: normalizeText(result.data.sourcePage) || '/contatti',
     };
 
+    // Save to DB (best effort — don't block on failure)
+    try {
+      const { prisma } = await import('@/lib/prisma');
+      await prisma.contactMessage.create({ data });
+    } catch (dbError) {
+      console.error('Contact DB write failed (non-blocking):', dbError);
+    }
+
     const [teamEmailResult, autoReplyEmailResult] = await Promise.all([
       sendEmail({
         to: siteConfig.contact.email,

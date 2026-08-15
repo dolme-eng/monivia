@@ -53,7 +53,7 @@ function getInitialPrefillBanner() {
   const prefill = readLoanPrefill();
   if (!prefill) return null;
   const monthly =
-    prefill.monthlyEstimate ?? calculateLoan(prefill.importo, prefill.durata, prefill.insurance, 0.02, 0.0005).monthly;
+    prefill.monthlyEstimate ?? calculateLoan(prefill.importo, prefill.durata, prefill.insurance, loanProducts.personale.tan, loanProducts.personale.insuranceRate).monthly;
   return buildPrefillBanner(prefill, monthly);
 }
 
@@ -104,7 +104,7 @@ export default function LoanForm() {
       const prefill = readLoanPrefill();
       if (!prefill) return;
       const monthly =
-        prefill.monthlyEstimate ?? calculateLoan(prefill.importo, prefill.durata, prefill.insurance).monthly;
+        prefill.monthlyEstimate ?? calculateLoan(prefill.importo, prefill.durata, prefill.insurance, loanProducts.personale.tan, loanProducts.personale.insuranceRate).monthly;
       setPrefillBanner(buildPrefillBanner(prefill, monthly));
       applyPrefillValues(prefill, setValue);
     };
