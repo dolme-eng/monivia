@@ -9,6 +9,7 @@ const serviceLinks = [
   { name: 'Prestito Aziendale', href: '/prestiti/business' },
   { name: 'Consolidamento Debiti', href: '/prestiti/consolidamento' },
   { name: 'Tariffe e condizioni', href: '/tariffe' },
+  { name: 'Calcola la rata', href: '/calcola' },
 ];
 
 const companyLinks = [
