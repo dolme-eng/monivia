@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 import { siteConfig } from '@/config/site';
-import { blogArticles } from '@/config/blog';
+import { blogArticles, BLOG_CATEGORIES } from '@/config/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.url;
@@ -48,5 +48,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...blogPages];
+  const blogCategoryPages: MetadataRoute.Sitemap = BLOG_CATEGORIES.map((category) => ({
+    url: `${baseUrl}/blog/${category.toLowerCase()}`,
+    lastModified,
+    changeFrequency: 'weekly' as const,
+    priority: 0.75,
+  }));
+
+  return [...staticPages, ...blogPages, ...blogCategoryPages];
 }

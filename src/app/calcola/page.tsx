@@ -15,6 +15,13 @@ export const metadata: Metadata = {
     siteName: 'Monivia',
     locale: 'it_IT',
     type: 'website',
+    images: ['/og-default.webp'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Calcola la tua rata | Monivia',
+    description: 'Simulatore prestito Monivia — calcolo immediato.',
+    images: ['/og-default.webp'],
   },
 };
 

@@ -14,6 +14,13 @@ export const metadata: Metadata = {
     siteName: 'Monivia',
     locale: 'it_IT',
     type: 'website',
+    images: ['/og-default.webp'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Domande frequenti | Monivia',
+    description: 'Risposte alle domande più comuni sui prestiti Monivia.',
+    images: ['/og-default.webp'],
   },
 };
 

@@ -14,6 +14,13 @@ export const metadata: Metadata = {
     siteName: 'Monivia',
     locale: 'it_IT',
     type: 'website',
+    images: ['/og-default.webp'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog Monivia',
+    description: 'Consigli, guide e aggiornamenti sui prestiti.',
+    images: ['/og-default.webp'],
   },
 };
 
