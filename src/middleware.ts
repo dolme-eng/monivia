@@ -49,6 +49,8 @@ export default async function middleware(req: NextRequest) {
   if (pathname.startsWith('/admin')) {
     const session = await getSession(req);
     if (!session || session.role !== 'ADMIN') {
+      const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+      console.warn(`[AUTH] Admin access denied: ${pathname} ip=${ip} time=${new Date().toISOString()}`);
       return NextResponse.redirect(new URL('/', req.url));
     }
   }
