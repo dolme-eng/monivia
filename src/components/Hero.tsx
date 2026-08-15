@@ -97,7 +97,7 @@ export default function Hero() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                  <p className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">
                     Percorso Monivia
                   </p>
                   <h2 className="mt-2 text-2xl font-black leading-tight sm:text-3xl">

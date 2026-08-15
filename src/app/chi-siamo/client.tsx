@@ -105,7 +105,7 @@ export default function ChiSiamoClient() {
                   <stat.Icon size={22} aria-hidden />
                 </div>
                 <p className="text-3xl font-black tracking-tight text-primary sm:text-4xl">{stat.value}</p>
-                <p className="mt-2 text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">{stat.label}</p>
+                <p className="mt-2 text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">{stat.label}</p>
               </motion.div>
             ))}
           </div>

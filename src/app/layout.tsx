@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import BackToTop from "@/components/BackToTop";
+import ExitIntentModal from "@/components/ExitIntentModal";
 import SkipToContent from "@/components/SkipToContent";
 import StickyConversionBar from "@/components/StickyConversionBar";
 import { siteConfig } from "@/config/site";
@@ -112,6 +114,8 @@ export default async function RootLayout({
         <CookieBanner />
         <StickyConversionBar />
         <WhatsAppButton />
+        <BackToTop />
+        <ExitIntentModal />
         <GoogleAnalyticsWrapper gaId={process.env.NEXT_PUBLIC_GA_ID || ""} nonce={nonce} />
       </body>
     </html>

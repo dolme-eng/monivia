@@ -110,7 +110,7 @@ export default function SimulatorHorizontal() {
           <div className="rounded-lg bg-slate-50 p-5 sm:p-6">
             <div className="mb-4 flex items-start justify-between gap-2">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Importo</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Importo</p>
                 <p className="mt-0.5 text-sm font-medium text-slate-500">Scegli quanto ti serve</p>
               </div>
               <div className="flex items-baseline gap-0.5 shrink-0">
@@ -141,7 +141,7 @@ export default function SimulatorHorizontal() {
               aria-valuenow={amount}
               aria-valuetext={`${amount.toLocaleString('it-IT')} euro`}
             />
-            <div className="mt-2.5 flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-400">
+            <div className="mt-2.5 flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-500">
               <span>5.000€</span>
               <span>1.000.000€</span>
             </div>
@@ -151,7 +151,7 @@ export default function SimulatorHorizontal() {
           <div className="rounded-lg bg-slate-50 p-5 sm:p-6">
             <div className="mb-4 flex items-start justify-between gap-2">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Durata</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Durata</p>
                 <p className="mt-0.5 text-sm font-medium text-slate-500">Adatta la rata</p>
               </div>
               <p className="text-xl font-black text-primary shrink-0 sm:text-2xl">
@@ -172,7 +172,7 @@ export default function SimulatorHorizontal() {
               aria-valuenow={months}
               aria-valuetext={`${months} mesi`}
             />
-            <div className="mt-2.5 flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-400">
+            <div className="mt-2.5 flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-500">
               <span>12 mesi</span>
               <span>360 mesi</span>
             </div>
@@ -196,7 +196,7 @@ export default function SimulatorHorizontal() {
                 <ShieldCheck size={22} />
               </div>
               <div className="flex-1">
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Assicurazione</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Assicurazione</p>
                 <p className="mt-1 text-sm font-black text-primary">
                   {insurance ? 'Inclusa' : 'Non inclusa'}
                 </p>

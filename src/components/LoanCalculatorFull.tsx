@@ -127,7 +127,7 @@ export default function LoanCalculatorFull() {
     <div className="space-y-8">
       {/* Product selector */}
       <div>
-        <p className="mb-3 text-xs font-black uppercase tracking-wider text-slate-400">Tipo di prestito</p>
+        <p className="mb-3 text-xs font-black uppercase tracking-wider text-slate-500">Tipo di prestito</p>
         <div className="flex flex-wrap gap-2">
           {loanSlugs.map((slug) => {
             const p = loanProducts[slug];
@@ -157,7 +157,7 @@ export default function LoanCalculatorFull() {
         <div className="rounded-2xl border border-slate-200 bg-white p-6">
           <div className="mb-4 flex items-start justify-between">
             <div>
-              <p className="text-xs font-black uppercase tracking-wider text-slate-400">Importo</p>
+              <p className="text-xs font-black uppercase tracking-wider text-slate-500">Importo</p>
               <p className="mt-1 text-sm text-slate-500">Quanto ti serve?</p>
             </div>
             <div className="flex items-baseline gap-1">
@@ -199,7 +199,7 @@ export default function LoanCalculatorFull() {
         <div className="rounded-2xl border border-slate-200 bg-white p-6">
           <div className="mb-4 flex items-start justify-between">
             <div>
-              <p className="text-xs font-black uppercase tracking-wider text-slate-400">Durata</p>
+              <p className="text-xs font-black uppercase tracking-wider text-slate-500">Durata</p>
               <p className="mt-1 text-sm text-slate-500">Adatta la rata</p>
             </div>
             <p className="text-2xl font-black text-primary">
@@ -240,7 +240,7 @@ export default function LoanCalculatorFull() {
                 <ShieldCheck size={24} />
               </div>
               <div>
-                <p className="text-xs font-black uppercase tracking-wider text-slate-400">Assicurazione</p>
+                <p className="text-xs font-black uppercase tracking-wider text-slate-500">Assicurazione</p>
                 <p className="mt-1 text-sm font-bold text-primary">
                   {insurance ? 'Inclusa' : 'Non inclusa'}
                 </p>
@@ -330,11 +330,11 @@ export default function LoanCalculatorFull() {
           <table className="w-full min-w-[500px] text-sm">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="px-3 py-2 text-left text-[10px] font-black uppercase tracking-wider text-slate-400">Prodotto</th>
-                <th className="px-3 py-2 text-center text-[10px] font-black uppercase tracking-wider text-slate-400">TAN</th>
-                <th className="px-3 py-2 text-center text-[10px] font-black uppercase tracking-wider text-slate-400">Rata</th>
-                <th className="px-3 py-2 text-center text-[10px] font-black uppercase tracking-wider text-slate-400">Totale</th>
-                <th className="px-3 py-2 text-center text-[10px] font-black uppercase tracking-wider text-slate-400">Interessi</th>
+                <th className="px-3 py-2 text-left text-[10px] font-black uppercase tracking-wider text-slate-500">Prodotto</th>
+                <th className="px-3 py-2 text-center text-[10px] font-black uppercase tracking-wider text-slate-500">TAN</th>
+                <th className="px-3 py-2 text-center text-[10px] font-black uppercase tracking-wider text-slate-500">Rata</th>
+                <th className="px-3 py-2 text-center text-[10px] font-black uppercase tracking-wider text-slate-500">Totale</th>
+                <th className="px-3 py-2 text-center text-[10px] font-black uppercase tracking-wider text-slate-500">Interessi</th>
               </tr>
             </thead>
             <tbody>

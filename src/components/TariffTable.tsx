@@ -11,22 +11,22 @@ export default function TariffTable() {
       <table className="w-full min-w-[700px] border-collapse">
         <thead>
           <tr className="border-b border-slate-200">
-            <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-wider text-slate-400">
+            <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-wider text-slate-500">
               Prodotto
             </th>
-            <th className="px-4 py-4 text-center text-xs font-black uppercase tracking-wider text-slate-400">
+            <th className="px-4 py-4 text-center text-xs font-black uppercase tracking-wider text-slate-500">
               TAN
             </th>
-            <th className="px-4 py-4 text-center text-xs font-black uppercase tracking-wider text-slate-400">
+            <th className="px-4 py-4 text-center text-xs font-black uppercase tracking-wider text-slate-500">
               Importo max
             </th>
-            <th className="px-4 py-4 text-center text-xs font-black uppercase tracking-wider text-slate-400">
+            <th className="px-4 py-4 text-center text-xs font-black uppercase tracking-wider text-slate-500">
               Durata max
             </th>
-            <th className="px-4 py-4 text-center text-xs font-black uppercase tracking-wider text-slate-400">
+            <th className="px-4 py-4 text-center text-xs font-black uppercase tracking-wider text-slate-500">
               Rata* (esempio)
             </th>
-            <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-wider text-slate-400">
+            <th className="px-4 py-4 text-left text-xs font-black uppercase tracking-wider text-slate-500">
               Vantaggi
             </th>
             <th className="px-4 py-4" />

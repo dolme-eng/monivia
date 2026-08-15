@@ -118,7 +118,7 @@ function ContattiContent() {
                   <Icon size={26} />
                 </div>
                 <div>
-                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">{label}</p>
+                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">{label}</p>
                   <p className="mt-1.5 text-sm font-black text-primary transition-colors group-hover:text-secondary">{value}</p>
                 </div>
               </motion.a>

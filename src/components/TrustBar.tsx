@@ -33,7 +33,7 @@ export default function TrustBar() {
                   <item.icon size={20} />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
                     {item.label}
                   </p>
                   <p className="mt-0.5 truncate text-sm font-black text-primary transition-colors group-hover:text-secondary">

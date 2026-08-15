@@ -17,7 +17,7 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
         >
           <button
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
-            className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+            className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40"
             aria-expanded={openIndex === i}
           >
             <span className="text-sm font-bold text-slate-900 sm:text-base">
