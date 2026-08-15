@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import "./globals.css";
 import SkipToContent from "@/components/SkipToContent";
+import ClientWidgets from "@/components/ClientWidgets";
 import { siteConfig } from "@/config/site";
 import { Inter } from "next/font/google";
 import GoogleAnalyticsWrapper from "@/components/GoogleAnalyticsWrapper";
 import { headers } from "next/headers";
-
-const CookieBanner = dynamic(() => import("@/components/CookieBanner"), { ssr: false });
-const WhatsAppButton = dynamic(() => import("@/components/WhatsAppButton"), { ssr: false });
-const BackToTop = dynamic(() => import("@/components/BackToTop"), { ssr: false });
-const ExitIntentModal = dynamic(() => import("@/components/ExitIntentModal"), { ssr: false });
-const StickyConversionBar = dynamic(() => import("@/components/StickyConversionBar"), { ssr: false });
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -140,11 +134,7 @@ export default async function RootLayout({
         <div id="site-content" tabIndex={-1}>
           {children}
         </div>
-        <CookieBanner />
-        <StickyConversionBar />
-        <WhatsAppButton />
-        <BackToTop />
-        <ExitIntentModal />
+        <ClientWidgets />
         <GoogleAnalyticsWrapper gaId={process.env.NEXT_PUBLIC_GA_ID || ""} nonce={nonce} />
       </body>
     </html>
