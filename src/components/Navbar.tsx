@@ -9,6 +9,7 @@ import { siteConfig } from '@/config/site';
 
 const navLinks = [
   { name: 'Prestiti', href: '/#prestiti' },
+  { name: 'Tariffe', href: '/tariffe' },
   { name: 'Blog', href: '/blog' },
   { name: 'FAQ', href: '/faq' },
   { name: 'Chi siamo', href: '/chi-siamo' },

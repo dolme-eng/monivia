@@ -8,6 +8,7 @@ const serviceLinks = [
   { name: 'Prestito Immobiliare', href: '/prestiti/immobiliare' },
   { name: 'Prestito Aziendale', href: '/prestiti/business' },
   { name: 'Consolidamento Debiti', href: '/prestiti/consolidamento' },
+  { name: 'Tariffe e condizioni', href: '/tariffe' },
 ];
 
 const companyLinks = [
