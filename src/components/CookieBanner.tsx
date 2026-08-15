@@ -73,7 +73,10 @@ export default function CookieBanner() {
               </button>
               <Link
                 href="/cookie-policy"
-                onClick={() => setIsVisible(false)}
+                onClick={() => {
+                  localStorage.setItem('monivia_cookie_consent', 'declined');
+                  setIsVisible(false);
+                }}
                 className="py-1 text-center text-xs text-slate-400 transition-colors hover:text-secondary"
               >
                 Personalizza preferenze

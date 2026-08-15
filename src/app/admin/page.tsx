@@ -70,6 +70,7 @@ export default function AdminLoansPage() {
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [selectedApp, setSelectedApp] = useState<LoanApplication | null>(null);
   const [updating, setUpdating] = useState(false);
+  const [notesDraft, setNotesDraft] = useState('');
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 400);
@@ -241,7 +242,7 @@ export default function AdminLoansPage() {
                         </td>
                         <td className="px-4 py-3 text-right">
                           <button
-                            onClick={() => setSelectedApp(app)}
+                            onClick={() => { setSelectedApp(app); setNotesDraft(app.notes || ''); }}
                             className="p-2 min-w-[36px] min-h-[36px] inline-flex items-center justify-center rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors"
                             aria-label="Dettagli"
                           >
@@ -363,9 +364,18 @@ export default function AdminLoansPage() {
                   className="w-full p-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-secondary resize-none"
                   rows={3}
                   placeholder="Aggiungi note..."
-                  defaultValue={selectedApp.notes || ''}
-                  onBlur={(e) => updateStatus(selectedApp.id, selectedApp.status, e.target.value)}
+                  value={notesDraft}
+                  onChange={(e) => setNotesDraft(e.target.value)}
                 />
+                {notesDraft !== (selectedApp.notes || '') && (
+                  <button
+                    onClick={() => updateStatus(selectedApp.id, selectedApp.status, notesDraft)}
+                    disabled={updating}
+                    className="mt-2 px-4 py-2 bg-primary text-white rounded-lg text-xs font-black hover:bg-slate-800 transition-colors min-h-[36px]"
+                  >
+                    Salva note
+                  </button>
+                )}
               </div>
 
               {/* Actions */}

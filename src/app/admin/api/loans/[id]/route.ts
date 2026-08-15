@@ -1,19 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { jwtVerify } from 'jose';
+import { requireAdmin } from '@/lib/auth';
 import { verifyCsrfToken } from '@/lib/csrf';
-
-async function requireAdmin(req: NextRequest) {
-  const token = req.cookies.get('authjs.session-token')?.value
-    || req.cookies.get('__Secure-authjs.session-token')?.value;
-  if (!token) return null;
-  try {
-    const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
-    const { payload } = await jwtVerify(token, secret);
-    if (payload.role !== 'ADMIN') return null;
-    return payload;
-  } catch { return null; }
-}
 
 const updateSchema = z.object({
   status: z.enum(['PENDING', 'REVIEWED', 'APPROVED', 'REJECTED', 'CONTACTED']).optional(),

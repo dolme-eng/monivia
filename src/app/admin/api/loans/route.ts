@@ -1,17 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { jwtVerify } from 'jose';
-
-async function requireAdmin(req: NextRequest) {
-  const token = req.cookies.get('authjs.session-token')?.value
-    || req.cookies.get('__Secure-authjs.session-token')?.value;
-  if (!token) return null;
-  try {
-    const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
-    const { payload } = await jwtVerify(token, secret);
-    if (payload.role !== 'ADMIN') return null;
-    return payload;
-  } catch { return null; }
-}
+import { requireAdmin } from '@/lib/auth';
 
 export async function GET(req: NextRequest) {
   const admin = await requireAdmin(req);

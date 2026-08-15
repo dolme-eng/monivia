@@ -63,32 +63,30 @@ export async function POST(request: Request) {
     const practiceId = `PD-${randomUUID().split('-')[0].toUpperCase()}`;
 
     const { prisma } = await import('@/lib/prisma');
-    if (prisma) {
-      try {
-        await prisma.loanApplication.create({
-          data: {
-            practiceId,
-            importo: data.importo,
-            durata: data.durata,
-            impiego: data.impiego,
-            nome: data.nome,
-            cognome: data.cognome,
-            email: data.email,
-            telefono: data.telefono,
-            codiceFiscale: data.codiceFiscale,
-            reddito: data.reddito,
-            finalita: data.finalita,
-            anzianita: data.anzianita,
-            sourcePage: data.sourcePage,
-          },
-        });
-      } catch (dbError) {
-        console.error('Prisma DB write failed:', dbError);
-        return NextResponse.json(
-          { error: 'Impossibile salvare la richiesta. Riprova più tardi.' },
-          { status: 503 }
-        );
-      }
+    try {
+      await prisma.loanApplication.create({
+        data: {
+          practiceId,
+          importo: data.importo,
+          durata: data.durata,
+          impiego: data.impiego,
+          nome: data.nome,
+          cognome: data.cognome,
+          email: data.email,
+          telefono: data.telefono,
+          codiceFiscale: data.codiceFiscale,
+          reddito: data.reddito,
+          finalita: data.finalita,
+          anzianita: data.anzianita,
+          sourcePage: data.sourcePage,
+        },
+      });
+    } catch (dbError) {
+      console.error('Prisma DB write failed:', dbError);
+      return NextResponse.json(
+        { error: 'Impossibile salvare la richiesta. Riprova più tardi.' },
+        { status: 503 }
+      );
     }
 
     const [teamEmailResult, autoReplyEmailResult] = await Promise.all([
