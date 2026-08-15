@@ -17,6 +17,9 @@ export default function LavoraConNoiClient() {
         badge="Carriere"
         title="Lavora con noi"
         description="Unisciti alla squadra Monivia e aiutaci a costruire un'esperienza finanziaria più semplice, più chiara e più umana."
+        variant="image"
+        imageSrc="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200"
+        imageAlt="Squadra che collabora in ufficio"
       />
 
       <section className="section-pad">

@@ -1,10 +1,20 @@
+import Image from 'next/image';
 import { Calendar, Clock } from 'lucide-react';
 import { CATEGORY_COLORS, type BlogCategory } from '@/config/blog';
 
 export default function BlogHero() {
   return (
     <section className="relative overflow-hidden bg-primary pb-16 pt-32 text-white">
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0">
+        <Image
+          src="https://images.unsplash.com/photo-1432821596592-e2c18b78144f?w=1200"
+          alt=""
+          fill
+          priority
+          className="object-cover opacity-10"
+        />
+      </div>
+      <div className="absolute inset-0 opacity-5">
         <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-secondary/30 blur-3xl" />
         <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-secondary/20 blur-3xl" />
       </div>

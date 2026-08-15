@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { HelpCircle, Phone } from 'lucide-react';
 import { faqItems, FAQ_CATEGORIES, type FaqCategory } from '@/config/faq';
 import FaqAccordion from '@/components/FaqAccordion';
@@ -17,7 +18,16 @@ export default function FaqClient() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-primary pb-16 pt-32 text-white">
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200"
+            alt=""
+            fill
+            priority
+            className="object-cover opacity-10"
+          />
+        </div>
+        <div className="absolute inset-0 opacity-5">
           <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-secondary/30 blur-3xl" />
           <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-secondary/20 blur-3xl" />
         </div>

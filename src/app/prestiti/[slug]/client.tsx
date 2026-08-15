@@ -23,6 +23,14 @@ const loanIcons: Record<LoanSlug, LucideIcon> = {
   business: Rocket,
 };
 
+const heroImages: Record<LoanSlug, string> = {
+  personale: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=1200',
+  auto: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1200',
+  immobiliare: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200',
+  consolidamento: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200',
+  business: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200',
+};
+
 function PrestitoDettaglioContent() {
   const params = useParams();
   const slug = params.slug as string;
@@ -40,6 +48,16 @@ function PrestitoDettaglioContent() {
 
       {/* Hero del prodotto */}
       <section className="relative overflow-hidden bg-primary pb-20 pt-32 sm:pt-36 text-white">
+        <div className="absolute inset-0">
+          <Image
+            src={heroImages[slug]}
+            alt=""
+            fill
+            priority
+            className="object-cover opacity-15"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/40 via-primary/75 to-primary" />
         <div className="site-container relative z-10">
           <Breadcrumbs
             className="mb-10 [&_a]:text-white/60 [&_a:hover]:text-secondary [&_span]:text-white/80"

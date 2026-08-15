@@ -91,6 +91,9 @@ function ContattiContent() {
         badge="Supporto e contatti"
         title="Contattaci"
         description="Hai una domanda? La nostra squadra è a tua disposizione con risposte rapide e un tono chiaro."
+        variant="image"
+        imageSrc="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1200"
+        imageAlt="Ufficio moderno con team di supporto"
       />
 
       <section className="section-pad">
