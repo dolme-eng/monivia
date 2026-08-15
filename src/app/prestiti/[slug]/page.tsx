@@ -28,6 +28,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default function PrestitoDettaglio() {
-  return <PrestitoDettaglioClient />;
+export default async function PrestitoDettaglio({ params }: Props) {
+  const { slug } = await params;
+  const product = isLoanSlug(slug) ? loanProducts[slug] : null;
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.monivia.it' },
+      { '@type': 'ListItem', position: 2, name: 'Prestiti', item: 'https://www.monivia.it/prestiti' },
+      ...(product
+        ? [{ '@type': 'ListItem', position: 3, name: product.shortTitle, item: `https://www.monivia.it/prestiti/${slug}` }]
+        : []),
+    ],
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <PrestitoDettaglioClient />
+    </>
+  );
 }

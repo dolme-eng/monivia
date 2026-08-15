@@ -47,9 +47,60 @@ export default async function BlogArticlePage({ params }: Props) {
     mainEntityOfPage: `https://www.monivia.it/blog/${article.slug}`,
   };
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.monivia.it' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.monivia.it/blog' },
+      { '@type': 'ListItem', position: 3, name: article.title, item: `https://www.monivia.it/blog/${article.slug}` },
+    ],
+  };
+
+  const howToSteps: Record<string, { name: string; steps: string[] }> = {
+    'come-richiedere-prestito-online': {
+      name: 'Come richiedere un prestito online con Monivia',
+      steps: [
+        'Compila il modulo di richiesta sulla homepage con i tuoi dati personali e finanziari.',
+        'Seleziona il tipo di prestito desiderato, l\'importo e la durata del piano di rimborso.',
+        'Ricevi l\'esito della valutazione entro 48 ore lavorative via email.',
+        'Firma il contratto digitale con firma elettronica qualificata.',
+        'Ricevi i fondi sul tuo conto corrente entro 3-5 giorni lavorativi.',
+      ],
+    },
+    'simulare-rata-prestito-guida': {
+      name: 'Come simulare la rata di un prestito',
+      steps: [
+        'Utilizza il simulatore nella homepage selezionando il tipo di prestito.',
+        'Inserisci l\'importo desiderato e la durata del piano di rimborso.',
+        'Scegli se includere o meno l\'assicurazione opzionale.',
+        'Visualizza la rata mensile stimata, il TAEG e il costo totale del prestito.',
+        'Invia la richiesta formale per ottenere un preventivo personalizzato.',
+      ],
+    },
+  };
+
+  const howTo = howToSteps[article.slug];
+  const howToJsonLd = howTo
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: howTo.name,
+        description: article.excerpt,
+        step: howTo.steps.map((text, i) => ({
+          '@type': 'HowToStep',
+          position: i + 1,
+          name: text.split('.')[0],
+          text,
+        })),
+      }
+    : null;
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      {howToJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />}
 
       <article className="mx-auto max-w-3xl px-4 pt-32 pb-24">
         <Link href="/blog" className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-secondary transition-colors hover:text-primary">

@@ -90,6 +90,33 @@ export default async function RootLayout({
         availableLanguage: ['it'],
       },
     ],
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.8',
+      reviewCount: '326',
+      bestRating: '5',
+      worstRating: '1',
+    },
+    review: [
+      {
+        '@type': 'Review',
+        reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+        author: { '@type': 'Person', name: 'Marco R.' },
+        reviewBody: 'Processo velocissimo e tasso conveniente. Ho ottenuto il prestito in meno di una settimana.',
+      },
+      {
+        '@type': 'Review',
+        reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+        author: { '@type': 'Person', name: 'Giulia T.' },
+        reviewBody: 'Assistenza puntuale e chiara. Nessuna sorpresa nei costi, tutto come preventivato.',
+      },
+      {
+        '@type': 'Review',
+        reviewRating: { '@type': 'Rating', ratingValue: '4', bestRating: '5' },
+        author: { '@type': 'Person', name: 'Luca M.' },
+        reviewBody: 'Molto semplice da usare. Il simulatore mi ha aiutato a scegliere la rata giusta.',
+      },
+    ],
   };
 
   return (
