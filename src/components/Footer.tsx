@@ -13,6 +13,7 @@ const serviceLinks = [
 const companyLinks = [
   { name: 'Chi siamo', href: '/chi-siamo' },
   { name: 'Blog', href: '/blog' },
+  { name: 'FAQ', href: '/faq' },
   { name: 'Lavora con noi', href: '/lavora-con-noi' },
   { name: 'Contatti', href: '/contatti' },
   { name: 'Trasparenza', href: '/trasparenza' },
