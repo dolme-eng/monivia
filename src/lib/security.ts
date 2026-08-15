@@ -88,10 +88,14 @@ function isAllowedOrigin(request: Request) {
 function getClientIdentifier(request: Request) {
   const forwardedFor = request.headers.get('x-forwarded-for');
   if (forwardedFor) {
-    return forwardedFor.split(',')[0]?.trim() || 'unknown';
+    const ip = forwardedFor.split(',')[0]?.trim();
+    if (ip && /^[\d.:a-fA-F]+$/.test(ip)) return ip;
   }
 
-  return request.headers.get('x-real-ip')?.trim() || 'unknown';
+  const realIp = request.headers.get('x-real-ip')?.trim();
+  if (realIp && /^[\d.:a-fA-F]+$/.test(realIp)) return realIp;
+
+  return 'unknown';
 }
 
 async function isRateLimited(request: Request, kind: SubmissionKind, limit: number, windowMs: number) {
@@ -104,8 +108,7 @@ async function isRateLimited(request: Request, kind: SubmissionKind, limit: numb
       await kv.expire(key, Math.ceil(windowMs / 1000));
     }
     return count > limit;
-  } catch (error) {
-    console.error('Redis Rate Limit Error — falling back to in-memory:', error);
+  } catch {
     return getMemoryRateLimit(key, limit, windowMs);
   }
 }
