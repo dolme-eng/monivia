@@ -30,7 +30,7 @@ export const blogArticles: BlogArticle[] = [
     category: 'Guida',
     date: '2025-08-10',
     readTime: 4,
-    ogImage: '/assets/hero_lifestyle.webp',
+    ogImage: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200',
     content: `
       <h2>Come funziona il prestito online con Monivia</h2>
       <p>Richiedere un prestito con Monivia è semplice, veloce e completamente online. Non devi recarti in filiale: tutto il processo avviene dal tuo computer o smartphone.</p>
@@ -72,7 +72,7 @@ export const blogArticles: BlogArticle[] = [
     category: 'Finanze',
     date: '2025-08-05',
     readTime: 5,
-    ogImage: '/assets/consultation.webp',
+    ogImage: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200',
     content: `
       <h2>Cos'è il TAN</h2>
       <p>Il <strong>TAN (Tasso Annuo Nominale)</strong> è il tasso di interesse puro applicato al prestito. Indica la percentuale di interessi che paghi sul capitale preso in prestito, senza considerare i costi accessori come l'assicurazione o le spese di gestione.</p>
@@ -97,7 +97,7 @@ export const blogArticles: BlogArticle[] = [
     category: 'Consigli',
     date: '2025-07-28',
     readTime: 5,
-    ogImage: '/assets/hero_lifestyle_new.webp',
+    ogImage: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=1200',
     content: `
       <h2>Cos'è il consolidamento debiti</h2>
       <p>Il consolidamento debiti è un finanziamento che permette di <strong>raggruppare tutti i prestiti esistenti</strong> in un'unica rata mensile. Invece di gestire più rate con diversi importi e scadenze, ne paghi una sola, spesso più bassa della somma delle precedenti.</p>
@@ -133,7 +133,7 @@ export const blogArticles: BlogArticle[] = [
     category: 'Confronto',
     date: '2025-07-20',
     readTime: 4,
-    ogImage: '/assets/premium_hero.webp',
+    ogImage: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1200',
     content: `
       <h2>Prestito personale</h2>
       <p>Il prestito personale è la soluzione più flessibile. Puoi usarlo per qualsiasi scopo: ristrutturare casa, partire in vacanza, coprire una spesa imprevista, o semplicemente avere una riserva di liquidità.</p>
@@ -165,7 +165,7 @@ export const blogArticles: BlogArticle[] = [
     category: 'Errori',
     date: '2025-07-15',
     readTime: 4,
-    ogImage: '/assets/pro_bg.webp',
+    ogImage: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200',
     content: `
       <h2>Errore 1: Confrontare solo il TAN</h2>
       <p>Molti confrontano solo il TAN tra le diverse offerte, ma il <strong>TAEG</strong> è l'indicatore più affidabile perché include tutti i costi: interessi, spese, assicurazione. Un TAN basso con costi nascosti può rivelarsi più caro.</p>
@@ -193,7 +193,7 @@ export const blogArticles: BlogArticle[] = [
     category: 'Simulatore',
     date: '2025-07-10',
     readTime: 3,
-    ogImage: '/assets/consultation.webp',
+    ogImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1200',
     content: `
       <h2>Perché simulare la rata</h2>
       <p>Prima di richiedere un prestito, è fondamentale capire quanto pagherai ogni mese. Il simulatore Monivia ti aiuta a visualizzare l'impatto del finanziamento sul tuo budget mensile.</p>

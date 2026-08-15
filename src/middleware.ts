@@ -30,7 +30,7 @@ function buildCSP(nonce: string): string {
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ''}`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: blob: https://www.google-analytics.com",
+    "img-src 'self' data: blob: https://www.google-analytics.com https://images.unsplash.com",
     "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://analytics.google.com",
     "manifest-src 'self' https://vercel.com",
     "media-src 'self' blob:",
