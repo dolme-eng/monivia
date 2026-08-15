@@ -235,7 +235,7 @@ export default function SimulatorHorizontal() {
                   <span className="ml-1 text-sm text-white/45">/mese</span>
                 </div>
                 <p className="mt-3 text-[11px] leading-relaxed text-white/45">
-                  TAEG {(taeg * 100).toFixed(2)}% · TAN {(tan * 100).toFixed(2)}%
+                  TAEG {taeg > 0 ? 'indicativo ' : ''}{(taeg * 100).toFixed(2)}% · TAN {(tan * 100).toFixed(2)}%
                   <br />
                   Totale {totalDue.toLocaleString('it-IT', { maximumFractionDigits: 0 })}€
                 </p>
@@ -270,7 +270,7 @@ export default function SimulatorHorizontal() {
             <span className="text-xs text-white/40">/mese</span>
           </div>
           <p className="text-[10px] text-white/35">
-            TAEG {(taeg * 100).toFixed(2)}% · {totalDue.toLocaleString('it-IT', { maximumFractionDigits: 0 })}€
+            TAEG indicativo {(taeg * 100).toFixed(2)}% · {totalDue.toLocaleString('it-IT', { maximumFractionDigits: 0 })}€
           </p>
         </div>
         <motion.button

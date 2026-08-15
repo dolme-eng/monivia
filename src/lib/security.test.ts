@@ -5,6 +5,12 @@ vi.mock('@vercel/kv', () => ({
   kv: {
     get: vi.fn((key: string) => Promise.resolve(kvStore.get(key) ?? null)),
     set: vi.fn((key: string, value: number) => { kvStore.set(key, value); return Promise.resolve('OK'); }),
+    incr: vi.fn((key: string) => {
+      const current = kvStore.get(key) ?? 0;
+      kvStore.set(key, current + 1);
+      return Promise.resolve(current + 1);
+    }),
+    expire: vi.fn(() => Promise.resolve(true)),
   },
 }));
 
