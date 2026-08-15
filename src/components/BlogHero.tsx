@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import { Calendar, Clock } from 'lucide-react';
-import { CATEGORY_COLORS, type BlogCategory } from '@/config/blog';
 
 export default function BlogHero() {
   return (
