@@ -78,6 +78,46 @@ export default async function BlogArticlePage({ params }: Props) {
         'Invia la richiesta formale per ottenere un preventivo personalizzato.',
       ],
     },
+    'guida-prestito-personale-completa': {
+      name: 'Come ottenere un prestito personale',
+      steps: [
+        'Verifica di possedere i requisiti: maggiore età, residenza in Italia, reddito documentabile.',
+        'Raccogli i documenti: documento d\'identità, codice fiscale, ultime buste paga o dichiarazione dei redditi.',
+        'Usa il simulatore per calcolare la rata ideale in base a importo e durata.',
+        'Compila il modulo di richiesta online con i tuoi dati personali e finanziari.',
+        'Ricevi l\'esito entro 48 ore e firma il contratto digitale.',
+        'Ricevi i fondi sul tuo conto corrente entro 3-5 giorni lavorativi.',
+      ],
+    },
+    'guida-prestito-auto': {
+      name: 'Come ottenere un prestito auto',
+      steps: [
+        'Scegli il veicolo: nuovo, usato, concessionario o privato.',
+        'Calcola la rata con il simulatore Monivia inserendo importo e durata.',
+        'Raccogli i documenti: documento, codice fiscale, proforma del veicolo, buste paga.',
+        'Compila il modulo online e invia la richiesta.',
+        'Ricevi l\'esito entro 48 ore e firma il contratto digitale.',
+        'Ricevi i fondi e acquista la tua auto.',
+      ],
+    },
+    'come-scegliere-durata-prestito': {
+      name: 'Come scegliere la durata del prestito',
+      steps: [
+        'Determina il tuo budget mensile: quanto puoi permetterti di pagare ogni mese.',
+        'Calcola il costo totale con diverse durate usando il simulatore.',
+        'Confronta: durata breve = rata alta ma pochi interessi; durata lunga = rata bassa ma molti interessi.',
+        'Scegli la durata che bilancia rata sostenibile e costo totale accettabile.',
+      ],
+    },
+    'come-calcolare-taeg': {
+      name: 'Come calcolare il TAEG di un prestito',
+      steps: [
+        'Verifica che il TAEG sia indicato nella proposta di prestito (obbligo di legge).',
+        'Confronta il TAEG di diverse offerte: più basso è, più conveniente è il prestito.',
+        'Considera che il TAEG include interessi, spese di istruttoria e assicurazione.',
+        'Usa il TAEG come indicatore principale per la tua decisione.',
+      ],
+    },
   };
 
   const howTo = howToSteps[article.slug];
@@ -139,6 +179,30 @@ export default async function BlogArticlePage({ params }: Props) {
         </div>
 
         <BlogShareButtons title={article.title} slug={article.slug} />
+
+        {/* Articoli correlati */}
+        <div className="mt-16">
+          <h2 className="text-xl font-black text-slate-900">Continua a leggere</h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            {blogArticles
+              .filter((a) => a.slug !== article.slug)
+              .sort((a, b) => (a.category === article.category ? -1 : 1))
+              .slice(0, 3)
+              .map((related) => (
+                <Link
+                  key={related.slug}
+                  href={`/blog/${related.slug}`}
+                  className="group rounded-xl border border-slate-100 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-secondary/30 hover:shadow-md"
+                >
+                  <BlogCategoryBadge category={related.category} />
+                  <h3 className="mt-3 text-sm font-bold leading-snug text-slate-900 group-hover:text-secondary">
+                    {related.title}
+                  </h3>
+                  <p className="mt-2 text-xs text-slate-400">{related.readTime} min di lettura</p>
+                </Link>
+              ))}
+          </div>
+        </div>
 
         <div
           className="prose prose-slate max-w-none mt-8

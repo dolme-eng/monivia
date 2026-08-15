@@ -5,7 +5,7 @@ import { blogArticles } from '@/config/blog';
 
 export const metadata: Metadata = {
   title: 'Blog | Monivia',
-  description: 'Consigli, guide e aggiornamenti sui prestiti personali, auto, immobiliari e consolidamento debiti.',
+  description: 'Guide pratique, consigli esperti e novita sui prestiti personali, auto, immobiliari e consolidamento debiti.',
   alternates: { canonical: 'https://www.monivia.it/blog' },
   openGraph: {
     title: 'Blog Monivia',

@@ -15,7 +15,7 @@ import { buildPageMetadata } from '@/lib/seo';
 
 export const metadata = buildPageMetadata({
   title: 'Monivia | Prestiti online chiari e veloci',
-  description: 'Scopri Monivia: simulatore, richiesta prestito guidata, assistenza dedicata e un percorso pensato prima per i dispositivi mobili.',
+  description: 'Richiedi prestito online con Monivia: simulatore gratuito, tasso fisso dal 2%, risposta in 48h. Zero costi nascosti.',
   path: '/',
   keywords: ['prestito online', 'prestiti personali', 'simulatore prestito', 'Monivia'],
 });

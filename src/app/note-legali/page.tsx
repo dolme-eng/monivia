@@ -7,13 +7,24 @@ import { buildPageMetadata } from '@/lib/seo';
 
 export const metadata = buildPageMetadata({
   title: 'Note Legali | Monivia',
-  description: 'Informazioni societarie, iscrizione OAM e avvertenze legali sul servizio Monivia.',
+  description: 'Informazioni societarie Monivia, iscrizione OAM, P.IVA e avvertenze legali sul servizio di credito.',
   path: '/note-legali',
 });
 
 export default function NoteLegali() {
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.monivia.it' },
+      { '@type': 'ListItem', position: 2, name: 'Note legali', item: 'https://www.monivia.it/note-legali' },
+    ],
+  };
+
   return (
-    <main className="min-h-screen overflow-hidden bg-slate-50 text-slate-900">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <main className="min-h-screen overflow-hidden bg-slate-50 text-slate-900">
       <Navbar />
 
       <PageHero
@@ -65,5 +76,6 @@ export default function NoteLegali() {
 
       <Footer />
     </main>
+    </>
   );
 }

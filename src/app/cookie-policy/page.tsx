@@ -7,13 +7,24 @@ import { buildPageMetadata } from '@/lib/seo';
 
 export const metadata = buildPageMetadata({
   title: 'Informativa Cookie | Monivia',
-  description: 'Scopri quali cookie utilizziamo su Monivia e come gestire le tue preferenze di tracciamento.',
+  description: 'Cookie policy Monivia: quali cookie utilizziamo e come gestire le tue preferenze di tracciamento.',
   path: '/cookie-policy',
 });
 
 export default function CookiePolicy() {
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.monivia.it' },
+      { '@type': 'ListItem', position: 2, name: 'Cookie policy', item: 'https://www.monivia.it/cookie-policy' },
+    ],
+  };
+
   return (
-    <main className="min-h-screen overflow-hidden bg-slate-50 text-slate-900">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <main className="min-h-screen overflow-hidden bg-slate-50 text-slate-900">
       <Navbar />
 
       <PageHero
@@ -64,5 +75,6 @@ export default function CookiePolicy() {
 
       <Footer />
     </main>
+    </>
   );
 }

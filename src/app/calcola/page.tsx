@@ -6,7 +6,7 @@ import LoanCalculatorFull from '@/components/LoanCalculatorFull';
 export const metadata: Metadata = {
   title: 'Calcola la tua rata | Monivia',
   description:
-    'Simula il tuo prestito personalizzando importo, durata e assicurazione. Confronta i prodotti Monivia e richiedi online.',
+    'Simulatore prestito online: calcola rata mensile, confronta prodotti e scopri il TAEG. Risultato immediato, zero impegno.',
   alternates: { canonical: 'https://www.monivia.it/calcola' },
   openGraph: {
     title: 'Calcola la tua rata | Monivia',

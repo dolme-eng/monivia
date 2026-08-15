@@ -5,7 +5,7 @@ import FaqClient from './client';
 export const metadata: Metadata = {
   title: 'Domande frequenti | Monivia',
   description:
-    'Risposte alle domande più comuni sui prestiti Monivia: requisiti, tempi, costi, rimborsi e supporto.',
+    'FAQ prestiti Monivia: requisiti, tempi di erogazione, costi, rimborsi anticipati e supporto clienti. Risposte immediate.',
   alternates: { canonical: 'https://www.monivia.it/faq' },
   openGraph: {
     title: 'Domande frequenti | Monivia',

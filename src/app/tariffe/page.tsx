@@ -8,7 +8,7 @@ import TariffTable from '@/components/TariffTable';
 export const metadata: Metadata = {
   title: 'Tariffe e condizioni | Monivia',
   description:
-    'Scopri le tariffe, il TAN e le condizioni dei prestiti Monivia. Tabelle trasparenti senza costi nascosti.',
+    'Confronta TAN e TAEG dei prestiti Monivia. Tabelle trasparenti, esempi pratici e nessun costo nascosto.',
   alternates: { canonical: 'https://www.monivia.it/tariffe' },
   openGraph: {
     title: 'Tariffe e condizioni | Monivia',

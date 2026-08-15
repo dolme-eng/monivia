@@ -8,13 +8,24 @@ import { siteConfig } from '@/config/site';
 
 export const metadata = buildPageMetadata({
   title: 'Informativa Privacy | Monivia',
-  description: 'Scopri come Monivia raccoglie, usa e protegge i tuoi dati personali in conformità al GDPR.',
+  description: 'Privacy policy Monivia: raccogliamo, usiamo e proteggiamo i tuoi dati personali in conformità al GDPR.',
   path: '/privacy-policy',
 });
 
 export default function PrivacyPolicy() {
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.monivia.it' },
+      { '@type': 'ListItem', position: 2, name: 'Privacy policy', item: 'https://www.monivia.it/privacy-policy' },
+    ],
+  };
+
   return (
-    <main className="min-h-screen overflow-hidden bg-slate-50 text-slate-900">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <main className="min-h-screen overflow-hidden bg-slate-50 text-slate-900">
       <Navbar />
 
       <PageHero
@@ -77,5 +88,6 @@ export default function PrivacyPolicy() {
 
       <Footer />
     </main>
+    </>
   );
 }
