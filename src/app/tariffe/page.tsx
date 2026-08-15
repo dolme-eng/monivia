@@ -27,7 +27,7 @@ export default function TariffePage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-secondary/80 to-primary/80 pt-32 pb-16">
         <div className="pointer-events-none absolute inset-0 bg-[url('/assets/grid.svg')] opacity-10 [mask-image:linear-gradient(to_bottom,white,transparent)]" />
         <div className="container relative mx-auto max-w-6xl px-4 text-center">
-          <h1 className="text-4xl font-black tracking-tight text-white md:text-5xl">
+          <h1 className="text-4xl font-black tracking-tight text-white sm:text-[2.75rem] md:text-5xl">
             Tariffe e condizioni
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-white/80">

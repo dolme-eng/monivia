@@ -16,7 +16,7 @@ export default function BlogShareButtons({ title, slug }: { title: string; slug:
   };
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-wrap items-center gap-3">
       <span className="flex items-center gap-1 text-xs font-bold text-slate-400">
         <Share2 size={14} />
         Condividi

@@ -5,7 +5,9 @@ import { calculateLoan } from '@/utils/finance';
 
 export default function TariffTable() {
   return (
-    <div className="overflow-x-auto">
+    <div className="relative">
+      <div className="overflow-x-auto">
+      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent sm:hidden" />
       <table className="w-full min-w-[700px] border-collapse">
         <thead>
           <tr className="border-b border-slate-200">
@@ -74,6 +76,7 @@ export default function TariffTable() {
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

@@ -25,7 +25,7 @@ export default function CalcolaPage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-primary/80 to-secondary/60 pt-32 pb-12">
         <div className="pointer-events-none absolute inset-0 bg-[url('/assets/grid.svg')] opacity-10 [mask-image:linear-gradient(to_bottom,white,transparent)]" />
         <div className="container relative mx-auto max-w-4xl px-4 text-center">
-          <h1 className="text-4xl font-black tracking-tight text-white md:text-5xl">
+          <h1 className="text-4xl font-black tracking-tight text-white sm:text-[2.75rem] md:text-5xl">
             Calcola la tua rata
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-white/70">

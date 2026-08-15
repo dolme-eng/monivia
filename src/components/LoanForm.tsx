@@ -293,7 +293,7 @@ export default function LoanForm() {
                           <div className="mb-4 flex items-baseline justify-between">
                             <div className="flex items-baseline gap-1">
                               <span className="text-2xl font-black text-primary">€</span>
-                              <input id="loan-importo" type="number" min={5000} max={1000000} step={1000} aria-label="Importo prestito" aria-invalid={!!errors.importo} aria-describedby={errors.importo ? 'error-importo' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 1000000) v = 1000000; field.onChange(v); }} onBlur={() => { if (field.value < 5000) field.onChange(5000); field.onBlur(); }} className="w-28 bg-transparent text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
+                              <input id="loan-importo" type="number" min={5000} max={1000000} step={1000} aria-label="Importo prestito" aria-invalid={!!errors.importo} aria-describedby={errors.importo ? 'error-importo' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 1000000) v = 1000000; field.onChange(v); }} onBlur={() => { if (field.value < 5000) field.onChange(5000); field.onBlur(); }} className="w-24 sm:w-28 bg-transparent text-xl sm:text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
                             </div>
                             <div className="text-right text-[10px] font-bold uppercase tracking-wider text-slate-400">
                               <p>Min 5.000€</p><p>Max 1.000.000€</p>
@@ -316,7 +316,7 @@ export default function LoanForm() {
                         <>
                           <div className="mb-4 flex items-baseline justify-between">
                             <div className="flex items-baseline gap-2">
-                              <input id="loan-durata" type="number" min={12} max={360} step={6} aria-label="Durata prestito in mesi" aria-invalid={!!errors.durata} aria-describedby={errors.durata ? 'error-durata' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 360) v = 360; field.onChange(v); }} onBlur={() => { if (field.value < 12) field.onChange(12); field.onBlur(); }} className="w-20 bg-transparent text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
+                              <input id="loan-durata" type="number" min={12} max={360} step={6} aria-label="Durata prestito in mesi" aria-invalid={!!errors.durata} aria-describedby={errors.durata ? 'error-durata' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 360) v = 360; field.onChange(v); }} onBlur={() => { if (field.value < 12) field.onChange(12); field.onBlur(); }} className="w-16 sm:w-20 bg-transparent text-xl sm:text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
                               <span className="text-lg font-bold text-slate-500">mesi</span>
                             </div>
                             <div className="text-right text-[10px] font-bold uppercase tracking-wider text-slate-400">

@@ -324,7 +324,9 @@ export default function LoanCalculatorFull() {
           <h3 className="text-sm font-black text-slate-900">Confronto prodotti</h3>
           <span className="text-xs text-slate-400">— stesso importo e durata</span>
         </div>
-        <div className="overflow-x-auto">
+        <div className="relative">
+          <div className="overflow-x-auto">
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent sm:hidden" />
           <table className="w-full min-w-[500px] text-sm">
             <thead>
               <tr className="border-b border-slate-100">
@@ -367,6 +369,7 @@ export default function LoanCalculatorFull() {
               })}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
