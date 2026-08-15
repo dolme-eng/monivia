@@ -14,6 +14,7 @@ const profiles = [
     iconText: 'text-white',
     hoverBorder: 'hover:border-secondary/30',
     linkColor: 'text-secondary hover:text-primary',
+    link: '/prestito-dipendenti',
   },
   {
     icon: UsersRound,
@@ -23,6 +24,7 @@ const profiles = [
     iconText: 'text-secondary',
     hoverBorder: 'hover:border-secondary/30',
     linkColor: 'text-secondary hover:text-primary',
+    link: '/prestito-online',
   },
   {
     icon: Landmark,
@@ -32,6 +34,7 @@ const profiles = [
     iconText: 'text-accent',
     hoverBorder: 'hover:border-accent/30',
     linkColor: 'text-accent hover:text-primary',
+    link: '/prestito-ristrutturazione',
   },
   {
     icon: ShieldAlert,
@@ -41,6 +44,7 @@ const profiles = [
     iconText: 'text-red-600',
     hoverBorder: 'hover:border-red-500/30',
     linkColor: 'text-red-600 hover:text-primary',
+    link: '/prestito-cessione-quinto',
   },
 ];
 
@@ -83,7 +87,7 @@ export default function CreditAccessibility() {
               <h3 className="text-lg font-black leading-tight text-primary">{profile.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-500">{profile.desc}</p>
               <Link
-                href="/#richiedi"
+                href={profile.link}
                 className={`mt-5 inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest transition-colors ${profile.linkColor}`}
               >
                 Scopri

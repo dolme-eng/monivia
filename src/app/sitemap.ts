@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/prestiti/immobiliare`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${baseUrl}/prestiti/consolidamento`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${baseUrl}/prestiti/business`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/prestito-online`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/prestito-dipendenti`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${baseUrl}/prestito-pensionati`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${baseUrl}/prestito-cessione-quinto`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${baseUrl}/prestito-ristrutturazione`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${baseUrl}/prestito-moto`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
   ];
 
   const blogPages: MetadataRoute.Sitemap = blogArticles.map((article) => ({
