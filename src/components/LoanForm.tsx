@@ -187,7 +187,7 @@ export default function LoanForm() {
           Grazie per aver scelto Monivia. La tua pratica <strong className="text-primary">#PD-{practiceId}</strong> è in fase di analisi.
           Ti contatteremo entro 48 ore lavorative.
         </p>
-        <button onClick={() => { window.location.href = '/'; }} className="btn-primary mx-auto px-8 py-4">
+        <button onClick={() => { window.location.href = '/grazie'; }} className="btn-primary mx-auto px-8 py-4">
           Torna alla pagina iniziale
         </button>
       </motion.div>

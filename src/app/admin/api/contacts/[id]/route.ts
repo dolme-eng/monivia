@@ -23,7 +23,20 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: 'Messaggio non trovato' }, { status: 404 });
   }
 
-  await prisma.contactMessage.delete({ where: { id } });
+  const adminEmail = admin.email || admin.userId || 'Admin';
+
+  await prisma.$transaction([
+    prisma.auditLog.create({
+      data: {
+        entity: 'ContactMessage',
+        entityId: id,
+        action: `DELETE:${existing.oggetto}`,
+        details: `Eliminato messaggio "${existing.oggetto}" da ${existing.nome} (${existing.email})`,
+        adminEmail,
+      },
+    }),
+    prisma.contactMessage.delete({ where: { id } }),
+  ]);
 
   return NextResponse.json({ success: true });
 }

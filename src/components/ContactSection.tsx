@@ -45,8 +45,7 @@ export default function ContactSection() {
       });
       const result = await response.json().catch(() => null);
       if (!response.ok) throw new Error(result?.error || "Errore durante l'invio");
-      setContactStatus('success');
-      reset();
+      window.location.href = '/grazie';
     } catch (err) {
       setContactStatus('error');
       setErrorMessage(err instanceof Error ? err.message : "Errore durante l'invio");

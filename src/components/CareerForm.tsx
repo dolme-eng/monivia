@@ -51,8 +51,7 @@ export default function CareerForm() {
       });
       const result = await response.json().catch(() => null);
       if (!response.ok) throw new Error(result?.error || "Errore durante l'invio");
-      setStatus('success');
-      reset();
+      window.location.href = '/grazie';
     } catch (err) {
       setStatus('error');
       setErrorMessage(err instanceof Error ? err.message : "Errore durante l'invio");

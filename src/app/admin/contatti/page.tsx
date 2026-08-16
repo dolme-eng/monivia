@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Trash2, Mail, MailOpen, User } from 'lucide-react';
+import { getCsrfToken } from '@/lib/csrf-client';
 
 type ContactMessage = {
   id: string;
@@ -46,13 +47,15 @@ export default function AdminContactsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Eliminare questo messaggio?')) return;
-    const csrfToken = document.cookie.match(/csrf_token=([^;]+)/)?.[1] || '';
-    await fetch(`/admin/api/contacts/${id}`, {
+    const csrfToken = await getCsrfToken();
+    const res = await fetch(`/admin/api/contacts/${id}`, {
       method: 'DELETE',
       headers: { 'x-csrf-token': csrfToken },
     });
-    setMessages((prev) => prev.filter((m) => m.id !== id));
-    if (selectedMessage?.id === id) setSelectedMessage(null);
+    if (res.ok) {
+      setMessages((prev) => prev.filter((m) => m.id !== id));
+      if (selectedMessage?.id === id) setSelectedMessage(null);
+    }
   };
 
   return (
