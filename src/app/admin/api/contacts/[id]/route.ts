@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { verifyCsrfToken } from '@/lib/csrf';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 type Params = { params: Promise<{ id: string }> };
 

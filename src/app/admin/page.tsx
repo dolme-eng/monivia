@@ -297,7 +297,6 @@ export default function AdminLoansPage() {
             </>
           )}
         </div>
-      </div>
 
       {/* Detail Modal */}
       {selectedApp && (
