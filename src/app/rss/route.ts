@@ -1,7 +1,7 @@
 import { siteConfig } from '@/config/site';
 import { blogArticles } from '@/config/blog';
 
-export default function RSS() {
+export function GET() {
   const baseUrl = siteConfig.url;
 
   const items = blogArticles
