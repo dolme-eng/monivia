@@ -11,8 +11,8 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: 'Non autorizzato' }, { status: 401 });
   }
 
-  const csrf = await verifyCsrfToken(req);
-  if (!csrf) {
+  const csrfToken = req.headers.get('x-csrf-token');
+  if (!verifyCsrfToken(csrfToken)) {
     return NextResponse.json({ error: 'CSRF non valido' }, { status: 403 });
   }
 
