@@ -81,10 +81,10 @@ export default function TestimonialSlider() {
             <p className="mb-6 text-base font-medium italic leading-relaxed text-white/88 sm:text-lg">
               &quot;{t.quote}&quot;
             </p>
-            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
               <div
-                className="h-11 w-11 shrink-0 rounded-full flex items-center justify-center text-sm font-black text-white"
-                style={{ backgroundColor: t.color }}
+                className="h-12 w-12 shrink-0 rounded-full flex items-center justify-center text-sm font-black text-white shadow-lg"
+                style={{ background: `linear-gradient(135deg, ${t.color}, ${t.color}cc)` }}
                 aria-hidden
               >
                 {t.initials}
@@ -101,23 +101,23 @@ export default function TestimonialSlider() {
 
       {/* Controls */}
       <div className="mt-6 flex items-center justify-between">
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button type="button" onClick={goPrev} aria-label="Recensione precedente"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-primary text-white transition-colors hover:bg-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary">
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-primary text-white transition-colors hover:bg-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary">
             <ChevronLeft size={18} />
           </button>
           <button type="button" onClick={goNext} aria-label="Recensione successiva"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-primary text-white transition-colors hover:bg-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary">
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-primary text-white transition-colors hover:bg-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary">
             <ChevronRight size={18} />
           </button>
         </div>
 
-        <div className="flex gap-1.5" role="tablist" aria-label="Seleziona recensione">
+        <div className="flex gap-2" role="tablist" aria-label="Seleziona recensione">
           {testimonials.map((_, i) => (
             <button key={i} type="button" role="tab" aria-selected={i === index}
               onClick={() => setIndex(i)}
               aria-label={`Recensione ${i + 1} di ${testimonials.length}`}
-              className={`h-1.5 rounded-full transition-all duration-500 outline-none focus-visible:ring-2 focus-visible:ring-secondary ${i === index ? 'w-7 bg-secondary' : 'w-1.5 bg-white/25 hover:bg-white/40'}`}
+              className={`h-2 rounded-full transition-all duration-500 outline-none focus-visible:ring-2 focus-visible:ring-secondary ${i === index ? 'w-8 bg-secondary' : 'w-2 bg-white/25 hover:bg-white/40'}`}
             />
           ))}
         </div>

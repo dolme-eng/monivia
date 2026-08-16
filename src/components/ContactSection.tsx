@@ -12,8 +12,8 @@ import { getCsrfToken } from '@/lib/csrf-client';
 import { ErrorMessage, fieldClass, type ContactFormValues } from '@/components/form-shared';
 
 export default function ContactSection() {
-  const [contactStatus, setContactStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const {
     register,
@@ -45,9 +45,9 @@ export default function ContactSection() {
       });
       const result = await response.json().catch(() => null);
       if (!response.ok) throw new Error(result?.error || "Errore durante l'invio");
-      window.location.href = '/grazie';
+      setIsSuccess(true);
+      setTimeout(() => { window.location.href = '/grazie'; }, 800);
     } catch (err) {
-      setContactStatus('error');
       setErrorMessage(err instanceof Error ? err.message : "Errore durante l'invio");
     }
   };
@@ -126,12 +126,12 @@ export default function ContactSection() {
                 {isSubmitting ? <span role="status" aria-live="polite">Invio in corso...</span> : 'Invia messaggio'}
               </button>
 
-              {contactStatus === 'success' && (
+              {isSuccess && (
                 <p role="status" aria-live="polite" className="rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-center text-sm font-bold text-emerald-700">
-                  Messaggio inviato! Ti risponderemo al più presto.
+                  Messaggio inviato! Reindirizzamento...
                 </p>
               )}
-              {contactStatus === 'error' && (
+              {errorMessage && (
                 <p role="alert" aria-live="assertive" className="rounded-lg border border-red-100 bg-red-50 p-4 text-center text-sm font-bold text-red-500">
                   {errorMessage || <>Errore durante l&apos;invio. Riprova o scrivici a {siteConfig.contact.email}.</>}
                 </p>

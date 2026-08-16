@@ -19,8 +19,8 @@ type CareerFormValues = {
 
 export default function CareerForm() {
   const pathname = usePathname();
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const {
     register,
@@ -51,9 +51,9 @@ export default function CareerForm() {
       });
       const result = await response.json().catch(() => null);
       if (!response.ok) throw new Error(result?.error || "Errore durante l'invio");
-      window.location.href = '/grazie';
+      setIsSuccess(true);
+      setTimeout(() => { window.location.href = '/grazie'; }, 800);
     } catch (err) {
-      setStatus('error');
       setErrorMessage(err instanceof Error ? err.message : "Errore durante l'invio");
     }
   };
@@ -111,13 +111,13 @@ export default function CareerForm() {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         type="submit"
-        disabled={isSubmitting || status === 'success'}
+        disabled={isSubmitting || isSuccess}
         className="btn-primary w-full py-4 text-xs font-black uppercase tracking-widest disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isSubmitting ? <span role="status" aria-live="polite">Invio in corso...</span> : status === 'success' ? 'Candidatura inviata' : 'Invia candidatura'}
+        {isSubmitting ? <span role="status" aria-live="polite">Invio in corso...</span> : isSuccess ? 'Candidatura inviata' : 'Invia candidatura'}
       </motion.button>
       <AnimatePresence>
-        {status === 'success' && (
+        {isSuccess && (
           <motion.p
             role="status"
             aria-live="polite"
@@ -126,10 +126,10 @@ export default function CareerForm() {
             exit={{ opacity: 0 }}
             className="rounded-xl border border-emerald-100 bg-emerald-50 p-3 text-center text-xs font-bold text-emerald-700"
           >
-            Grazie! Esamineremo il tuo profilo e ti ricontatteremo se c&apos;è un&apos;opportunità adatta.
+            Grazie! Reindirizzamento...
           </motion.p>
         )}
-        {status === 'error' && (
+        {errorMessage && (
           <motion.p
             role="alert"
             aria-live="assertive"

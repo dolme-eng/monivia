@@ -21,7 +21,9 @@ import { ErrorMessage, fieldClass } from '@/components/form-shared';
 
 const steps = [
   { id: 1, title: 'Personale' },
-  { id: 2, title: 'Finanziario' },
+  { id: 2, title: 'Importo' },
+  { id: 3, title: 'Profilo' },
+  { id: 4, title: 'Invia' },
 ];
 
 interface FormValues {
@@ -128,14 +130,22 @@ export default function LoanForm() {
     setTimeout(() => formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   };
 
+  const validateAndNext = async (fields: string[]) => {
+    const isValid = await trigger(fields as any);
+    if (isValid) {
+      setCurrentStep((prev) => Math.min(prev + 1, 4));
+      scrollToTop();
+      setTimeout(() => stepTitleRef.current?.focus(), 100);
+    }
+  };
+
   const nextStep = async () => {
     if (currentStep === 1) {
-      const isValid = await trigger(['nome', 'cognome', 'codiceFiscale', 'email', 'telefono']);
-      if (isValid) {
-        setCurrentStep(2);
-        scrollToTop();
-        setTimeout(() => stepTitleRef.current?.focus(), 100);
-      }
+      await validateAndNext(['nome', 'cognome', 'codiceFiscale', 'email', 'telefono']);
+    } else if (currentStep === 2) {
+      await validateAndNext(['importo', 'durata', 'finalita']);
+    } else if (currentStep === 3) {
+      await validateAndNext(['impiego', 'reddito', 'anzianita']);
     }
   };
 
@@ -160,15 +170,15 @@ export default function LoanForm() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Errore durante l'invio");
       setPracticeId(String(result.practiceId || '').replace(/^PD-/, ''));
-      setCurrentStep(3);
+      setCurrentStep(5);
       scrollToTop();
     } catch (err) {
       setServerError(err instanceof Error ? err.message : "Errore durante l'invio");
     }
   };
 
-  /* ── Step 3: Successo ── */
-  if (currentStep === 3) {
+  /* ── Step 5: Successo ── */
+  if (currentStep === 5) {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.92 }}
@@ -194,7 +204,7 @@ export default function LoanForm() {
     );
   }
 
-  /* ── Step 1 & 2 ── */
+  /* ── Steps 1-4 ── */
   return (
     <div className="w-full scroll-mt-24" ref={formTopRef}>
       {/* Prefill banner */}
@@ -275,12 +285,12 @@ export default function LoanForm() {
               </motion.div>
             )}
 
-            {/* ── Step 2: Finanziario ── */}
+            {/* ── Step 2: Importo e durata ── */}
             {currentStep === 2 && (
               <motion.div key="step2" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ type: 'spring', stiffness: 320, damping: 28 }} className="space-y-5">
                 <div className="mb-6">
-                  <h3 ref={stepTitleRef} tabIndex={-1} className="text-xl font-black text-primary sm:text-2xl outline-none">Dettagli finanziari</h3>
-                  <p className="mt-1 text-sm text-slate-500">Aiutaci a capire meglio le tue esigenze.</p>
+                  <h3 ref={stepTitleRef} tabIndex={-1} className="text-xl font-black text-primary sm:text-2xl outline-none">Importo e durata</h3>
+                  <p className="mt-1 text-sm text-slate-500">Scegli quanto ti serve e in quanto tempo vuoi restituirlo.</p>
                 </div>
 
                 {/* Importo slider */}
@@ -293,13 +303,13 @@ export default function LoanForm() {
                           <div className="mb-4 flex items-baseline justify-between">
                             <div className="flex items-baseline gap-1">
                               <span className="text-2xl font-black text-primary">€</span>
-                              <input id="loan-importo" type="number" min={5000} max={1000000} step={1000} aria-label="Importo prestito" aria-invalid={!!errors.importo} aria-describedby={errors.importo ? 'error-importo' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 1000000) v = 1000000; field.onChange(v); }} onBlur={() => { if (field.value < 5000) field.onChange(5000); field.onBlur(); }} className="w-24 sm:w-28 bg-transparent text-xl sm:text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
+                              <input id="loan-importo" type="number" min={5000} max={1000000} step={1000} aria-label="Importo prestito" aria-invalid={!!errors.importo} aria-describedby={errors.importo ? 'error-importo' : undefined} aria-valuetext={`${field.value.toLocaleString('it-IT')} euro`} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 1000000) v = 1000000; field.onChange(v); }} onBlur={() => { if (field.value < 5000) field.onChange(5000); field.onBlur(); }} className="w-24 sm:w-28 bg-transparent text-xl sm:text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
                             </div>
                             <div className="text-right text-[10px] font-bold uppercase tracking-wider text-slate-400">
                               <p>Min 5.000€</p><p>Max 1.000.000€</p>
                             </div>
                           </div>
-                          <input type="range" min={5000} max={1000000} step={1000} value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} aria-label="Seleziona importo" aria-invalid={!!errors.importo} aria-describedby={errors.importo ? 'error-importo' : undefined} />
+                          <input type="range" min={5000} max={1000000} step={1000} value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} aria-label="Seleziona importo" aria-invalid={!!errors.importo} aria-describedby={errors.importo ? 'error-importo' : undefined} aria-valuetext={`${field.value.toLocaleString('it-IT')} euro`} />
                         </>
                       )}
                     />
@@ -316,14 +326,14 @@ export default function LoanForm() {
                         <>
                           <div className="mb-4 flex items-baseline justify-between">
                             <div className="flex items-baseline gap-2">
-                              <input id="loan-durata" type="number" min={12} max={360} step={6} aria-label="Durata prestito in mesi" aria-invalid={!!errors.durata} aria-describedby={errors.durata ? 'error-durata' : undefined} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 360) v = 360; field.onChange(v); }} onBlur={() => { if (field.value < 12) field.onChange(12); field.onBlur(); }} className="w-16 sm:w-20 bg-transparent text-xl sm:text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
+                              <input id="loan-durata" type="number" min={12} max={360} step={6} aria-label="Durata prestito in mesi" aria-invalid={!!errors.durata} aria-describedby={errors.durata ? 'error-durata' : undefined} aria-valuetext={`${field.value} mesi`} value={field.value} onChange={(e) => { let v = Number(e.target.value); if (v > 360) v = 360; field.onChange(v); }} onBlur={() => { if (field.value < 12) field.onChange(12); field.onBlur(); }} className="w-16 sm:w-20 bg-transparent text-xl sm:text-2xl font-black text-primary outline-none border-b-2 border-slate-300 focus:border-secondary" />
                               <span className="text-lg font-bold text-slate-500">mesi</span>
                             </div>
                             <div className="text-right text-[10px] font-bold uppercase tracking-wider text-slate-400">
                               <p>Min 12 mesi</p><p>Max 360 mesi</p>
                             </div>
                           </div>
-                          <input type="range" min={12} max={360} step={6} value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} aria-label="Seleziona durata" aria-invalid={!!errors.durata} aria-describedby={errors.durata ? 'error-durata' : undefined} />
+                          <input type="range" min={12} max={360} step={6} value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} aria-label="Seleziona durata" aria-invalid={!!errors.durata} aria-describedby={errors.durata ? 'error-durata' : undefined} aria-valuetext={`${field.value} mesi`} />
                         </>
                       )}
                     />
@@ -331,7 +341,28 @@ export default function LoanForm() {
                   <ErrorMessage id="error-durata" message={errors.durata?.message} />
                 </div>
 
-                {/* Campi aggiuntivi */}
+                {/* Finalità */}
+                <div>
+                  <Label htmlFor="loan-finalita">Finalità</Label>
+                  <select id="loan-finalita" {...register('finalita')} className="field-shell">
+                    <option>Acquisto Auto</option>
+                    <option>Ristrutturazione Casa</option>
+                    <option>Consolidamento Debiti</option>
+                    <option>Viaggi / Benessere</option>
+                    <option>Altro</option>
+                  </select>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ── Step 3: Profilo lavorativo ── */}
+            {currentStep === 3 && (
+              <motion.div key="step3" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ type: 'spring', stiffness: 320, damping: 28 }} className="space-y-5">
+                <div className="mb-6">
+                  <h3 ref={stepTitleRef} tabIndex={-1} className="text-xl font-black text-primary sm:text-2xl outline-none">Profilo lavorativo</h3>
+                  <p className="mt-1 text-sm text-slate-500">Ciserve capire meglio le tue esigenze.</p>
+                </div>
+
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="loan-impiego">Tipo di impiego</Label>
@@ -347,21 +378,21 @@ export default function LoanForm() {
                     <input id="loan-reddito" type="number" {...register('reddito', { required: 'Obbligatorio', min: { value: 500, message: 'Min 500€' }, max: { value: 1000000, message: 'Max 1.000.000€' } })} aria-invalid={!!errors.reddito} aria-describedby={errors.reddito ? 'error-reddito' : undefined} placeholder="Es: 2500" className={fieldClass(!!errors.reddito)} />
                     <ErrorMessage id="error-reddito" message={errors.reddito?.message} />
                   </div>
-                  <div>
-                    <Label htmlFor="loan-finalita">Finalità</Label>
-                    <select id="loan-finalita" {...register('finalita')} className="field-shell">
-                      <option>Acquisto Auto</option>
-                      <option>Ristrutturazione Casa</option>
-                      <option>Consolidamento Debiti</option>
-                      <option>Viaggi / Benessere</option>
-                      <option>Altro</option>
-                    </select>
-                  </div>
-                  <div>
+                  <div className="sm:col-span-2">
                     <Label htmlFor="loan-anzianita">Anzianità lavorativa (anni) *</Label>
                     <input id="loan-anzianita" type="number" {...register('anzianita', { required: 'Obbligatorio', min: { value: 0, message: 'Minimo 0' }, max: { value: 50, message: 'Massimo 50' } })} aria-invalid={!!errors.anzianita} aria-describedby={errors.anzianita ? 'error-anzianita' : undefined} placeholder="Es: 5" className={fieldClass(!!errors.anzianita)} />
                     <ErrorMessage id="error-anzianita" message={errors.anzianita?.message} />
                   </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ── Step 4: Consensi e invio ── */}
+            {currentStep === 4 && (
+              <motion.div key="step4" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ type: 'spring', stiffness: 320, damping: 28 }} className="space-y-5">
+                <div className="mb-6">
+                  <h3 ref={stepTitleRef} tabIndex={-1} className="text-xl font-black text-primary sm:text-2xl outline-none">Conferma e invia</h3>
+                  <p className="mt-1 text-sm text-slate-500">Controlla i dati e autorizza l&apos;invio della richiesta.</p>
                 </div>
 
                 {/* Consensi */}
@@ -385,6 +416,8 @@ export default function LoanForm() {
                     </div>
                   ))}
                 </div>
+
+                <TrustStrip />
               </motion.div>
             )}
           </AnimatePresence>
@@ -397,7 +430,7 @@ export default function LoanForm() {
               </button>
             ) : <div />}
 
-            {currentStep === 1 ? (
+            {currentStep < 4 ? (
               <button type="button" onClick={nextStep} className="btn-primary flex w-full items-center px-7 py-4 text-xs uppercase tracking-widest sm:w-auto">
                 Continua <ChevronRight size={15} />
               </button>

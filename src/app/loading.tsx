@@ -1,9 +1,5 @@
-import LoadingSpinner from '@/components/LoadingSpinner';
+import { PageSkeleton } from '@/components/Skeleton';
 
 export default function Loading() {
-  return (
-    <div className="bg-white">
-      <LoadingSpinner />
-    </div>
-  );
+  return <PageSkeleton />;
 }

@@ -4,6 +4,7 @@
   /* === Core Palette — Monivia Premium === */
   --color-primary: #0a1628;
   --color-secondary: #00d4ff;
+  --color-secondary-dark: #0891b2;
   --color-accent: #6366f1;
   --color-surface: #f5f8ff;
   --color-muted: #64748b;
@@ -97,7 +98,7 @@
   }
 
   .badge {
-    @apply inline-flex items-center gap-2 rounded-full border border-secondary/25 bg-secondary/8 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.18em] text-secondary;
+    @apply inline-flex items-center gap-2 rounded-full border border-secondary/25 bg-secondary/8 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.18em] text-secondary-dark;
   }
 
   .badge-dark {
@@ -196,6 +197,7 @@
 @layer utilities {
 
   .text-accent   { color: var(--color-accent); }
+  .text-secondary-dark { color: var(--color-secondary-dark); }
   .bg-accent\/8  { background-color: rgba(99, 102, 241, 0.08); }
   .bg-accent\/10 { background-color: rgba(99, 102, 241, 0.10); }
   .bg-accent\/12 { background-color: rgba(99, 102, 241, 0.12); }
