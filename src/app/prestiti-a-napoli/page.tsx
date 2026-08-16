@@ -24,11 +24,17 @@ const localBusinessJsonLd = {
     addressRegion: 'MI',
     addressCountry: 'IT',
   },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 40.8518,
+    longitude: 14.2681,
+  },
   areaServed: {
     '@type': 'City',
     name: 'Napoli',
   },
   telephone: '+393508533366',
+  openingHours: 'Mo-Fr 09:00-18:00',
 };
 
 const breadcrumbJsonLd = {

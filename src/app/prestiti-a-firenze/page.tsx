@@ -24,11 +24,17 @@ const localBusinessJsonLd = {
     addressRegion: 'MI',
     addressCountry: 'IT',
   },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 43.7696,
+    longitude: 11.2558,
+  },
   areaServed: {
     '@type': 'City',
     name: 'Firenze',
   },
   telephone: '+393508533366',
+  openingHours: 'Mo-Fr 09:00-18:00',
 };
 
 const breadcrumbJsonLd = {

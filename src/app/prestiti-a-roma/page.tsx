@@ -24,11 +24,17 @@ const localBusinessJsonLd = {
     addressRegion: 'MI',
     addressCountry: 'IT',
   },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 41.9028,
+    longitude: 12.4964,
+  },
   areaServed: {
     '@type': 'City',
     name: 'Roma',
   },
   telephone: '+393508533366',
+  openingHours: 'Mo-Fr 09:00-18:00',
 };
 
 const breadcrumbJsonLd = {

@@ -38,6 +38,21 @@ export default function VideoPromo() {
       className="relative overflow-hidden bg-primary py-20 sm:py-28"
       aria-labelledby="video-promo-title"
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'VideoObject',
+            name: 'Monivia — Il futuro del credito in 60 secondi',
+            description: 'Scopri come Monivia semplifica il processo di finanziamento con una richiesta digitale al 100%.',
+            thumbnailUrl: 'https://www.monivia.it/og-default.webp',
+            uploadDate: '2024-01-01T00:00:00+01:00',
+            duration: 'PT1M',
+            embedUrl: 'https://www.monivia.it',
+          }),
+        }}
+      />
       <div className="site-container relative z-10">
         <motion.div {...fadeInUp} className="mb-12 text-center">
           <div className="badge-dark inline-flex mb-5">

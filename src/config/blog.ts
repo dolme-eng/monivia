@@ -4,6 +4,7 @@ export type BlogArticle = {
   slug: string;
   title: string;
   excerpt: string;
+  summary?: string;
   category: BlogCategory;
   date: string; // ISO date
   readTime: number; // minutes
@@ -27,6 +28,7 @@ export const blogArticles: BlogArticle[] = [
     slug: 'come-richiedere-prestito-online',
     title: 'Come richiedere un prestito online in 5 minuti',
     excerpt: 'Scopri come ottenere un prestito personale, auto o immobiliare con Monivia in pochi click, senza spostamenti e senza lunghe attese.',
+    summary: 'Per richiedere un prestito online con Monivia basta scegliere il tipo di prestito, usare il simulatore per calcolare la rata, compilare il modulo con dati personali e finanziari, e attendere la risposta entro 48 ore lavorative. Tutto avviene al 100% online senza spostamenti.',
     category: 'Guida',
     date: '2025-08-10',
     readTime: 4,
@@ -69,6 +71,7 @@ export const blogArticles: BlogArticle[] = [
     slug: 'tan-taeg-cosa-sono',
     title: 'TAN e TAEG: cosa sono e come leggerli',
     excerpt: 'Guida semplice per comprendere il Tasso Annuo Nominale e il Tasso Annuo Effettivo Globale, i due indicatori fondamentali per confrontare i prestiti.',
+    summary: 'Il TAN è il tasso di interesse puro sul capitale preso in prestito, mentre il TAEG include tutti i costi (interessi, spese, assicurazione) ed è l\'indicatore più affidabile per confrontare prestiti. Confronta sempre il TAEG, non solo il TAN.',
     category: 'Finanze',
     date: '2025-08-05',
     readTime: 5,
@@ -94,6 +97,7 @@ export const blogArticles: BlogArticle[] = [
     slug: 'consolidamento-debiti-quando-conviene',
     title: 'Consolidamento debiti: quando conviene?',
     excerpt: 'Scopri quando ha senso unire tutti i tuoi prestiti in un\'unica rata mensile più bassa e come può aiutarti a risparmiare.',
+    summary: 'Il consolidamento debiti conviene quando hai più prestiti in corso con tassi elevati e vuoi una rata unica più bassa. Non conviene se i tuoi prestiti attuali hanno già tassi bassi o la durata residua è breve. Con Monivia il consolidamento offre tasso fisso e zero spese nascoste.',
     category: 'Consigli',
     date: '2025-07-28',
     readTime: 5,
@@ -130,6 +134,7 @@ export const blogArticles: BlogArticle[] = [
     slug: 'prestito-personale-vs-auto',
     title: 'Prestito personale vs prestito auto: quali differenze?',
     excerpt: 'Confronto dettagliato tra prestito personale e prestito auto per aiutarti a scegliere la soluzione più adatta alle tue esigenze.',
+    summary: 'Il prestito personale offre massima flessibilità d\'uso (fino a 100.000€, 12-120 mesi, nessun giustificativo), mentre il prestito auto ha spesso un TAN più basso ma richiede documentazione del veicolo. Scegli il personale per flessibilità, l\'auto per un tasso leggermente più basso.',
     category: 'Confronto',
     date: '2025-07-20',
     readTime: 4,
@@ -162,6 +167,7 @@ export const blogArticles: BlogArticle[] = [
     slug: '5-errori-evitare-finanziamento',
     title: 'I 5 errori da evitare quando richiedi un finanziamento',
     excerpt: 'Ecco gli errori più comuni quando si richiede un prestito e come evitarli per ottenere le migliori condizioni.',
+    summary: 'I 5 errori principali sono: confrontare solo il TAN invece del TAEG, scegliere la durata più lunga senza considerare gli interessi totali, non valutare l\'assicurazione, accettare la prima proposta senza confrontare, e non leggere le condizioni generali del contratto.',
     category: 'Errori',
     date: '2025-07-15',
     readTime: 4,

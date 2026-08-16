@@ -93,6 +93,68 @@ export default function TariffePage() {
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: 'Prestiti Monivia',
+            description: 'Gamma completa di prodotti di prestito: personale, auto, immobiliare, consolidamento debiti e prestito aziendale con TAN fisso e zero spese nascoste.',
+            brand: {
+              '@type': 'Brand',
+              name: 'Monivia',
+            },
+            offers: [
+              {
+                '@type': 'Offer',
+                name: 'Prestito Personale',
+                price: '2.0%',
+                priceCurrency: 'EUR',
+                description: 'TAN fisso dal 2,0%, importi da 5.000€ a 100.000€, durata 12-120 mesi',
+                availability: 'https://schema.org/InStock',
+                url: 'https://www.monivia.it/prestiti/prestito-personale',
+              },
+              {
+                '@type': 'Offer',
+                name: 'Prestito Auto',
+                price: '1.8%',
+                priceCurrency: 'EUR',
+                description: 'TAN fisso dal 1,8%, importi fino a 50.000€, durata fino a 84 mesi',
+                availability: 'https://schema.org/InStock',
+                url: 'https://www.monivia.it/prestiti/prestito-auto',
+              },
+              {
+                '@type': 'Offer',
+                name: 'Prestito Immobiliare',
+                price: '2.5%',
+                priceCurrency: 'EUR',
+                description: 'TAN fisso dal 2,5%, per ristrutturazioni e acquisti immobiliari',
+                availability: 'https://schema.org/InStock',
+                url: 'https://www.monivia.it/prestiti/prestito-immobiliare',
+              },
+              {
+                '@type': 'Offer',
+                name: 'Consolidamento Debiti',
+                price: '2.2%',
+                priceCurrency: 'EUR',
+                description: 'TAN fisso dal 2,2%, unisci tutti i prestiti in un\'unica rata',
+                availability: 'https://schema.org/InStock',
+                url: 'https://www.monivia.it/prestiti/consolidamento-debiti',
+              },
+              {
+                '@type': 'Offer',
+                name: 'Prestito Aziendale',
+                price: '3.0%',
+                priceCurrency: 'EUR',
+                description: 'TAN fisso dal 3,0%, per la crescita della tua impresa',
+                availability: 'https://schema.org/InStock',
+                url: 'https://www.monivia.it/prestiti/prestito-aziendale',
+              },
+            ],
+          }),
+        }}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-secondary/80 to-primary/80 pt-32 pb-16">
         <div className="pointer-events-none absolute inset-0 bg-[url('/assets/grid.svg')] opacity-10 [mask-image:linear-gradient(to_bottom,white,transparent)]" />

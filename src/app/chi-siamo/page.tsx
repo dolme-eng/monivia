@@ -27,6 +27,16 @@ export default function ChiSiamo() {
     logo: `${siteConfig.url}/logo.svg`,
     description: 'Istituto finanziario italiano specializzato in prestiti online, fondato nel 2014 a Milano.',
     foundingDate: '2014',
+    foundingLocation: {
+      '@type': 'City',
+      name: 'Milano',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Milano',
+        addressRegion: 'MI',
+        addressCountry: 'IT',
+      },
+    },
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Via Savona, 15',
@@ -49,10 +59,34 @@ export default function ChiSiamo() {
       '@type': 'QuantitativeValue',
       value: 50,
     },
-    areaServed: {
-      '@type': 'Country',
-      name: 'Italia',
-    },
+    areaServed: [
+      {
+        '@type': 'Country',
+        name: 'Italia',
+      },
+      {
+        '@type': 'State',
+        name: 'Lombardia',
+      },
+      {
+        '@type': 'State',
+        name: 'Lazio',
+      },
+      {
+        '@type': 'State',
+        name: 'Piemonte',
+      },
+      {
+        '@type': 'State',
+        name: 'Campania',
+      },
+      {
+        '@type': 'State',
+        name: 'Toscana',
+      },
+    ],
+    slogan: 'Il futuro del credito, semplificato.',
+    naics: '522310',
     knowsAbout: [
       'Prestiti online',
       'Finanziamento personale',

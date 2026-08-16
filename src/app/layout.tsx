@@ -157,6 +157,7 @@ export default async function RootLayout({
               '@type': 'WebSite',
               name: 'Monivia',
               url: siteConfig.url,
+              lastReviewed: '2026-08-16',
               potentialAction: {
                 '@type': 'SearchAction',
                 target: {

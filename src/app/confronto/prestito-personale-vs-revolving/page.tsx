@@ -46,6 +46,20 @@ export default function PrestitoPersonaleVsRevolvingPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Confronto Prestito Personale vs Revolving',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Prestito Personale Monivia' },
+              { '@type': 'ListItem', position: 2, name: 'Carta Revolving' },
+            ],
+          }),
+        }}
+      />
       <PrestitoPersonaleVsRevolvingClient />
     </>
   );

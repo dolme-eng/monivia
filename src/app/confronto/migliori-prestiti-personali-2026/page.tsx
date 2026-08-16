@@ -46,6 +46,21 @@ export default function MiglioriPrestitiPersonali2026Page() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Confronto Migliori Prestiti Personali 2026',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Monivia — Prestito Personale' },
+              { '@type': 'ListItem', position: 2, name: 'Banca Tradizionale A' },
+              { '@type': 'ListItem', position: 3, name: 'Fintech B' },
+            ],
+          }),
+        }}
+      />
       <MiglioriPrestitiPersonali2026Client />
     </>
   );

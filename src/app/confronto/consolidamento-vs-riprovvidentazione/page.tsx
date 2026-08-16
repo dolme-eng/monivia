@@ -46,6 +46,20 @@ export default function ConsolidamentoVsRiprovvidentazionePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Confronto Consolidamento Debiti vs Riprovvidentazione',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Consolidamento Debiti Monivia' },
+              { '@type': 'ListItem', position: 2, name: 'Riprovvidentazione Tradizionale' },
+            ],
+          }),
+        }}
+      />
       <ConsolidamentoVsRiprovvidentazioneClient />
     </>
   );

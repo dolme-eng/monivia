@@ -43,7 +43,11 @@ export default async function BlogArticlePage({ params }: Props) {
     datePublished: article.date,
     dateModified: article.date,
     articleSection: article.category,
-    author: { '@type': 'Organization', name: 'Monivia' },
+    author: {
+      '@type': 'Person',
+      name: 'Redazione Monivia',
+      url: 'https://www.monivia.it/chi-siamo',
+    },
     publisher: {
       '@type': 'Organization',
       name: 'Monivia',

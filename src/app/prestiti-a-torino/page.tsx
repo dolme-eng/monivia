@@ -24,11 +24,17 @@ const localBusinessJsonLd = {
     addressRegion: 'MI',
     addressCountry: 'IT',
   },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 45.0703,
+    longitude: 7.6869,
+  },
   areaServed: {
     '@type': 'City',
     name: 'Torino',
   },
   telephone: '+393508533366',
+  openingHours: 'Mo-Fr 09:00-18:00',
 };
 
 const breadcrumbJsonLd = {

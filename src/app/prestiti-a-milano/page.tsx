@@ -23,11 +23,17 @@ const localBusinessJsonLd = {
     postalCode: '20144',
     addressCountry: 'IT',
   },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 45.4642,
+    longitude: 9.19,
+  },
   areaServed: {
     '@type': 'City',
     name: 'Milano',
   },
   telephone: '+393508533366',
+  openingHours: 'Mo-Fr 09:00-18:00',
 };
 
 const breadcrumbJsonLd = {
