@@ -113,6 +113,22 @@ export default async function RootLayout({
     ],
   };
 
+  const siteNavigationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SiteNavigationElement',
+    name: 'Menu principale',
+    url: siteConfig.url,
+    hasPart: [
+      { '@type': 'SiteNavigationElement', name: 'Prestiti', url: `${siteConfig.url}/#prestiti` },
+      { '@type': 'SiteNavigationElement', name: 'Tariffe', url: `${siteConfig.url}/tariffe` },
+      { '@type': 'SiteNavigationElement', name: 'Calcola', url: `${siteConfig.url}/calcola` },
+      { '@type': 'SiteNavigationElement', name: 'Blog', url: `${siteConfig.url}/blog` },
+      { '@type': 'SiteNavigationElement', name: 'FAQ', url: `${siteConfig.url}/faq` },
+      { '@type': 'SiteNavigationElement', name: 'Chi siamo', url: `${siteConfig.url}/chi-siamo` },
+      { '@type': 'SiteNavigationElement', name: 'Contatti', url: `${siteConfig.url}/contatti` },
+    ],
+  };
+
   return (
     <html lang="it" className="scroll-smooth" data-scroll-behavior="smooth">
       <head>
@@ -128,6 +144,10 @@ export default async function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationJsonLd) }}
         />
       </head>
       <body className={`${inter.className} antialiased relative`}>

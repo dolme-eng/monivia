@@ -158,6 +158,27 @@ export default function PrestitoOnlineClient() {
         </div>
       </section>
 
+      {/* Pagine correlate */}
+      <section className="section-pad border-t border-slate-100 bg-slate-50">
+        <div className="site-container">
+          <h2 className="text-xl font-black text-slate-900">Pagine correlate</h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Link href="/tariffe" className="group rounded-xl border border-slate-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-secondary/30 hover:shadow-md">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-secondary">Tariffe e condizioni</h3>
+              <p className="mt-2 text-xs text-slate-400">Confronta TAN e TAEG di tutti i prodotti Monivia.</p>
+            </Link>
+            <Link href="/calcola" className="group rounded-xl border border-slate-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-secondary/30 hover:shadow-md">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-secondary">Calcola la tua rata</h3>
+              <p className="mt-2 text-xs text-slate-400">Simulatore gratuito per calcolare rata mensile e costo totale.</p>
+            </Link>
+            <Link href="/prestiti/personale" className="group rounded-xl border border-slate-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-secondary/30 hover:shadow-md">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-secondary">Prestito Personale</h3>
+              <p className="mt-2 text-xs text-slate-400">Fino a 100.000€, tasso fisso, risposta in 48 ore.</p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </main>
   );

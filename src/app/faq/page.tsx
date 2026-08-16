@@ -1,28 +1,14 @@
-import type { Metadata } from 'next';
 import { faqItems } from '@/config/faq';
 import FaqClient from './client';
+import { buildPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: 'Domande frequenti | Monivia',
   description:
     'FAQ prestiti Monivia: requisiti, tempi di erogazione, costi, rimborsi anticipati e supporto clienti. Risposte immediate.',
-  alternates: { canonical: 'https://www.monivia.it/faq' },
-  openGraph: {
-    title: 'Domande frequenti | Monivia',
-    description: 'Risposte alle domande più comuni sui prestiti Monivia.',
-    url: 'https://www.monivia.it/faq',
-    siteName: 'Monivia',
-    locale: 'it_IT',
-    type: 'website',
-    images: ['/og-default.webp'],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Domande frequenti | Monivia',
-    description: 'Risposte alle domande più comuni sui prestiti Monivia.',
-    images: ['/og-default.webp'],
-  },
-};
+  path: '/faq',
+  keywords: ['FAQ prestiti', 'domande frequenti', 'requisiti prestito', 'costi prestito'],
+});
 
 export default function FaqPage() {
   const faqJsonLd = {

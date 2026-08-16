@@ -1,4 +1,5 @@
 import { buildPageMetadata } from '@/lib/seo';
+import { siteConfig } from '@/config/site';
 import ChiSiamoClient from './client';
 
 export const metadata = buildPageMetadata({
@@ -18,9 +19,46 @@ export default function ChiSiamo() {
     ],
   };
 
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: `${siteConfig.url}/logo.svg`,
+    description: 'Istituto finanziario italiano specializzato in prestiti online, fondato nel 2014 a Milano.',
+    foundingDate: '2014',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Via Savona, 15',
+      addressLocality: 'Milano',
+      postalCode: '20144',
+      addressCountry: 'IT',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: siteConfig.contact.phone.link,
+      email: siteConfig.contact.email,
+      contactType: 'customer service',
+      availableLanguage: ['it'],
+    },
+    sameAs: [
+      siteConfig.links.facebook,
+      siteConfig.links.instagram,
+    ],
+    numberOfEmployees: {
+      '@type': 'QuantitativeValue',
+      value: 50,
+    },
+    areaServed: {
+      '@type': 'Country',
+      name: 'Italia',
+    },
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
       <ChiSiamoClient />
     </>
   );

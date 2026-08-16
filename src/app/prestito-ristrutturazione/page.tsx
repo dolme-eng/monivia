@@ -4,7 +4,7 @@ import PrestitoRistrutturazioneClient from './client';
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Prestito Ristrutturazione Casa | Monivia',
-  description: 'Prestito per ristrutturazione casa. Finzia i lavori con un tasso fisso e rate fisse.',
+  description: 'Prestito per ristrutturazione casa. Finanzia i lavori con un tasso fisso e rate fisse.',
   path: '/prestito-ristrutturazione',
   keywords: ['prestito ristrutturazione', 'finanziamento ristrutturazione casa', 'prestito lavori'],
   image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200',

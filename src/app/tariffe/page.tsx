@@ -1,31 +1,17 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, Info, HelpCircle } from 'lucide-react';
 import { loanProducts, loanSlugs } from '@/config/loans';
 import { calculateLoan } from '@/utils/finance';
 import TariffTable from '@/components/TariffTable';
+import { buildPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: 'Tariffe e condizioni | Monivia',
   description:
     'Confronta TAN e TAEG dei prestiti Monivia. Tabelle trasparenti, esempi pratici e nessun costo nascosto.',
-  alternates: { canonical: 'https://www.monivia.it/tariffe' },
-  openGraph: {
-    title: 'Tariffe e condizioni | Monivia',
-    description: 'Tabelle trasparenti dei tassi Monivia.',
-    url: 'https://www.monivia.it/tariffe',
-    siteName: 'Monivia',
-    locale: 'it_IT',
-    type: 'website',
-    images: ['/og-default.webp'],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Tariffe e condizioni | Monivia',
-    description: 'Tabelle trasparenti dei tassi Monivia.',
-    images: ['/og-default.webp'],
-  },
-};
+  path: '/tariffe',
+  keywords: ['tariffe prestiti', 'TAN TAEG', 'condizioni prestito', 'costi prestito Monivia'],
+});
 
 export default function TariffePage() {
   const breadcrumbJsonLd = {
@@ -127,6 +113,27 @@ export default function TariffePage() {
             <Link href="/calcola" className="btn-cyan inline-flex items-center gap-2">
               <HelpCircle size={18} />
               Simula la tua rata
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Pagine correlate */}
+      <section className="border-t border-slate-100 bg-slate-50 py-16">
+        <div className="container mx-auto max-w-6xl px-4">
+          <h2 className="text-xl font-black text-slate-900">Pagine correlate</h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Link href="/calcola" className="group rounded-xl border border-slate-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-secondary/30 hover:shadow-md">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-secondary">Calcola la tua rata</h3>
+              <p className="mt-2 text-xs text-slate-400">Simulatore gratuito per calcolare rata mensile e costo totale.</p>
+            </Link>
+            <Link href="/prestito-online" className="group rounded-xl border border-slate-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-secondary/30 hover:shadow-md">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-secondary">Prestito Online</h3>
+              <p className="mt-2 text-xs text-slate-400">Richiedi un prestito online in 5 minuti, risposta in 48 ore.</p>
+            </Link>
+            <Link href="/faq" className="group rounded-xl border border-slate-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-secondary/30 hover:shadow-md">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-secondary">Domande frequenti</h3>
+              <p className="mt-2 text-xs text-slate-400">Risposte a tutti i dubbi su requisiti, costi e tempi.</p>
             </Link>
           </div>
         </div>

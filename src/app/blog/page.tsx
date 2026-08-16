@@ -1,28 +1,14 @@
-import type { Metadata } from 'next';
 import BlogHero from '@/components/BlogHero';
 import BlogCard from '@/components/BlogCard';
 import { blogArticles } from '@/config/blog';
+import { buildPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: 'Blog | Monivia',
-  description: 'Guide pratique, consigli esperti e novita sui prestiti personali, auto, immobiliari e consolidamento debiti.',
-  alternates: { canonical: 'https://www.monivia.it/blog' },
-  openGraph: {
-    title: 'Blog Monivia',
-    description: 'Consigli, guide e aggiornamenti sui prestiti.',
-    url: 'https://www.monivia.it/blog',
-    siteName: 'Monivia',
-    locale: 'it_IT',
-    type: 'website',
-    images: ['/og-default.webp'],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Blog Monivia',
-    description: 'Consigli, guide e aggiornamenti sui prestiti.',
-    images: ['/og-default.webp'],
-  },
-};
+  description: 'Guide pratiche, consigli esperti e novità sui prestiti personali, auto, immobiliari e consolidamento debiti.',
+  path: '/blog',
+  keywords: ['blog prestiti', 'guide finanziarie', 'consigli prestiti', 'news Monivia'],
+});
 
 export default function BlogPage() {
   const breadcrumbJsonLd = {
