@@ -138,7 +138,7 @@ export default async function RootLayout({
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
         <link rel="manifest" href="/site.webmanifest" />
-        <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} Blog`} href="/rss.xml" />
+        <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} Blog`} href="/rss" />
         <meta name="msapplication-TileColor" content="#0f172a" />
         <meta name="theme-color" content="#0f172a" />
         <script
