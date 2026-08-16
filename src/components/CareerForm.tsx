@@ -63,7 +63,7 @@ export default function CareerForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4 text-left">
       <input type="text" {...register('website')} tabIndex={-1} autoComplete="off" aria-hidden="true" className="sr-only" />
       <div>
-        <label htmlFor="career-nome" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-400">
+        <label htmlFor="career-nome" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-500">
           Nome completo *
         </label>
         <input
@@ -78,7 +78,7 @@ export default function CareerForm() {
         <ErrorMessage id="error-career-nome" message={errors.nome?.message} />
       </div>
       <div>
-        <label htmlFor="career-email" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-400">
+        <label htmlFor="career-email" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-500">
           Email *
         </label>
         <input
@@ -94,7 +94,7 @@ export default function CareerForm() {
         <ErrorMessage id="error-career-email" message={errors.email?.message} />
       </div>
       <div>
-        <label htmlFor="career-message" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-400">
+        <label htmlFor="career-message" className="mb-2 ml-1 block text-xs font-black uppercase tracking-widest text-slate-500">
           Presentazione breve *
         </label>
         <textarea

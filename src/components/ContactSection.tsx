@@ -66,7 +66,7 @@ export default function ContactSection() {
               <input type="text" {...register('website')} tabIndex={-1} autoComplete="off" className="sr-only" aria-hidden="true" />
 
               <div>
-                <label htmlFor="contact-nome" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Nome *</label>
+                <label htmlFor="contact-nome" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">Nome *</label>
                 <input
                   id="contact-nome"
                   {...register('nome')}
@@ -79,7 +79,7 @@ export default function ContactSection() {
               </div>
 
               <div>
-                <label htmlFor="contact-email" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Email *</label>
+                <label htmlFor="contact-email" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">Email *</label>
                 <input
                   id="contact-email"
                   type="email"
@@ -93,7 +93,7 @@ export default function ContactSection() {
               </div>
 
               <div>
-                <label htmlFor="contact-oggetto" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Oggetto *</label>
+                <label htmlFor="contact-oggetto" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">Oggetto *</label>
                 <input
                   id="contact-oggetto"
                   {...register('oggetto')}
@@ -106,7 +106,7 @@ export default function ContactSection() {
               </div>
 
               <div>
-                <label htmlFor="contact-message" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-400">Messaggio *</label>
+                <label htmlFor="contact-message" className="mb-2 block text-xs font-black uppercase tracking-widest text-slate-500">Messaggio *</label>
                 <textarea
                   id="contact-message"
                   {...register('message')}

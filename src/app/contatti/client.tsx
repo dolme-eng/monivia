@@ -144,7 +144,7 @@ function ContattiContent() {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="page-contact-nome" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
+                    <label htmlFor="page-contact-nome" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-500">
                       Nome *
                     </label>
                     <input
@@ -160,7 +160,7 @@ function ContattiContent() {
                     <ErrorMessage id="error-page-nome" message={errors.nome?.message} />
                   </div>
                   <div>
-                    <label htmlFor="page-contact-email" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
+                    <label htmlFor="page-contact-email" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-500">
                       Email *
                     </label>
                     <input
@@ -179,7 +179,7 @@ function ContattiContent() {
                 </div>
 
                 <div>
-                  <label htmlFor="page-contact-oggetto" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
+                  <label htmlFor="page-contact-oggetto" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-500">
                     Oggetto *
                   </label>
                   <input
@@ -195,7 +195,7 @@ function ContattiContent() {
                 </div>
 
                 <div>
-                  <label htmlFor="page-contact-message" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-400">
+                  <label htmlFor="page-contact-message" className="mb-2 block ml-1 text-xs font-black uppercase tracking-widest text-slate-500">
                     Messaggio *
                   </label>
                   <textarea
@@ -221,6 +221,8 @@ function ContattiContent() {
                 <AnimatePresence>
                   {status === 'success' && (
                     <motion.p
+                      role="status"
+                      aria-live="polite"
                       initial={{ opacity: 0, y: -8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
@@ -231,6 +233,8 @@ function ContattiContent() {
                   )}
                   {status === 'error' && (
                     <motion.p
+                      role="alert"
+                      aria-live="assertive"
                       initial={{ opacity: 0, y: -8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}

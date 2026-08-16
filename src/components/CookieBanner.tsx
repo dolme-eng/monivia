@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cookie } from 'lucide-react';
 
 export default function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
+  const bannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -14,6 +15,17 @@ export default function CookieBanner() {
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    const first = bannerRef.current?.querySelector<HTMLElement>('button, a[href]');
+    first?.focus();
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') declineCookies();
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [isVisible]);
 
   const acceptCookies = () => {
     localStorage.setItem('monivia_cookie_consent', 'accepted');
@@ -31,6 +43,7 @@ export default function CookieBanner() {
     <AnimatePresence>
       {isVisible && (
         <motion.div
+          ref={bannerRef}
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 16, scale: 0.95 }}
@@ -51,7 +64,7 @@ export default function CookieBanner() {
             {/* Body */}
             <p id="cookie-desc" className="mb-4 text-sm leading-relaxed text-slate-500">
               Per migliorare la tua esperienza e analizzare il traffico.{' '}
-              <Link href="/cookie-policy" className="font-bold text-secondary hover:underline">
+              <Link href="/cookie-policy" className="font-bold text-secondary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40 focus-visible:rounded">
                 Informativa cookie
               </Link>
               .
@@ -61,13 +74,13 @@ export default function CookieBanner() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={acceptCookies}
-                className="btn-cyan w-full py-3 text-xs uppercase tracking-widest"
+                className="btn-cyan w-full py-3 text-xs uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40"
               >
                 Accetta tutti
               </button>
               <button
                 onClick={declineCookies}
-                className="btn-secondary w-full py-3 text-xs uppercase tracking-widest"
+                className="btn-secondary w-full py-3 text-xs uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40"
               >
                 Solo necessari
               </button>
@@ -77,7 +90,7 @@ export default function CookieBanner() {
                   localStorage.setItem('monivia_cookie_consent', 'declined');
                   setIsVisible(false);
                 }}
-                className="py-1 text-center text-xs text-slate-400 transition-colors hover:text-secondary"
+                className="py-1 text-center text-xs text-slate-500 transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40 focus-visible:rounded"
               >
                 Personalizza preferenze
               </Link>

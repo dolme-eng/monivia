@@ -92,7 +92,7 @@ export default function Footer() {
               <ul className="space-y-3">
                 {serviceLinks.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="group flex items-center gap-2 text-sm text-slate-500 transition-colors hover:text-secondary">
+                    <Link href={link.href} className="group flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-secondary">
                       <span className="h-px w-0 bg-secondary transition-all duration-300 group-hover:w-3" aria-hidden />
                       {link.name}
                     </Link>
@@ -107,7 +107,7 @@ export default function Footer() {
               <ul className="space-y-3">
                 {companyLinks.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="group flex items-center gap-2 text-sm text-slate-500 transition-colors hover:text-secondary">
+                    <Link href={link.href} className="group flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-secondary">
                       <span className="h-px w-0 bg-secondary transition-all duration-300 group-hover:w-3" aria-hidden />
                       {link.name}
                     </Link>
@@ -121,21 +121,22 @@ export default function Footer() {
               <h3 className="mb-5 text-[11px] font-black uppercase tracking-[0.2em] text-white">Contattaci</h3>
               <ul className="space-y-4">
                 <li>
-                  <a href={`tel:${siteConfig.contact.phone.link}`} className="group flex items-start gap-3 text-sm text-slate-500 transition-colors hover:text-secondary">
+                  <a href={`tel:${siteConfig.contact.phone.link}`} className="group flex items-start gap-3 text-sm text-slate-400 transition-colors hover:text-secondary">
                     <Phone size={15} className="mt-0.5 shrink-0 text-secondary" />
                     {siteConfig.contact.phone.display}
                   </a>
                 </li>
                 <li>
-                  <a href={`mailto:${siteConfig.contact.email}`} className="group flex items-start gap-3 text-sm text-slate-500 transition-colors hover:text-secondary">
+                  <a href={`mailto:${siteConfig.contact.email}`} className="group flex items-start gap-3 text-sm text-slate-400 transition-colors hover:text-secondary">
                     <Mail size={15} className="mt-0.5 shrink-0 text-secondary" />
                     {siteConfig.contact.email}
                   </a>
                 </li>
                 <li>
-                  <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="group flex items-start gap-3 text-sm text-slate-500 transition-colors hover:text-secondary">
+                  <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="group flex items-start gap-3 text-sm text-slate-400 transition-colors hover:text-secondary">
                     <MapPin size={15} className="mt-0.5 shrink-0 text-secondary" />
                     {siteConfig.contact.address}
+                    <span className="sr-only">(apre in una nuova finestra)</span>
                   </a>
                 </li>
               </ul>
@@ -146,14 +147,14 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/6 pt-8 pb-32 md:pb-8">
           <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
-            <p className="text-xs text-slate-600">
+            <p className="text-xs text-slate-400">
               © 2026 Monivia S.r.l. — P.IVA / C.F. 10984760583 — OAM n. A23741 — REA MI-2139056 — Cap. Soc. € 95.000 i.v.
             </p>
-            <p className="text-[10px] text-slate-700">
+            <p className="text-[10px] text-slate-400">
               Ultimo aggiornamento: giugno 2026
             </p>
           </div>
-          <p className="mt-4 text-[11px] leading-relaxed text-slate-700">
+          <p className="mt-4 text-[11px] leading-relaxed text-slate-400">
             Monivia S.r.l. iscritta all'Albo degli Intermediari OAM con n. A23741. Sede legale: Via Savona, 15 — 20144 Milano (MI).
             Monivia opera in qualità di intermediario di finanza ai sensi dell'art. 106 TUB. I servizi di prestito sono erogati in collaborazione con istituti di credito autorizzati.
             Messaggio pubblicitario con finalità promozionale. Per le condizioni contrattuali e i costi si rimanda ai fogli informativi disponibili in filiale e su questo sito.

@@ -50,6 +50,7 @@ export default function FaqClient() {
         <div className="mb-10 flex flex-wrap gap-2">
           <button
             onClick={() => setActiveCategory('Tutte')}
+            aria-pressed={activeCategory === 'Tutte'}
             className={`rounded-full px-4 py-2 text-xs font-bold transition-colors ${
               activeCategory === 'Tutte'
                 ? 'bg-secondary text-primary'
@@ -64,6 +65,7 @@ export default function FaqClient() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
+                aria-pressed={activeCategory === cat}
                 className={`rounded-full px-4 py-2 text-xs font-bold transition-colors ${
                   activeCategory === cat
                     ? 'bg-secondary text-primary'

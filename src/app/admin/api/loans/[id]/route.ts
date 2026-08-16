@@ -60,3 +60,48 @@ export async function PATCH(
     return NextResponse.json({ success: false, error: 'Errore interno' }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const admin = await requireAdmin(req);
+  if (!admin) {
+    return NextResponse.json({ success: false, error: 'Non autorizzato' }, { status: 401 });
+  }
+
+  const csrfToken = req.headers.get('x-csrf-token');
+  if (!verifyCsrfToken(csrfToken)) {
+    return NextResponse.json({ success: false, error: 'Token CSRF non valido' }, { status: 403 });
+  }
+
+  try {
+    const { prisma } = await import('@/lib/prisma');
+    const { id } = await params;
+
+    const existing = await prisma.loanApplication.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ success: false, error: 'Pratica non trovata' }, { status: 404 });
+    }
+
+    const adminEmail = admin.email || admin.userId || 'Admin';
+
+    await prisma.$transaction([
+      prisma.auditLog.create({
+        data: {
+          entity: 'LoanApplication',
+          entityId: id,
+          action: `DELETE:${existing.practiceId}`,
+          details: `Eliminata pratica ${existing.practiceId} di ${existing.nome} ${existing.cognome}`,
+          adminEmail,
+        },
+      }),
+      prisma.loanApplication.delete({ where: { id } }),
+    ]);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Admin loan delete error:', error);
+    return NextResponse.json({ success: false, error: 'Errore interno' }, { status: 500 });
+  }
+}

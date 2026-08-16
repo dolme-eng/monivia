@@ -14,6 +14,7 @@ import {
   FileText,
   Loader2,
   ArrowUpDown,
+  Trash2,
 } from 'lucide-react';
 
 interface LoanApplication {
@@ -71,6 +72,7 @@ export default function AdminLoansPage() {
   const [selectedApp, setSelectedApp] = useState<LoanApplication | null>(null);
   const [updating, setUpdating] = useState(false);
   const [notesDraft, setNotesDraft] = useState('');
+  const [statusCounts, setStatusCounts] = useState<Record<string, number>>({ ALL: 0 });
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 400);
@@ -89,6 +91,9 @@ export default function AdminLoansPage() {
       if (data.success) {
         setApplications(data.applications);
         setPagination(data.pagination);
+        if (statusFilter === 'ALL') {
+          setStatusCounts((prev) => ({ ...prev, ALL: data.pagination.total }));
+        }
       }
     } catch {
       console.error('Failed to fetch applications');
@@ -135,21 +140,31 @@ export default function AdminLoansPage() {
   const formatDate = (date: string) =>
     new Date(date).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-  return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <div className="bg-primary text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center gap-3 mb-2">
-            <FileText size={28} className="text-secondary" />
-            <h1 className="text-2xl font-black">Dashboard Pratiche</h1>
-          </div>
-          <p className="text-white/60 text-sm">Gestione delle richieste di prestito</p>
-        </div>
-      </div>
+  const deleteLoan = async (id: string) => {
+    if (!confirm('Eliminare questa pratica? Questa azione non può essere annullata.')) return;
+    setUpdating(true);
+    try {
+      const csrfToken = await getCsrfToken();
+      const res = await fetch(`/admin/api/loans/${id}`, {
+        method: 'DELETE',
+        headers: { 'x-csrf-token': csrfToken },
+      });
+      const data = await res.json();
+      if (data.success) {
+        setApplications((prev) => prev.filter((app) => app.id !== id));
+        setSelectedApp(null);
+        setPagination((prev) => ({ ...prev, total: prev.total - 1 }));
+      }
+    } catch {
+      console.error('Failed to delete');
+    } finally {
+      setUpdating(false);
+    }
+  };
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats */}
+  return (
+    <div>
+      {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           {['ALL', 'PENDING', 'REVIEWED', 'APPROVED', 'REJECTED', 'CONTACTED'].map((s) => (
             <button
@@ -165,7 +180,7 @@ export default function AdminLoansPage() {
                 {s === 'ALL' ? 'Tutte' : STATUS_LABELS[s]}
               </p>
               <p className="text-2xl font-black text-primary mt-1">
-                {s === 'ALL' ? pagination.total : '—'}
+                {s === 'ALL' ? statusCounts.ALL || pagination.total : statusCounts[s] ?? '—'}
               </p>
             </button>
           ))}
@@ -421,6 +436,13 @@ export default function AdminLoansPage() {
                     <ArrowUpDown size={14} /> Ripristina a In attesa
                   </button>
                 )}
+                <button
+                  onClick={() => deleteLoan(selectedApp.id)}
+                  disabled={updating}
+                  className="flex items-center gap-2 px-4 py-3 bg-red-50 text-red-600 border border-red-200 rounded-xl text-sm font-black hover:bg-red-100 transition-colors min-h-[44px] ml-auto"
+                >
+                  <Trash2 size={14} /> Elimina
+                </button>
               </div>
 
               {/* Meta */}

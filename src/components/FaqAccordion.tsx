@@ -16,9 +16,11 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
           className="overflow-hidden rounded-xl border border-slate-200 bg-white transition-colors hover:border-secondary/30"
         >
           <button
+            id={`faq-btn-${i}`}
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
             className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40"
             aria-expanded={openIndex === i}
+            aria-controls={`faq-panel-${i}`}
           >
             <span className="text-sm font-bold text-slate-900 sm:text-base">
               {item.question}
@@ -38,7 +40,12 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
               >
-                <div className="px-6 pb-5 text-sm leading-relaxed text-slate-500">
+                <div
+                  id={`faq-panel-${i}`}
+                  role="region"
+                  aria-labelledby={`faq-btn-${i}`}
+                  className="px-6 pb-5 text-sm leading-relaxed text-slate-500"
+                >
                   {item.answer}
                 </div>
               </motion.div>

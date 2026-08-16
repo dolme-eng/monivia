@@ -43,7 +43,7 @@ interface FormValues {
 }
 
 const Label = ({ children, htmlFor }: { children: React.ReactNode; htmlFor?: string }) => (
-  <label htmlFor={htmlFor} className="mb-2 block ml-1 text-[11px] font-black uppercase tracking-widest text-slate-400">
+  <label htmlFor={htmlFor} className="mb-2 block ml-1 text-[11px] font-black uppercase tracking-widest text-slate-500">
     {children}
   </label>
 );
