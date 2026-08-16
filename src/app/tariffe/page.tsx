@@ -26,6 +26,73 @@ export default function TariffePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Prodotti di prestito Monivia',
+            itemListElement: [
+              {
+                '@type': 'Offer',
+                position: 1,
+                name: 'Prestito Personale',
+                priceSpecification: {
+                  '@type': 'QuantitativeValue',
+                  value: 2.0,
+                  unitText: 'TAN %',
+                },
+                category: 'Prestito personale',
+              },
+              {
+                '@type': 'Offer',
+                position: 2,
+                name: 'Prestito Auto',
+                priceSpecification: {
+                  '@type': 'QuantitativeValue',
+                  value: 1.8,
+                  unitText: 'TAN %',
+                },
+                category: 'Prestito auto',
+              },
+              {
+                '@type': 'Offer',
+                position: 3,
+                name: 'Prestito Immobiliare',
+                priceSpecification: {
+                  '@type': 'QuantitativeValue',
+                  value: 2.5,
+                  unitText: 'TAN %',
+                },
+                category: 'Prestito immobiliare',
+              },
+              {
+                '@type': 'Offer',
+                position: 4,
+                name: 'Consolidamento Debiti',
+                priceSpecification: {
+                  '@type': 'QuantitativeValue',
+                  value: 2.2,
+                  unitText: 'TAN %',
+                },
+                category: 'Consolidamento debiti',
+              },
+              {
+                '@type': 'Offer',
+                position: 5,
+                name: 'Prestito Aziendale',
+                priceSpecification: {
+                  '@type': 'QuantitativeValue',
+                  value: 3.0,
+                  unitText: 'TAN %',
+                },
+                category: 'Prestito aziendale',
+              },
+            ],
+          }),
+        }}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-secondary/80 to-primary/80 pt-32 pb-16">
         <div className="pointer-events-none absolute inset-0 bg-[url('/assets/grid.svg')] opacity-10 [mask-image:linear-gradient(to_bottom,white,transparent)]" />

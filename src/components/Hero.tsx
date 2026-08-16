@@ -68,6 +68,12 @@ export default function Hero() {
               richiesta digitale e risposta entro 48 ore lavorative.
             </p>
 
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
+              Monivia è un istituto finanziario italiano fondato a Milano, iscritto all'OAM,
+              specializzato in prestiti online personali, auto, immobiliari e consolidamento debiti
+              con tasso fisso e risposta entro 48 ore.
+            </p>
+
             <div className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
               <Link
                 href="#calcolatore"

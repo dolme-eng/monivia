@@ -1,5 +1,6 @@
 import { buildPageMetadata } from '@/lib/seo';
 import { isLoanSlug, loanProducts } from '@/config/loans';
+import { siteConfig } from '@/config/site';
 import type { Metadata } from 'next';
 import PrestitoDettaglioClient from './client';
 
@@ -96,6 +97,36 @@ export default async function PrestitoDettaglio({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
+      {product && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'LoanOrCredit',
+              name: product.title,
+              description: product.description,
+              provider: {
+                '@type': 'FinancialService',
+                name: 'Monivia',
+                url: siteConfig.url,
+              },
+              interestRate: {
+                '@type': 'QuantitativeValue',
+                value: product.tan * 100,
+                unitText: 'TAN %',
+                minValue: product.tan * 100,
+              },
+              amount: {
+                '@type': 'MonetaryAmount',
+                currency: 'EUR',
+                maxValue: product.slug === 'immobiliare' ? 500000 : product.slug === 'consolidamento' ? 200000 : 100000,
+              },
+              url: `${siteConfig.url}/prestiti/${product.slug}`,
+            }),
+          }}
+        />
+      )}
       <PrestitoDettaglioClient />
     </>
   );

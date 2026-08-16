@@ -41,8 +41,17 @@ export default async function BlogArticlePage({ params }: Props) {
     headline: article.title,
     description: article.excerpt,
     datePublished: article.date,
+    dateModified: article.date,
+    articleSection: article.category,
     author: { '@type': 'Organization', name: 'Monivia' },
-    publisher: { '@type': 'Organization', name: 'Monivia' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Monivia',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.monivia.it/logo.svg',
+      },
+    },
     image: article.ogImage,
     mainEntityOfPage: `https://www.monivia.it/blog/${article.slug}`,
   };

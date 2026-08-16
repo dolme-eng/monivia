@@ -28,7 +28,7 @@ export const faqItems: FaqItem[] = [
   {
     category: 'Generale',
     question: 'Il prestito è sicuro?',
-    answer: 'Sì. Monivia utilizza crittografia SSL a 213 bit per proteggere tutti i tuoi dati. Inoltre, siamo iscritti all\'OAM (Organismo di Agenti e Mediatori) e operiamo nel pieno rispetto della normativa italiana e europea.',
+    answer: 'Sì. Monivia utilizza crittografia SSL a 256 bit per proteggere tutti i tuoi dati. Inoltre, siamo iscritti all\'OAM (Organismo di Agenti e Mediatori) e operiamo nel pieno rispetto della normativa italiana e europea.',
   },
 
   // --- Requisiti ---

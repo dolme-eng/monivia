@@ -53,6 +53,15 @@ export default function ChiSiamo() {
       '@type': 'Country',
       name: 'Italia',
     },
+    knowsAbout: [
+      'Prestiti online',
+      'Finanziamento personale',
+      'Prestito auto',
+      'Prestito immobiliare',
+      'Consolidamento debiti',
+      'Intermediazione creditizia',
+      'Fintech Italia',
+    ],
   };
 
   return (

@@ -19,8 +19,9 @@ const localBusinessJsonLd = {
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Via Savona, 15',
-    addressLocality: 'Firenze',
-    postalCode: '50100',
+    addressLocality: 'Milano',
+    postalCode: '20144',
+    addressRegion: 'MI',
     addressCountry: 'IT',
   },
   areaServed: {
