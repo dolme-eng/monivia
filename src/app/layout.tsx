@@ -18,7 +18,6 @@ export const metadata: Metadata = {
     languages: {
       'it': siteConfig.url,
     },
-    rss: `${siteConfig.url}/rss.xml`,
   },
   keywords: [
     'prestiti personali',
