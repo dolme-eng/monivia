@@ -49,7 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const blogCategoryPages: MetadataRoute.Sitemap = BLOG_CATEGORIES.map((category) => ({
-    url: `${baseUrl}/blog/${category.toLowerCase()}`,
+    url: `${baseUrl}/blog/categoria/${category.toLowerCase()}`,
     lastModified,
     changeFrequency: 'weekly' as const,
     priority: 0.75,

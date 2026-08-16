@@ -37,11 +37,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${category} — ${count} articoli | Blog Monivia`,
     description: CATEGORY_DESCRIPTIONS[category],
-    alternates: { canonical: `https://www.monivia.it/blog/${slug}` },
+    alternates: { canonical: `https://www.monivia.it/blog/categoria/${slug}` },
     openGraph: {
       title: `${category} | Blog Monivia`,
       description: CATEGORY_DESCRIPTIONS[category],
-      url: `https://www.monivia.it/blog/${slug}`,
+      url: `https://www.monivia.it/blog/categoria/${slug}`,
       siteName: 'Monivia',
       locale: 'it_IT',
       type: 'website',
@@ -69,7 +69,7 @@ export default async function BlogCategoryPage({ params }: Props) {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.monivia.it' },
       { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.monivia.it/blog' },
-      { '@type': 'ListItem', position: 3, name: category, item: `https://www.monivia.it/blog/${slug}` },
+      { '@type': 'ListItem', position: 3, name: category, item: `https://www.monivia.it/blog/categoria/${slug}` },
     ],
   };
 
